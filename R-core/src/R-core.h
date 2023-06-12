@@ -9,8 +9,8 @@
 #include "Core/Data.h"
 
 #include "Services/Server/Server.h"
-#include "Platform/Server/LinuxServer.h"
-#include "Platform/Server/WindowsServer.h"
+#include "Services/Server/Platform/LinuxServer.h"
+#include "Services/Server/Platform/WindowsServer.h"
 
 #include "Services/Window/Window.h"
-#include "Platform/Window/WindowsWindow.h"
+#include "Services/Window/Platform/WindowsWindow.h"

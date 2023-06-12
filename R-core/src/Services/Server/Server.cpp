@@ -4,8 +4,8 @@
 #include "Core/Data.h"
 
 #include "Services/Server/Server.h"
-#include "Platform/Server/WindowsServer.h"
-#include "Platform/Server/LinuxServer.h"
+#include "Services/Server/Platform/WindowsServer.h"
+#include "Services/Server/Platform/LinuxServer.h"
 
 namespace RC {
 

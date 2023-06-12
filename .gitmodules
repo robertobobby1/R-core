@@ -1,0 +1,3 @@
+[submodule "R-core/vendor/spdlog"]
+	path = R-core/vendor/spdlog
+	url = https://github.com/gabime/spdlog.git

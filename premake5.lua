@@ -10,6 +10,5 @@ workspace "R-core"
 		"Dist"
 	}
 
-include "R-core/vendor/imgui"
 include "R-core"
 include "Testing"

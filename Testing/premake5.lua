@@ -25,6 +25,15 @@ project "Testing"
 		"ImGui"
 	}
 
+	filter "system:windows"
+	cppdialect "C++17"
+	systemversion "latest"
+
+	defines
+	{
+		"RC_PLATFORM_WINDOWS"
+	}
+
 	filter "configurations:Debug"
 		defines "HZ_DEBUG"
 		runtime "Debug"

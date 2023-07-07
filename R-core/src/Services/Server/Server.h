@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Service.h"
+#include "Core/Buffer.h"
 
 namespace RC {
 	
@@ -17,28 +18,39 @@ namespace RC {
 
 	class Server : public Service {
 	public:
+		static std::shared_ptr<Server> Create(const ServerInput& input);
+
+		inline void SetOnBufferDataCallback (std::function<void(Buffer&)> onNewDataFunc) 
+			{ f_onNewData = onNewDataFunc; }
+
+	protected:
 
 		Server(const ServerInput& input);
 		~Server() = default;
 
 		virtual void Init() override = 0;
 		virtual void OnUpdate() override;
-
-		static std::shared_ptr<Server> Create(const ServerInput& input);
-
-	protected:
-
 		virtual void Server::InitThreads(std::function<void()> mainThreadFunc, std::function<void()> workerThreadFunc);
+		virtual void Shutdown();
+
+		// mutex and conditions
+		std::mutex m_mutex;
+		std::condition_variable m_condition;
+
+		// Shutdown flag
+		bool m_isShutdown = false;
+
+		// From here down variables need to be initialized externally 
+		// By children objects or set functions 
 
 		// Thread objects
 		std::shared_ptr<std::thread> m_mainThread;
 		std::vector<std::shared_ptr<std::thread>> m_workerThreads;
 
-		// mutex and conditions
-		std::shared_ptr<std::mutex> mutex;
-		std::shared_ptr<std::condition_variable> condition;
-
 		// Basic server data
 		std::shared_ptr<ServerData> m_data;
+
+		// Callback to new Data
+		std::function<void(Buffer&)> f_onNewData;
 	};
 }

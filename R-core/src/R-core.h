@@ -7,6 +7,7 @@
 #include "Core/Log.h"
 #include "Core/Service.h"
 #include "Core/Data.h"
+#include "Core/Buffer.h"
 
 #include "Services/Server/Server.h"
 #include "Services/Server/Platform/LinuxServer.h"

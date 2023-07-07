@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <iostream>
+#include <iterator>
 #include <thread>
 #include <mutex>
 #include <condition_variable>
@@ -9,6 +10,7 @@
 #include <vector>
 #include <unordered_map>
 #include <utility>
+#include <queue>
 
 
 #ifdef RC_PLATFORM_WINDOWS

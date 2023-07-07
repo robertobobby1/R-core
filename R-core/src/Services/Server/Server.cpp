@@ -41,13 +41,23 @@ namespace RC {
 				std::make_shared<std::thread>(workerThreadFunc)
 			);
 		}
+	}
 
+	void Server::Shutdown()
+	{
+		m_mainThread.get()->~thread();
+		for (auto& thread : m_workerThreads)
+		{
+			thread.get()->~thread();
+		}
 
+		m_isShutdown = true;
+		RC_LOG_WARN("Threads were terminated!");
 	}
 
 	void Server::OnUpdate()
 	{
-		//RC_ASSERT(!m_data->m_handled);
+		RC_ASSERT(!m_data->m_handled);
 		// Run all dependency callbacks (Check for change should be done in the callback)
 		for (auto& depFunc : m_dependencyCallbacks)
 		{

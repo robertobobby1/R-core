@@ -1,5 +1,6 @@
 #pragma once
 #include "rcpch.h"
+
 #include "Services/Server/Server.h"
 
 namespace RC {
@@ -15,7 +16,19 @@ namespace RC {
 		void MainThreadLoop();
 		void WorkerThreadLoop();
 
+		void OnError(const std::string& msg, bool closeSocket = true);
+		void SetTSQueue(SOCKET socket);
+
+		// gets a SOCKET to process by the thread, 
+		// threads will wait here until they receive data by the main thread 
+		SOCKET GetTSQueue();
+
 	private:
-		void Setup();
+		bool Setup();
+
+		// Only used by main thread
+		SOCKET ListenSocket;
+		// Used by workers and main thread (needs to be protected with mutex)
+		std::shared_ptr<std::queue<SOCKET>> m_socketQueue;
 	};
 }

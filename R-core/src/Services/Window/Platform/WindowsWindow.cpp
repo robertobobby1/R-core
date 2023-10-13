@@ -15,7 +15,6 @@ namespace RC
 
 	void WindowsWindow::Init()
 	{
-		Application::GetApp().AddDependency("Server", RC_BIND_FN(WindowsWindow::OnDispatchable));
 	}
 
 	void WindowsWindow::OnUpdate()

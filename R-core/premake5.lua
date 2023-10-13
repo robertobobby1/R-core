@@ -16,13 +16,15 @@ project "R-Core"
 	
 	defines
 	{
+		"UUID_SYSTEM_GENERATOR"
 	}
 
 	includedirs
 	{
 		"src",
 		"vendor/imgui",
-		"vendor/spdlog/include/"
+		"vendor/spdlog/include/",
+		"vendor/uuid"
 	}
 
 	links

@@ -5,7 +5,7 @@
 
 namespace RC {
 
-	Window::Window(const WindowInput& input)
+	Window::Window(const WindowInput& input) : Service()
 	{
 		this->m_width = input.Width;
 		this->m_height = input.Height;

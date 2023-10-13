@@ -21,9 +21,9 @@ namespace RC {
 		#endif	
 	}
 
-	Server::Server(const ServerInput& input)
+	Server::Server(const ServerInput& input) : Service()
 	{
-		this->m_serviceName = "Server";
+		//this->m_serviceName = "Server";
 		this->m_data = std::make_shared<ServerData>();
 
 		m_data->m_port = input.Port;
@@ -57,13 +57,14 @@ namespace RC {
 
 	void Server::OnUpdate()
 	{
-		RC_ASSERT(!m_data->m_handled);
-		// Run all dependency callbacks (Check for change should be done in the callback)
+		if (m_data->m_handled)
+			return;
+
+		/*
 		for (auto& depFunc : m_dependencyCallbacks)
 		{
 			depFunc(*(m_data.get()));
 			m_data->m_handled = true;
-		}
+		}*/
 	}
-
 }

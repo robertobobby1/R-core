@@ -12,11 +12,17 @@ project "Testing"
 		"src/**.cpp",
 	}
 
+	defines
+	{
+		"UUID_SYSTEM_GENERATOR"
+	}
+
 	includedirs
 	{
 		"%{wks.location}/R-core/src",
 		"%{wks.location}/R-core/vendor/imgui",
-		"%{wks.location}/R-core/vendor/spdlog/include"
+		"%{wks.location}/R-core/vendor/spdlog/include",
+		"%{wks.location}/R-core/vendor/uuid"
 	}
 
 	links

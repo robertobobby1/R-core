@@ -3,7 +3,7 @@
 namespace RC {
 
 	enum DispatchableType {
-		None = 0, 
+		DTNone = 0, 
 		ServerDataType
 	};
 

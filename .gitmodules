@@ -4,3 +4,6 @@
 [submodule "R-core/vendor/imgui"]
 	path = R-core/vendor/imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule "R-core/vendor/glfw"]
+	path = R-core/vendor/glfw
+	url = https://github.com/glfw/glfw.git

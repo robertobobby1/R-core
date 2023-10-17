@@ -41,8 +41,7 @@ namespace RC {
 		virtual inline bool operator==(const char* className) const { return this->GetChildClassName() == className; }
 		virtual inline bool operator!=(const char* className) const { return this->GetChildClassName() != className; }
 
-	private:
-
+	protected: 
 		// id 0 is an invalid id, this has to be set by Application
 		int m_id = 0;
 

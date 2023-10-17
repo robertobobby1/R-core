@@ -9,7 +9,6 @@ namespace RC {
 	{
 		this->m_width = input.Width;
 		this->m_height = input.Height;
-
 	}
 
 	std::shared_ptr<Window> Window::Create(const WindowInput& input)

@@ -22,6 +22,7 @@ namespace RC {
 
 		virtual void Init() override = 0;
 		virtual void OnUpdate() override = 0;
+		virtual bool IsUniqueService() const override { return true; }
 
 		static std::shared_ptr<Window> Create(const WindowInput& input);
 

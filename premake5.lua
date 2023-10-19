@@ -12,4 +12,6 @@ workspace "R-core"
 
 include "Testing"
 include "R-core/vendor/imgui"
+include "R-core/vendor/glfw"
+include "R-core/vendor/glad"
 include "R-core"

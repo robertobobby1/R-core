@@ -17,18 +17,27 @@ project "Testing"
 		"UUID_SYSTEM_GENERATOR"
 	}
 
+	ignoredefaultlibraries
+	{
+		"libcmtd"
+	}
+
 	includedirs
 	{
 		"%{wks.location}/R-core/src",
 		"%{wks.location}/R-core/vendor/imgui",
 		"%{wks.location}/R-core/vendor/spdlog/include",
-		"%{wks.location}/R-core/vendor/uuid"
+		"%{wks.location}/R-core/vendor/uuid",
+		"%{wks.location}/R-core/vendor/GLFW/include",
+		"%{wks.location}/R-core/vendor/glad/include"
 	}
 
 	links
 	{
 		"R-core",
-		"ImGui"
+		"ImGui",
+		"glad",
+		"GLFW"
 	}
 
 	filter "system:windows"

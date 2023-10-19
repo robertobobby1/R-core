@@ -29,6 +29,11 @@ namespace RC {
 			m_dependencyCallbacks.emplace_back(dependency);
 		};
 
+		virtual inline std::string ToString() {
+			std::string res = "["; res += this->m_id; res += "-"; res += this->GetChildClassName(); res += "]";
+			return res; 
+		}
+
 		virtual inline const char* GetChildClassName() const { return typeid(*(this)).name(); }
 		virtual inline bool IsUniqueService()          const { return false; }
 		virtual inline int GetId()                     const { return m_id; }
@@ -64,36 +69,25 @@ namespace RC {
 
 	struct DependencyDescriber
 	{
-		std::shared_ptr<Service> dependency;
+		std::shared_ptr<Service> dep;
 		bool tryToFind;
+		const char* depName;
 
-		DependencyDescriber(std::shared_ptr<Service> _dependency, bool _tryToFind)
-			: dependency(_dependency), tryToFind(_tryToFind) { }
-	};
+		DependencyDescriber(const char* _depName, std::shared_ptr<Service> _dependency, bool _tryToFind)
+			: dep(_dependency), tryToFind(_tryToFind), depName(_depName){ }
 
-	class ServiceMapComparator {
-	public: 
-		using is_transparent = std::true_type;
-
-		bool operator()(
-			const int object1,
-			const std::shared_ptr<RC::Service> object2
-		) const {
-			return object1 < object2->GetId();
-		}
-
-		bool operator()(
-			const std::shared_ptr<RC::Service> object1,
-			const int object2
-		) const {
-			return object1->GetId() < object2;
-		}
-
-		bool operator()(
-			const std::shared_ptr<RC::Service> object1,
-			const std::shared_ptr<RC::Service> object2
-		) const {
-			return object1->GetId() < object2->GetId();
+		/*
+		* Careful usage, the function "casts" the object for you by returning the children object 
+		* however, it uses the given dependency name by the user to find it 
+		*/
+		template<typename T>
+		static std::shared_ptr<T> get(std::vector<DependencyDescriber> dependencies, const char* serviceName)
+		{
+			for (auto& describer : dependencies) {
+				if (describer.depName == serviceName)
+					return describer.dep;
+			}
+			return nullptr;
 		}
 	};
 }

@@ -8,9 +8,8 @@ namespace RC {
 		ImGui();
 		~ImGui() = default;
 
-		virtual void Init() override = 0;
-		virtual void OnUpdate() override = 0;
-
+		virtual void Init() override;
+		virtual void OnUpdate() override;
 
 	};
 }

@@ -1,6 +1,7 @@
 project "R-Core"
 	kind "StaticLib"
 	language "C++"
+	staticruntime "off"
 
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
@@ -16,20 +17,26 @@ project "R-Core"
 	
 	defines
 	{
-		"UUID_SYSTEM_GENERATOR"
+		"UUID_SYSTEM_GENERATOR",
+		"BUILD_SHARED_LIBS"
 	}
 
 	includedirs
 	{
 		"src",
+
+		"vendor/glad/include",
 		"vendor/imgui",
 		"vendor/spdlog/include/",
-		"vendor/uuid"
+		"vendor/uuid",
+		"vendor/glfw/include"
 	}
 
 	links
 	{
 		"ImGui",
+		"glad",
+		"GLFW"
 	}
 
 	filter "system:windows"
@@ -41,6 +48,10 @@ project "R-Core"
 			"RC_PLATFORM_WINDOWS"
 		}
 
+		links
+		{
+			"Ws2_32.lib",
+		}
 
 	filter "configurations:Debug"
 		defines "RC_DEBUG"

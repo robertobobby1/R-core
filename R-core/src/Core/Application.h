@@ -14,16 +14,43 @@ namespace RC {
 		~Application();
 		void Run();
 
+		// returns singleton
+		inline static Application& GetApp() { return *s_App; }
+
+		// will return the service id, add it to dep map and to service list
+		inline void AddService(std::shared_ptr<Service> service)
+		{
+			if (CheckDuplicatedUniqueService(service))
+				return;
+
+			service->m_id = (int)(m_services.size() + 1);
+			m_services[service->m_id] = service;
+		}
+
+		inline void PrintServices()
+		{
+			for (auto& service : m_services) {
+
+				RC_LOG_INFO("{0}", service.second->ToString());
+				for (auto& describer : service.second->m_dependencies){
+					RC_LOG_INFO("----{0}", describer.dep->ToString(), describer.dep->m_id);
+				}
+			}
+			RC_LOG_INFO("");
+		}
+
+	private:
 		/*
 		* Search service by className and return id of the service, 
 		* will return the first one it finds, if not found return 0
 		*/ 
 		std::vector<int> SearchServicesByClassName(const char* className);
 		/*
-		* Remove all of the services that are unique and that may have been 
-		* instantiated more than once due to it been dependency of multiple services
+		* Check if the new given service is a duplicated and not 
+		* add it if it is already inside and reassign the given shared ptr
+		* Return if it was a duplicated unique service
 		*/
-		void RemoveDuplicatedUniqueServices();
+		bool CheckDuplicatedUniqueService(std::shared_ptr<Service> service);
 		/*
 		* Will check there is no circular dependency meaning: given service 1 and service 2 
 		* service1 -> service2 -> service1 -> service2 ... 
@@ -31,46 +58,34 @@ namespace RC {
 		*/
 		void CheckNonCircularDependency();
 		/*
-		* 
+		* Will check all the dependencies of all services and instantiate them if necessary 
+		* depending on every possible scenario: 
+		* -----------| TryToFind | Non-instantiated | Instantiated | Multi-instantiated
+		* Unique	 | --------- |        UC1       |      UC2     |	   ERROR     
+		* Non-unique |	  true	 |        UC3       |      UC4     |		UC7
+		* Non-unique |	  false	 |        UC5       |      UC6     |		UC8
 		*/
 		void AddDependencyServices();
-
-		// returns singleton
-		inline static Application& GetApp() { return *s_App; }
-
-		// will return the service id, add it to dep map and to service list
-		inline void AddService(std::shared_ptr<Service> service)
-		{
-			service->m_id = (int)(m_services.size() + 1);
-			m_services[service] = std::vector<int>();
-		}
-
-		inline void PrintServices()
-		{
-			for (auto& service : m_services) {
-				RC_LOG_INFO("object of type {0}, with m_id {1} and has {2} service dependencies",
-					service.first->GetChildClassName(), service.first->m_id, service.second.size()
-				);
-			}
-		}
+		/*
+		* Will return the order of execution to avoid services to be runned 
+		* before their dependencies in a list of shared ptr services
+		* THIS METHOD SHOULD ONLY BE CALLED AFTER DEPENDENCIES HAVE BEEN CORRECTLY INSTANTIATED
+		*/
+		std::vector<int> GetExecutionOrderIds();
+		/*
+		* Recursive function used to determine the order of the execution 
+		* taking into account the dependencies
+		*/
+		void Application::AddDependencyDependencies(std::vector<int>& orderedList, DependencyDescriber& dep);
 
 	private:
 
 		static Application* s_App;
-
 		/*
 		* keeps the service and a list of the dependencies that that service has
 		* it is unordered and must be formatted during Run function because it is
-		* used by the user by calling AddService
+		* used by the user by calling AddService multiple times
 		*/ 
-		std::map<std::shared_ptr<Service>, std::vector<int>, ServiceMapComparator> m_services;
-
-		/*
-		* keeps the mapping between a deleted service during the Run function 
-		* and the service it has been overwritten by, used for unique services and
-		* non-unique that may be overwritten deleted services
-		*/
-		std::map<int, int> m_serviceOverwrite;
-
+		std::map<int, std::shared_ptr<Service>> m_services;
 	};
 }

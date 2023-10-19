@@ -2,14 +2,17 @@
 
 #include "Core/Service.h"
 
+#include "GLFW/glfw3.h"
+
 namespace RC {
 
 	struct WindowInput {
 		uint32_t  Height;
 		uint32_t  Width;
+		const char* Title;
 
-		WindowInput(uint32_t width = 1600, uint32_t height = 900)
-			: Width(width), Height(height)
+		WindowInput(uint32_t width = 1600, uint32_t height = 900, const char* title = "Window")
+			: Width(width), Height(height), Title(title)
 		{
 		}
 
@@ -20,15 +23,18 @@ namespace RC {
 		Window(const WindowInput& input);
 		~Window() = default;
 
-		virtual void Init() override = 0;
-		virtual void OnUpdate() override = 0;
-		virtual bool IsUniqueService() const override { return true; }
+		virtual void Init() override;
+		virtual void OnUpdate() override;
 
 		static std::shared_ptr<Window> Create(const WindowInput& input);
 
 	protected:
-		uint32_t  m_width;
-		uint32_t  m_height;
+		const char* m_title;
+		uint32_t    m_width;
+		uint32_t    m_height;
+		bool	    m_Vsync;
+
+		GLFWwindow* m_Window;
 
 	};
 }

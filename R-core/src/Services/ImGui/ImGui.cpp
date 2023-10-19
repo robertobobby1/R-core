@@ -8,17 +8,16 @@ namespace RC {
 	ImGui::ImGui() : Service()
 	{
 		// default values for window input, customize in the future
-		DependencyDescriber depD(Window::Create(WindowInput()), false);
-		this->m_dependencies.push_back(depD);
+		this->m_dependencies.push_back(DependencyDescriber(
+			"Window", Window::Create(WindowInput()), true)
+		);
 	}
 
 	void ImGui::Init()
 	{
-
 	}
 
 	void ImGui::OnUpdate() 
 	{
-
 	}
 }

@@ -21,81 +21,82 @@ namespace RC {
 	void Application::Run()
 	{
 		PrintServices();
-		// Remove unique services duplications 
-		RemoveDuplicatedUniqueServices();
-		PrintServices(); 
 		// add the dependencies in the services when needed 
 		AddDependencyServices();
 		PrintServices(); 
 		// crash when a circular dependency is found
 		CheckNonCircularDependency();
 
+		// get services in execution order
+		std::vector<int> orderedServices = GetExecutionOrderIds();
+		
 		// Initialize all services and start looping
-		for (auto& service : m_services) {
-			service.first->Init();
+		for (auto& index : orderedServices) {
+			auto& service = m_services[index];
+			RC_LOG_INFO("The service {0} with id {1} has a shared ptr count of {2}", 
+				service->GetChildClassName(), service->GetId(), service.use_count()
+			);
+			service->Init();
 		}
 
 		// infinite loop of application
 		while (true) {
 			// loop through all services, this vector should be limited
-			for (auto& service : m_services) {
-				service.first->OnUpdate();
+			for (auto& index : orderedServices) {
+				m_services[index]->OnUpdate();
 			}
 		}
 	}
 
-	void Application::RemoveDuplicatedUniqueServices()
+	bool Application::CheckDuplicatedUniqueService(std::shared_ptr<Service> service)
 	{
-		for (auto& service : m_services) {
-			if (!service.first->IsUniqueService())
-				return;
+		if (!service->IsUniqueService())
+			return false;
 
-			std::vector<int> indexes = SearchServicesByClassName(service.first->GetChildClassName());
-			// remove all the duplicates
-			for (auto& index : indexes) {
-				if (index == service.first->m_id)
-					continue;
-				m_serviceOverwrite.insert({ index, service.first->m_id });
-				m_services.erase(m_services.find(index));
-			}
+		std::vector<int> indexes = SearchServicesByClassName(service->GetChildClassName());
+
+		if (indexes.size() > 1)
+			RC_ASSERT_MSG(false, "The search should not find more than 1, there are already duplicates!");
+
+		// if already exists reassign given service to the already existing service
+		if (indexes.size() == 1) {
+			service = m_services[indexes[0]];
+			return true;
 		}
+
+		return false;
 	}
 
 	void Application::AddDependencyServices()
 	{
 		// iterate all services incrementally
 		for (auto& service : m_services) {
-			RC_LOG_INFO("service with id {0}, checking its {1} dependencies", service.first->m_id , service.first->m_dependencies.size());
+			RC_LOG_INFO("{0}, checking its {1} dependencies", service.second->ToString(), service.second->m_dependencies.size());
 			// iterate the dependency vector using indexes 
-			for (int dependencyIndex = 0; dependencyIndex < service.first->m_dependencies.size(); dependencyIndex++) {
-				auto& dependency = service.first->m_dependencies[dependencyIndex];
-				std::vector<int> indexes = SearchServicesByClassName(dependency.dependency->GetChildClassName());
+			for (int describerIndex = 0; describerIndex < service.second->m_dependencies.size(); describerIndex++) {
+				auto& describer = service.second->m_dependencies[describerIndex];
+				std::vector<int> indexes = SearchServicesByClassName(describer.dep->GetChildClassName());
 				// Use already instantiated services when its found by class name and:
 				//		Dependency is unique service and hasn't been found yet
 				//		Dependency is non unique service and has been found and try to find flag is set
 				if (
-					dependency.dependency->IsUniqueService() && indexes.size() == 1 ||
-					!dependency.dependency->IsUniqueService() && dependency.tryToFind && indexes.size() > 0
+					describer.dep->IsUniqueService() && indexes.size() == 1 ||
+					!describer.dep->IsUniqueService() && describer.tryToFind && indexes.size() > 0
 				) {
 					// change the services dependency to the new service, allowing him to access his dependencies
-					m_services
-						.find(service.first->m_id)
-						->first
-						->m_dependencies[dependencyIndex]
-						.dependency
-						.reset(m_services.find(indexes[0])->first.get());
+					service.second->m_dependencies[describerIndex].dep = m_services[indexes[0]];
 				}
 				// Add the dependency as a new service when: 
 				//		Dependency is unique service and the service hasn't been found
 				//		Dependency is non unique service and it wasn't found by class name or try to find flag is not set
 				else if (
-					dependency.dependency->IsUniqueService() && indexes.size() == 0 ||
-					!dependency.dependency->IsUniqueService()
+					describer.dep->IsUniqueService() && indexes.size() == 0 ||
+					!describer.dep->IsUniqueService()
 				) {
 					// will be added to the end of the list, dependencies will be checked anyways
-					this->AddService(dependency.dependency);
+					this->AddService(describer.dep);
 				// On Any other case throw descriptive errors for debug purposes 
-				} else if (dependency.dependency->IsUniqueService() && indexes.size() > 1) {
+				} else if (describer.dep->IsUniqueService() && indexes.size() > 1) {
 					RC_ASSERT_MSG(false,
 						"Some error occured! Only one unique service should appear, check function RemoveDuplicatedUniqueServices"
 					);
@@ -106,15 +107,54 @@ namespace RC {
 		}
 	}
 
+	std::vector<int> Application::GetExecutionOrderIds()
+	{
+		std::vector<int> orderedList;
+
+		// iterate all services dependencies and then add service if needed
+		for (auto& service : m_services) {
+			for (auto& dependency : service.second->m_dependencies) {
+				AddDependencyDependencies(orderedList, dependency);
+			}
+			// check if it already exists in the vector
+			bool found = false;
+			for (auto& index : orderedList) {
+				if (m_services[index]->GetId() == service.second->GetId())
+					found = true;
+			}
+
+			if (!found) 
+				orderedList.push_back(service.second->GetId());
+		}
+		return orderedList;
+	}
+
+	void Application::AddDependencyDependencies(std::vector<int>& orderedList, DependencyDescriber& describer)
+	{
+		// base case: dependency already in the list (this searches in the vector for the dep)
+		for (auto& index : orderedList) {
+			if (m_services[index]->GetId() == describer.dep->GetId())
+				return;
+		}
+
+		// Add the dependencies dependencies first, as there should be no circular 
+		for (auto& dep : describer.dep->m_dependencies) {
+			AddDependencyDependencies(orderedList, dep);
+		}
+		// finally add the dependency to the list
+		orderedList.push_back(describer.dep->GetId());
+
+	}
+
 	std::vector<int> Application::SearchServicesByClassName(const char* className)
 	{
 		std::vector<int> res;
 		for (auto& service : m_services) {
 			// check if it has the same className 
-			if (*(service.first) != className)
+			if (*(service.second) != className)
 				continue;
 
-			res.push_back(service.first->m_id);
+			res.push_back(service.second->m_id);
 		}
 		return res;
 	}
@@ -123,20 +163,20 @@ namespace RC {
 	{
 		for (auto& service : m_services) {
 			// should only be a couple of dependencies, iterate the services dependencies
-			for (auto& dependency : service.first->m_dependencies) {
+			for (auto& describer : service.second->m_dependencies) {
 				// search by class name on services
 				for (auto& dependencyService : m_services) {
 					// check if it doesn't have the same className and ignore them
-					if (*(service.first) != dependency.dependency->GetChildClassName())
+					if (*(service.second) != describer.dep->GetChildClassName())
 						continue;
 
 					// iterate over the dependencies of the service which is a dependency 
-					for (auto& dependencyServiceDependencies : dependencyService.first->m_dependencies) {
+					for (auto& dependencyServiceDependencies : dependencyService.second->m_dependencies) {
 						// assert it is not circular
 						RC_ASSERT_MSG(
-							(*(dependencyServiceDependencies.dependency) != service.first->GetChildClassName()),
+							(*(dependencyServiceDependencies.dep) != service.second->GetChildClassName()),
 							"Circular dependency {0} -> {1} -> {0} -> ...",
-							service.first->GetChildClassName(), dependency.dependency->GetChildClassName()
+							service.second->GetChildClassName(), describer.dep->GetChildClassName()
 						)
 					}
 				}

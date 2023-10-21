@@ -18,7 +18,7 @@ project "R-Core"
 	defines
 	{
 		"UUID_SYSTEM_GENERATOR",
-		"BUILD_SHARED_LIBS"
+		"GLFW_INCLUDE_NONE"
 	}
 
 	includedirs

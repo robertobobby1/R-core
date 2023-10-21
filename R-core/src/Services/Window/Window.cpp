@@ -19,6 +19,19 @@ namespace RC {
 		RC_LOG_ERROR("GLFW Error ({0}): {1}", error, description);
 	}
 
+	static void PrintOpenGLInfo()
+	{
+		GLint major, minor;
+		glGetIntegerv(GL_MAJOR_VERSION, &major);
+		glGetIntegerv(GL_MINOR_VERSION, &minor);
+
+		RC_LOG_INFO("GL Vendor            : {0}", (char*)glGetString(GL_VENDOR));
+		RC_LOG_INFO("GL Renderer          : {0}", (char*)glGetString(GL_RENDERER));
+		RC_LOG_INFO("GL Version (string)  : {0}", (char*)glGetString(GL_VERSION));
+		RC_LOG_INFO("GL Version (integer) : {0}.{1}", major, minor);
+		RC_LOG_INFO("GLSL Version         : {0}", (char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
+	}
+
 	Window::Window(const WindowInput& input) : Service()
 	{
 		this->m_width = input.Width;
@@ -36,15 +49,15 @@ namespace RC {
 		RC_ASSERT_MSG(success, "Could not initialize GLFW!");
 		glfwSetErrorCallback(OnGLFWError);
 
+		// set openGL version
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+
 		m_Window = glfwCreateWindow((int)this->m_width, (int)this->m_height, this->m_title, nullptr, nullptr);
 
 		glfwMakeContextCurrent(m_Window);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-
 		RC_ASSERT_MSG(status, "Failed to initialize Glad!");
 	}
 

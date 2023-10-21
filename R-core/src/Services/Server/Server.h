@@ -30,7 +30,7 @@ namespace RC {
 
 		virtual void Init() override = 0;
 		virtual void OnUpdate() override;
-		virtual void Server::InitThreads(std::function<void()> mainThreadFunc, std::function<void()> workerThreadFunc);
+		virtual void InitThreads(std::function<void()> mainThreadFunc, std::function<void()> workerThreadFunc);
 		virtual void Shutdown();
 
 		// mutex and conditions

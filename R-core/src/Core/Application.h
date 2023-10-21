@@ -76,7 +76,7 @@ namespace RC {
 		* Recursive function used to determine the order of the execution 
 		* taking into account the dependencies
 		*/
-		void Application::AddDependencyDependencies(std::vector<int>& orderedList, DependencyDescriber& dep);
+		void AddDependencyDependencies(std::vector<int>& orderedList, DependencyDescriber& dep);
 
 	private:
 

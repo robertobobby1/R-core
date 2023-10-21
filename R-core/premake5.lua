@@ -40,14 +40,15 @@ project "R-Core"
 		"GLFW"
 	}
 
-	filter "system:mac"
+	filter "system:macosx"
 		systemversion "latest"
 
 		defines
 		{
 			"RC_PLATFORM_MACOS"
 		}
-	filter "system:mac"
+
+	filter "system:linux"
 		systemversion "latest"
 
 		defines

@@ -41,13 +41,8 @@ project "Testing"
 	}
 
 	filter "system:windows"
-	cppdialect "C++17"
-	systemversion "latest"
-
-	defines
-	{
-		"RC_PLATFORM_WINDOWS"
-	}
+		cppdialect "C++17"
+		systemversion "latest"
 
 	filter "configurations:Debug"
 		defines "HZ_DEBUG"

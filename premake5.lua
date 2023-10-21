@@ -2,6 +2,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 workspace "R-core"
 	architecture "x86_64"
+	cppdialect "C++17"
 
 	configurations
 	{

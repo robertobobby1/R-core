@@ -1,5 +1,6 @@
 project "R-Core"
 	kind "StaticLib"
+	cppdialect "C++17"
 	language "C++"
 	staticruntime "off"
 
@@ -39,8 +40,22 @@ project "R-Core"
 		"GLFW"
 	}
 
+	filter "system:mac"
+		systemversion "latest"
+
+		defines
+		{
+			"RC_PLATFORM_MACOS"
+		}
+	filter "system:mac"
+		systemversion "latest"
+
+		defines
+		{
+			"RC_PLATFORM_LINUX"
+		}
+
 	filter "system:windows"
-		cppdialect "C++17"
 		systemversion "latest"
 
 		defines

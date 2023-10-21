@@ -10,7 +10,12 @@ namespace RC {
 
 }
 
+#if defined(RC_PLATFORM_MACOS) || defined(RC_PLATFORM_LINUX)
+#include <signal.h>
+#define RC_DEBUGBREAK()         raise(SIGTRAP)
+#elif RC_PLATFORM_WINDOWS
 #define RC_DEBUGBREAK()         __debugbreak()
+#endif
 
 #define RC_LOG_INFO(...)        ::RC::Log::GetLogger()->info(__VA_ARGS__)
 #define RC_LOG_WARN(...)	    ::RC::Log::GetLogger()->warn(__VA_ARGS__)
@@ -19,6 +24,7 @@ namespace RC {
 #define RC_LOG_CRITICAL(...)    ::RC::Log::GetLogger()->critical(__VA_ARGS__)
 
 #define RC_LOG_MEMORYUSAGE()    ::RC::Log::GetLogger()->info("The current memory usage is {0}", (RC::GetAllocations() / 8))
+
 
 #define RC_ASSERT_MSG(assert, ...)  { if(!assert) { RC_LOG_ERROR(__VA_ARGS__); RC_DEBUGBREAK();} }
 #define RC_ASSERT(assert)  {    if(!assert) { RC_DEBUGBREAK();} }

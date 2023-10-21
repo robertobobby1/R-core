@@ -3,6 +3,7 @@
 
 #include "Services/Server/Server.h"
 
+#ifdef RC_PLATFORM_WINDOWS
 namespace RC {
 
 	class WindowsServer : public Server {
@@ -32,3 +33,4 @@ namespace RC {
 		std::shared_ptr<std::queue<SOCKET>> m_socketQueue;
 	};
 }
+#endif

@@ -3,18 +3,22 @@
 #include "Core/Core.h"
 #include "Core/Data.h"
 
-#include "Services/Server/Server.h"
-#include "Services/Server/Platform/WindowsServer.h"
+#if defined(RC_PLATFORM_MACOS) || defined(RC_PLATFORM_LINUX)
 #include "Services/Server/Platform/LinuxServer.h"
+#elif RC_PLATFORM_WINDOWS
+#include "Services/Server/Platform/WindowsServer.h"
+#endif
+
+#include "Services/Server/Server.h"
 
 namespace RC {
 
 	std::shared_ptr<Server> Server::Create(const ServerInput& input)
 	{
-		#ifdef RC_PLATFORM_WINDOWS
+		#if defined(RC_PLATFORM_MACOS) || defined(RC_PLATFORM_LINUX)
+			return std::make_shared<LinuxServer>(input);			
+		#elif RC_PLATFORM_WINDOWS
 			return std::make_shared<WindowsServer>(input);
-		#elif RC_PLATFORM_LINUX
-			return std::make_shared<LinuxServer>(input);
 		#else
 			RC_LOG_ERROR("System not detected! Server couldn't be created");
 			return nullptr;

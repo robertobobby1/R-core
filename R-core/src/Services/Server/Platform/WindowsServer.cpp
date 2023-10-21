@@ -6,6 +6,8 @@
 #include "Services/Server/Server.h"
 #include "Services/Server/Platform/WindowsServer.h"
 
+#ifdef RC_PLATFORM_WINDOWS
+
 namespace RC {
 
     WindowsServer::WindowsServer(const ServerInput& input) 
@@ -171,3 +173,5 @@ namespace RC {
         return true;
     }
 }
+
+#endif

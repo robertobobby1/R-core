@@ -41,7 +41,6 @@ project "R-Core"
 	}
 
 	filter "system:macosx"
-		systemversion "latest"
 
 		defines
 		{

@@ -16,10 +16,7 @@ project "R-Core"
 		"src/**.h"
 	}
 	
-	defines
-	{
-		"GLFW_INCLUDE_NONE"
-	}
+	defines "GLFW_INCLUDE_NONE"
 
 	includedirs
 	{
@@ -31,7 +28,6 @@ project "R-Core"
 		"vendor/uuid",
 		"vendor/glfw/include"
 	}
-
 	links
 	{
 		"ImGui",
@@ -40,15 +36,19 @@ project "R-Core"
 	}
 
 	filter "system:macosx"
-
-		defines
+		links 
+		{
+			"OpenGL.framework",
+			"Cocoa.framework",
+			"IOKit.framework"
+		}
+		defines 
 		{
 			"RC_PLATFORM_MACOS"
 		}
 
 	filter "system:linux"
 		systemversion "latest"
-
 		defines
 		{
 			"RC_PLATFORM_LINUX"
@@ -56,15 +56,13 @@ project "R-Core"
 
 	filter "system:windows"
 		systemversion "latest"
-
-		defines
-		{
-			"RC_PLATFORM_WINDOWS"
-		}
-
 		links
 		{
 			"Ws2_32.lib",
+		}
+		defines
+		{
+			"RC_PLATFORM_WINDOWS"
 		}
 
 	filter "configurations:Debug"
@@ -72,23 +70,7 @@ project "R-Core"
 		runtime "Debug"
 		symbols "on"
 
-		defines
-		{
-		}
-
-		links
-		{
-		}
-
 	filter "configurations:Release"
 		defines "RC_RELEASE"
 		runtime "Release"
 		optimize "on"
-
-		defines
-		{
-		}
-
-		links
-		{
-		}

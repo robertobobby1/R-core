@@ -1,15 +1,22 @@
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 workspace "R-core"
-	architecture "x86_64"
 	cppdialect "C++17"
-
 	configurations
 	{
 		"Debug",
 		"Release",
 		"Dist"
 	}
+
+	filter "system:macosx"
+		architecture "universal"
+
+	filter "system:windows"
+		architecture "x86_64"
+	
+	filter "system:linux"
+		architecture "x86_64"
 
 include "Testing"
 include "R-core/vendor/imgui"

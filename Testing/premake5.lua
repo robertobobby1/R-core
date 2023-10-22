@@ -2,7 +2,7 @@
 project "Testing"
 	kind "ConsoleApp"
 	language "C++"
-	
+ 
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
@@ -11,12 +11,10 @@ project "Testing"
 		"src/**.h",
 		"src/**.cpp",
 	}
-
 	ignoredefaultlibraries
 	{
 		"libcmtd"
 	}
-
 	includedirs
 	{
 		"%{wks.location}/R-core/src",
@@ -26,7 +24,6 @@ project "Testing"
 		"%{wks.location}/R-core/vendor/GLFW/include",
 		"%{wks.location}/R-core/vendor/glad/include"
 	}
-
 	links
 	{
 		"R-core",
@@ -35,32 +32,24 @@ project "Testing"
 		"GLFW"
 	}
 
+	filter "system:macosx"
+		links
+		{
+			"OpenGL.framework",
+			"Cocoa.framework",
+			"IOKit.framework"
+		}
+
 	filter "system:windows"
 		cppdialect "C++17"
 		systemversion "latest"
 
 	filter "configurations:Debug"
-		defines "HZ_DEBUG"
+		defines "RC_DEBUG"
 		runtime "Debug"
 		symbols "on"
 
-		defines
-		{
-		}
-
-		links
-		{
-		}
-
 	filter "configurations:Release"
-		defines "HZ_RELEASE"
+		defines "RC_RELEASE"
 		runtime "Release"
 		optimize "on"
-
-		defines
-		{
-		}
-
-		links
-		{
-		}

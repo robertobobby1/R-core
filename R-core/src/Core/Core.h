@@ -1,22 +1,20 @@
 #pragma once
 #include "rcpch.h"
+
+#include "Core/Platform.h"
 #include "Core/Log.h"
 
-namespace RC {
-
-	// Memory allocation usage
-	extern unsigned long long heapAllocatedBytes;
-	static inline unsigned long long GetAllocations() { return heapAllocatedBytes; }
-
-}
+// Memory allocation usage
+extern unsigned long long heapAllocatedBytes;
+static inline unsigned long long GetAllocations() { return heapAllocatedBytes; }
 
 #if defined(RC_PLATFORM_MACOS) || defined(RC_PLATFORM_LINUX)
-#include <signal.h>
-#define RC_DEBUGBREAK()         raise(SIGTRAP)
+	#include <signal.h>
+	#define RC_DEBUGBREAK()         raise(SIGTRAP)
 #elif RC_PLATFORM_WINDOWS
-#define RC_DEBUGBREAK()         __debugbreak()
-#else	
-#define RC_DEBUGBREAK()
+	#define RC_DEBUGBREAK()         __debugbreak()
+#else
+	#define RC_DEBUGBREAK()
 #endif
 
 #define RC_LOG_INFO(...)        ::RC::Log::GetLogger()->info(__VA_ARGS__)

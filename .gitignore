@@ -17,3 +17,6 @@ Intermediates/
 #mac 
 Makefile
 .DS_Store
+
+#vs code
+settings.json

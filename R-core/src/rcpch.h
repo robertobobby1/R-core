@@ -13,7 +13,6 @@
 #include <utility>
 #include <queue>
 
-
 #ifdef RC_PLATFORM_WINDOWS
 	#include <WinSock2.h> 
 	#include <ws2tcpip.h>

@@ -8,8 +8,10 @@
 #include "Core/Log.h"
 #include "Core/Service.h"
 #include "Core/Data.h"
+#include "Core/Dispatch.h"
 #include "Core/Buffer.h"
 
+// Platform dependent services
 #include "Services/Server/Server.h"
 
 #if defined(RC_PLATFORM_MACOS) || defined(RC_PLATFORM_LINUX)
@@ -18,7 +20,5 @@
 	#include "Services/Server/Platform/WindowsServer.h"
 #endif
 
-#include "Services/GLFW/GLFWService.h"
 #include "Services/ImGui/ImGui.h"
-
 #include "Services/Window/Window.h"

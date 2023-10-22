@@ -18,7 +18,6 @@ project "R-Core"
 	
 	defines
 	{
-		"UUID_SYSTEM_GENERATOR",
 		"GLFW_INCLUDE_NONE"
 	}
 

@@ -13,3 +13,7 @@ Intermediates/
 **.vcxproj.filters
 **.vcxproj.user
 **.csproj
+
+#mac 
+Makefile
+.DS_Store

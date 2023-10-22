@@ -12,11 +12,6 @@ project "Testing"
 		"src/**.cpp",
 	}
 
-	defines
-	{
-		"UUID_SYSTEM_GENERATOR"
-	}
-
 	ignoredefaultlibraries
 	{
 		"libcmtd"

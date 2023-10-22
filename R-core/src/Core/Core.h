@@ -15,6 +15,8 @@ namespace RC {
 #define RC_DEBUGBREAK()         raise(SIGTRAP)
 #elif RC_PLATFORM_WINDOWS
 #define RC_DEBUGBREAK()         __debugbreak()
+#else	
+#define RC_DEBUGBREAK()
 #endif
 
 #define RC_LOG_INFO(...)        ::RC::Log::GetLogger()->info(__VA_ARGS__)

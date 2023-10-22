@@ -45,20 +45,20 @@ namespace RC {
 
 	void Window::Init()
 	{
+		glfwSetErrorCallback(OnGLFWError);
 		int success = glfwInit();
 		RC_ASSERT_MSG(success, "Could not initialize GLFW!");
-		glfwSetErrorCallback(OnGLFWError);
 
 		// set openGL version
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-
 
 		m_Window = glfwCreateWindow((int)this->m_width, (int)this->m_height, this->m_title, nullptr, nullptr);
 
 		glfwMakeContextCurrent(m_Window);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		RC_ASSERT_MSG(status, "Failed to initialize Glad!");
+		PrintOpenGLInfo();
 	}
 
 	void Window::OnUpdate()

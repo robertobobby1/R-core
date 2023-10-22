@@ -13,6 +13,8 @@
 #include <utility>
 #include <queue>
 
+// make sure the platform is correctly set
+#include "Core/Platform.h"
 #ifdef RC_PLATFORM_WINDOWS
 	#include <WinSock2.h> 
 	#include <ws2tcpip.h>

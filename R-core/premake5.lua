@@ -42,28 +42,12 @@ project "R-Core"
 			"Cocoa.framework",
 			"IOKit.framework"
 		}
-		defines 
-		{
-			"RC_PLATFORM_MACOS"
-		}
 
 	filter "system:linux"
 		systemversion "latest"
-		defines
-		{
-			"RC_PLATFORM_LINUX"
-		}
 
 	filter "system:windows"
 		systemversion "latest"
-		links
-		{
-			"Ws2_32.lib",
-		}
-		defines
-		{
-			"RC_PLATFORM_WINDOWS"
-		}
 
 	filter "configurations:Debug"
 		defines "RC_DEBUG"

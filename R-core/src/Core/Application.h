@@ -27,6 +27,12 @@ namespace RC {
 			m_services[service->m_id] = service;
 		}
 
+		inline void RemoveServiceById(int id) 
+		{
+			m_services.erase(id); 
+			SetExecutionOrderIds();
+		}
+
 		inline void PrintServices()
 		{
 			for (auto& service : m_services) {
@@ -71,12 +77,12 @@ namespace RC {
 		* before their dependencies in a list of shared ptr services
 		* THIS METHOD SHOULD ONLY BE CALLED AFTER DEPENDENCIES HAVE BEEN CORRECTLY INSTANTIATED
 		*/
-		std::vector<int> GetExecutionOrderIds();
+		void SetExecutionOrderIds();
 		/*
 		* Recursive function used to determine the order of the execution 
 		* taking into account the dependencies
 		*/
-		void AddDependencyDependencies(std::vector<int>& orderedList, DependencyDescriber& dep);
+		void AddDependencyDependencies(std::vector<int>& m_orderedList, DependencyDescriber& dep);
 
 	private:
 
@@ -87,5 +93,10 @@ namespace RC {
 		* used by the user by calling AddService multiple times
 		*/ 
 		std::map<int, std::shared_ptr<Service>> m_services;
+
+		/*
+		* The order in which the services must be executed to keep the dependencies save
+		*/
+		std::vector<int> m_serviceOrder;
 	};
 }

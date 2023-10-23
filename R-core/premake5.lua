@@ -16,7 +16,11 @@ project "R-Core"
 		"src/**.h"
 	}
 	
-	defines "GLFW_INCLUDE_NONE"
+	defines 
+	{
+		"GLFW_INCLUDE_NONE",
+		"IMGUI_IMPL_OPENGL_LOADER_GLAD"
+	}
 
 	includedirs
 	{

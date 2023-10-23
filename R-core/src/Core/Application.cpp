@@ -26,12 +26,11 @@ namespace RC {
 		PrintServices(); 
 		// crash when a circular dependency is found
 		CheckNonCircularDependency();
-
-		// get services in execution order
-		std::vector<int> orderedServices = GetExecutionOrderIds();
+		// set services execution order
+		SetExecutionOrderIds();
 		
 		// Initialize all services and start looping
-		for (auto& index : orderedServices) {
+		for (auto& index : m_serviceOrder) {
 			auto& service = m_services[index];
 			RC_LOG_INFO("The service {0} with id {1} has a shared ptr count of {2}", 
 				service->GetChildClassName(), service->GetId(), service.use_count()
@@ -42,7 +41,7 @@ namespace RC {
 		// infinite loop of application
 		while (true) {
 			// loop through all services, this vector should be limited
-			for (auto& index : orderedServices) {
+			for (auto& index : m_serviceOrder) {
 				m_services[index]->OnUpdate();
 			}
 		}
@@ -107,7 +106,7 @@ namespace RC {
 		}
 	}
 
-	std::vector<int> Application::GetExecutionOrderIds()
+	void Application::SetExecutionOrderIds()
 	{
 		std::vector<int> orderedList;
 
@@ -126,7 +125,7 @@ namespace RC {
 			if (!found) 
 				orderedList.push_back(service.second->GetId());
 		}
-		return orderedList;
+		m_serviceOrder = orderedList;
 	}
 
 	void Application::AddDependencyDependencies(std::vector<int>& orderedList, DependencyDescriber& describer)

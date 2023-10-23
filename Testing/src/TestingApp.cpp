@@ -9,7 +9,7 @@ int main(int argc, char** argv)
 	RC::ServerInput serverInput;
 	app->AddService(RC::Server::Create(serverInput));
 
-	app->AddService(std::make_shared<RC::ImGui>());
+	app->AddService(std::make_shared<RC::ServerGui>());
 
 	RC::WindowInput windowInput;
 	app->AddService(RC::Window::Create(windowInput));

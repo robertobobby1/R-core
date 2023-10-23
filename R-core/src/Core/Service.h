@@ -84,7 +84,7 @@ namespace RC {
 		{
 			for (auto& describer : dependencies) {
 				if (describer.depName == serviceName)
-					return describer.dep;
+					return std::dynamic_pointer_cast<T>(describer.dep);
 			}
 			return nullptr;
 		}

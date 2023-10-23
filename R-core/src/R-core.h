@@ -20,5 +20,6 @@
 	#include "Services/Server/Platform/WindowsServer.h"
 #endif
 
-#include "Services/ImGui/ImGui.h"
+#include "Services/ImGui/RCGui.h"
+#include "Services/ServerGui/ServerGui.h"
 #include "Services/Window/Window.h"

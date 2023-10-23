@@ -28,13 +28,11 @@ namespace RC {
 
 		static std::shared_ptr<Window> Create(const WindowInput& input);
 
-	protected:
 		const char* m_title;
 		uint32_t    m_width;
 		uint32_t    m_height;
 		bool	    m_Vsync;
-
-		GLFWwindow* m_Window;
+		GLFWwindow* m_window;
 
 	};
 }

@@ -1,36 +1,42 @@
-project "GLFW"
+project "ImGui"
 	kind "StaticLib"
-	language "C"
+	language "C++"
+    cppdialect "C++17"
 
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
 	files
 	{
-		"include/GLFW/glfw3.h",
-		"include/GLFW/glfw3native.h",
-		"src/**.c",
-		"src/**.m"
+		"imconfig.h",
+		"imgui.h",
+		"imgui.cpp",
+		"imgui_draw.cpp",
+		"imgui_internal.h",
+        "imgui_tables.cpp",
+		"imgui_widgets.cpp",
+		"imstb_rectpack.h",
+		"imstb_textedit.h",
+		"imstb_truetype.h",
+		"imgui_demo.cpp"
 	}
-
-	filter "system:macosx"
-		defines "_GLFW_COCOA"
-
-	filter "system:linux"
-		pic "On"
-
-		systemversion "latest"
-		staticruntime "On"
-		defines "_GLFW_X11"
 
 	filter "system:windows"
 		systemversion "latest"
+		cppdialect "C++17"
 		staticruntime "On"
-		defines 
-		{ 
-			"_GLFW_WIN32",
-			"_CRT_SECURE_NO_WARNINGS"
-		}
+
+	filter "system:linux"
+		pic "On"
+		systemversion "latest"
+		cppdialect "C++17"
+		staticruntime "On"
+
+    filter "system:mac"
+		pic "On"
+		systemversion "latest"
+		cppdialect "C++17"
+		staticruntime "On"
 
 	filter "configurations:Debug"
 		runtime "Debug"

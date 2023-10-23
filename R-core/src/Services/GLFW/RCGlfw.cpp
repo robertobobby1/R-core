@@ -8,6 +8,8 @@
 
 namespace RC {
 
+	static bool hasInfoBeenPrinted = false;
+
 	std::shared_ptr<RCGlfw> RCGlfw::Create()
 	{
 		return std::make_shared<RCGlfw>();
@@ -20,6 +22,9 @@ namespace RC {
 
 	void RCGlfw::PrintOpenGLInfo()
 	{
+		if (hasInfoBeenPrinted)
+			return;
+
 		GLint major, minor;
 		glGetIntegerv(GL_MAJOR_VERSION, &major);
 		glGetIntegerv(GL_MINOR_VERSION, &minor);
@@ -29,6 +34,8 @@ namespace RC {
 		RC_LOG_INFO("GL Version (string)  : {0}", (char*)glGetString(GL_VERSION));
 		RC_LOG_INFO("GL Version (integer) : {0}.{1}", major, minor);
 		RC_LOG_INFO("GLSL Version         : {0}", (char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+		hasInfoBeenPrinted = true;
 	}
 
 	void RCGlfw::Init()

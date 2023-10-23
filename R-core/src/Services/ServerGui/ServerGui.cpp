@@ -23,7 +23,7 @@ namespace RC {
 	{
 		bool show_demo_window = true;
 		m_guiService->Begin();
-		//ImGui::ShowDemoWindow(&show_demo_window);
+		ImGui::ShowDemoWindow(&show_demo_window);
 		m_guiService->End();
 	}
 }

@@ -4,15 +4,15 @@
 
 #include "imgui.h"
 
-namespace RC
-{
+namespace RC {
 
 	ServerGui::ServerGui()
 		: Service()
 	{
 		m_guiService = std::make_shared<RCGui>();
 		this->m_dependencies.push_back(
-			DependencyDescriber("ImGui", m_guiService, false));
+			DependencyDescriber("ImGui", m_guiService, false)
+		);
 	}
 
 	void ServerGui::Init()
@@ -33,7 +33,7 @@ namespace RC
 		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 		if (opt_fullscreen)
 		{
-			ImGuiViewport *viewport = ImGui::GetMainViewport();
+			ImGuiViewport* viewport = ImGui::GetMainViewport();
 			ImGui::SetNextWindowPos(viewport->Pos);
 			ImGui::SetNextWindowSize(viewport->Size);
 			ImGui::SetNextWindowViewport(viewport->ID);
@@ -60,8 +60,8 @@ namespace RC
 			ImGui::PopStyleVar(2);
 
 		// DockSpace
-		ImGuiIO &io = ImGui::GetIO();
-		ImGuiStyle &style = ImGui::GetStyle();
+		ImGuiIO& io = ImGui::GetIO();
+		ImGuiStyle& style = ImGui::GetStyle();
 		float minWinSizeX = style.WindowMinSize.x;
 		style.WindowMinSize.x = 370.0f;
 		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
@@ -113,8 +113,6 @@ namespace RC
 		ImGui::Begin("Settings");
 		static bool m_show = true;
 		ImGui::Checkbox("Checkbox", &m_show);
-
-		// ImGui::Image((ImTextureID)s_Font->GetAtlasTexture()->GetRendererID(), { 512,512 }, { 0, 1 }, { 1, 0 });
 
 		ImGui::End();
 		ImGui::End();

@@ -4,15 +4,15 @@
 
 #include "imgui.h"
 
-namespace RC {
+namespace RC
+{
 
 	ServerGui::ServerGui()
 		: Service()
 	{
 		m_guiService = std::make_shared<RCGui>();
 		this->m_dependencies.push_back(
-			DependencyDescriber("ImGui", m_guiService, false)
-		);
+			DependencyDescriber("ImGui", m_guiService, false));
 	}
 
 	void ServerGui::Init()
@@ -33,7 +33,7 @@ namespace RC {
 		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 		if (opt_fullscreen)
 		{
-			ImGuiViewport* viewport = ImGui::GetMainViewport();
+			ImGuiViewport *viewport = ImGui::GetMainViewport();
 			ImGui::SetNextWindowPos(viewport->Pos);
 			ImGui::SetNextWindowSize(viewport->Size);
 			ImGui::SetNextWindowViewport(viewport->ID);
@@ -48,9 +48,9 @@ namespace RC {
 			window_flags |= ImGuiWindowFlags_NoBackground;
 
 		// Important: note that we proceed even if Begin() returns false (aka window is collapsed).
-		// This is because we want to keep our DockSpace() active. If a DockSpace() is inactive, 
+		// This is because we want to keep our DockSpace() active. If a DockSpace() is inactive,
 		// all active windows docked into it will lose their parent and become undocked.
-		// We cannot preserve the docking relationship between an active window and an inactive docking, otherwise 
+		// We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
 		// any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 		ImGui::Begin("DockSpace Demo", &dockspaceOpen, window_flags);
@@ -60,8 +60,8 @@ namespace RC {
 			ImGui::PopStyleVar(2);
 
 		// DockSpace
-		ImGuiIO& io = ImGui::GetIO();
-		ImGuiStyle& style = ImGui::GetStyle();
+		ImGuiIO &io = ImGui::GetIO();
+		ImGuiStyle &style = ImGui::GetStyle();
 		float minWinSizeX = style.WindowMinSize.x;
 		style.WindowMinSize.x = 370.0f;
 		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
@@ -77,23 +77,23 @@ namespace RC {
 			if (ImGui::BeginMenu("File"))
 			{
 				if (ImGui::MenuItem("Open Project...", "Ctrl+O"))
-					//OpenProject();
+					ImGui::Text("Whatever");
 
 				ImGui::Separator();
 
 				if (ImGui::MenuItem("New Scene", "Ctrl+N"))
-					//NewScene();
+					ImGui::Text("Whatever");
 
 				if (ImGui::MenuItem("Save Scene", "Ctrl+S"))
-					//SaveScene();
+					ImGui::Text("Whatever");
 
 				if (ImGui::MenuItem("Save Scene As...", "Ctrl+Shift+S"))
-					//SaveSceneAs();
+					ImGui::Text("Whatever");
 
 				ImGui::Separator();
 
 				if (ImGui::MenuItem("Exit"))
-					//Application::Get().Close();
+					ImGui::Text("Whatever");
 
 				ImGui::EndMenu();
 			}
@@ -101,8 +101,9 @@ namespace RC {
 			if (ImGui::BeginMenu("Script"))
 			{
 				if (ImGui::MenuItem("Reload assembly", "Ctrl+R"))
-					//ScriptEngine::ReloadAssembly();
-
+				{
+					ImGui::Text("Whatever");
+				}
 				ImGui::EndMenu();
 			}
 
@@ -111,15 +112,12 @@ namespace RC {
 
 		ImGui::Begin("Settings");
 		static bool m_show = true;
-		ImGui::Checkbox("Show physics colliders", &m_show);
+		ImGui::Checkbox("Checkbox", &m_show);
 
-		//ImGui::Image((ImTextureID)s_Font->GetAtlasTexture()->GetRendererID(), { 512,512 }, { 0, 1 }, { 1, 0 });
-
+		// ImGui::Image((ImTextureID)s_Font->GetAtlasTexture()->GetRendererID(), { 512,512 }, { 0, 1 }, { 1, 0 });
 
 		ImGui::End();
-
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
-
+		ImGui::End();
 
 		m_guiService->End();
 	}

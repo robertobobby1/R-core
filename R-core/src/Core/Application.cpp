@@ -20,7 +20,6 @@ namespace RC {
 
 	void Application::Run()
 	{
-		PrintServices();
 		// add the dependencies in the services when needed 
 		AddDependencyServices();
 		PrintServices(); 
@@ -29,21 +28,26 @@ namespace RC {
 		// set services execution order
 		SetExecutionOrderIds();
 		
-		// Initialize all services and start looping
+		// Initialize all services, synchronously and in dependency order
+		RC_LOG_INFO("------------- Initializing application services -------------");
 		for (auto& index : m_serviceOrder) {
 			auto& service = m_services[index];
-			RC_LOG_INFO("The service {0} with id {1} has a shared ptr count of {2}", 
+			service->Init();
+			RC_LOG_INFO("The service {0} with id {1} has a shared ptr count of {2} was succesfully initialized",
 				service->GetChildClassName(), service->GetId(), service.use_count()
 			);
-			service->Init();
 		}
+		RC_LOG_INFO("------------- End initializing application services -------------");
 
-		// infinite loop of application
-		while (true) {
-			// loop through all services, this vector should be limited
-			for (auto& index : m_serviceOrder) {
-				m_services[index]->OnUpdate();
-			}
+		// Run all services in independent threads
+		for (auto& index : m_serviceOrder) {
+			m_servicesThreads[index] = std::thread([this](std::shared_ptr<Service> service) {
+				service->Run();
+			}, m_services[index]);
+		}
+		// Wait till all of them are finished
+		for (auto& index : m_serviceOrder) {
+			m_servicesThreads[index].join();
 		}
 	}
 

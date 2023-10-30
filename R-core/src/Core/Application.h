@@ -35,14 +35,15 @@ namespace RC {
 
 		inline void PrintServices()
 		{
+			RC_LOG_INFO("-------------- Services and dependency information --------------");
 			for (auto& service : m_services) {
 
 				RC_LOG_INFO("{0}", service.second->ToString());
 				for (auto& describer : service.second->m_dependencies){
-					RC_LOG_INFO("----{0}", describer.dep->ToString(), describer.dep->m_id);
+					RC_LOG_INFO("----{0}", describer.dep->ToString());
 				}
 			}
-			RC_LOG_INFO("");
+			RC_LOG_INFO("-------------- End services and dependency information --------------");
 		}
 
 	private:
@@ -93,10 +94,13 @@ namespace RC {
 		* used by the user by calling AddService multiple times
 		*/ 
 		std::map<int, std::shared_ptr<Service>> m_services;
-
 		/*
 		* The order in which the services must be executed to keep the dependencies save
 		*/
 		std::vector<int> m_serviceOrder;
+		/*
+		* Threads ordered by serviceId (each service is a thread)
+		*/
+		std::map<int, std::thread> m_servicesThreads;
 	};
 }

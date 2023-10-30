@@ -11,11 +11,14 @@ namespace RC {
 		~RCGlfw() = default;
 
 		virtual void Init() override;
-		virtual void OnUpdate() override;
+		virtual void Run() override;
 		virtual bool IsUniqueService() const override { return true; }
 
 		static std::shared_ptr<RCGlfw> Create();
 
-		static void PrintOpenGLInfo();
+		void PrintOpenGLInfo();
+
+	private:
+		bool m_isPrinted = false;
 	};
 }

@@ -34,31 +34,31 @@ namespace RC {
 
 	}
 
-	void Server::InitThreads(std::function<void()> mainThreadFunc, std::function<void()> workerThreadFunc){
-
-		m_mainThread = std::make_shared<std::thread>(mainThreadFunc);
+	void Server::InitThreads(std::function<void()> mainThreadFunc, std::function<void()> workerThreadFunc)
+	{
+		m_mainThread = std::thread(mainThreadFunc);
 
 		for (int i = 0; i < m_data->m_maxPoolSize; i++)
 		{
 			m_workerThreads.push_back(
-				std::make_shared<std::thread>(workerThreadFunc)
+				std::thread(workerThreadFunc)
 			);
 		}
 	}
 
 	void Server::Shutdown()
 	{
-		m_mainThread.get()->~thread();
+		m_mainThread.~thread();
 		for (auto& thread : m_workerThreads)
 		{
-			thread.get()->~thread();
+			thread.~thread();
 		}
 
 		m_isShutdown = true;
 		RC_LOG_WARN("Threads were terminated!");
 	}
 
-	void Server::OnUpdate()
+	void Server::Run()
 	{
 		if (m_data->m_handled)
 			return;

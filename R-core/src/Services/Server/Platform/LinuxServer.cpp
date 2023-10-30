@@ -10,15 +10,11 @@ namespace RC {
 	{
 	}
 
-	LinuxServer::~LinuxServer()
-	{
-	}
-
 	void LinuxServer::Init()
 	{
 	}
 
-	void LinuxServer::OnUpdate()
+	void LinuxServer::Run()
 	{
 	}
 }

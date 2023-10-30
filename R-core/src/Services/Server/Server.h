@@ -29,7 +29,7 @@ namespace RC {
 		~Server() = default;
 
 		virtual void Init() override = 0;
-		virtual void OnUpdate() override;
+		virtual void Run() override;
 		virtual void InitThreads(std::function<void()> mainThreadFunc, std::function<void()> workerThreadFunc);
 		virtual void Shutdown();
 
@@ -44,8 +44,8 @@ namespace RC {
 		// By children objects or set functions 
 
 		// Thread objects
-		std::shared_ptr<std::thread> m_mainThread;
-		std::vector<std::shared_ptr<std::thread>> m_workerThreads;
+		std::thread m_mainThread;
+		std::vector<std::thread> m_workerThreads;
 
 		// Basic server data
 		std::shared_ptr<ServerData> m_data;

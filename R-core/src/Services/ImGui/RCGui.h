@@ -16,12 +16,11 @@ namespace RC {
 		~RCGui();
 
 		virtual void Init() override;
-		virtual void OnUpdate() override;
+		virtual void Run() override;
+		virtual bool IsUniqueService() const override { return true; }
 
-		static std::shared_ptr<RCGui> Create();
-
-		void Begin();
-		void End();
+		virtual void Begin();
+		virtual void End();
 
 	private:
 

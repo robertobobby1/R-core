@@ -14,30 +14,9 @@
 #include "GLFW/glfw3.h"
 
 #include "Services/ImGui/RCGui.h"
-#ifdef RC_PLATFORM_WINDOWS
-#include "Services/ImGui/Platform/WindowsRCGui.h"
-#elif defined(RC_PLATFORM_MACOS)
-#include "Services/ImGui/Platform/MacRCGui.h"
-#elif defined(RC_PLATFORM_LINUX)
-#include "Services/ImGui/Platform/LinuxRCGui.h"
-#endif
 
 namespace RC
 {
-
-	std::shared_ptr<RCGui> RCGui::Create()
-	{
-#ifdef RC_PLATFORM_WINDOWS
-		return std::make_shared<WindowsRCGui>();
-#elif defined(RC_PLATFORM_MACOS)
-		return std::make_shared<MacRCGui>();
-#elif defined(RC_PLATFORM_LINUX)
-		return std::make_shared<LinuxRCGui>();
-#else
-		RC_LOG_ERROR("The platform is not supported! Supported platforms are Linux, Windows, Mac");
-		return nullptr;
-#endif
-	}
 
 	RCGui::RCGui()
 		: Service()
@@ -56,8 +35,9 @@ namespace RC
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
 		// glfw
-		glfwDestroyWindow(m_windowService->m_window);
 		glfwTerminate();
+		// will call window's destructor including deletion of glfw window's deletion
+		m_windowService.reset();
 		// app
 		Application::GetApp().RemoveServiceById(m_windowService->GetId());
 	}
@@ -87,13 +67,12 @@ namespace RC
 			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 		}
 
-		// Setup Platform/Renderer backends
 		ImGui_ImplGlfw_InitForOpenGL(m_windowService->m_window, true);
 		// TODO Version 4.1 for now dynamic?
 		ImGui_ImplOpenGL3_Init("#version 410");
 	}
 
-	void RCGui::OnUpdate()
+	void RCGui::Run()
 	{
 	}
 
@@ -109,7 +88,7 @@ namespace RC
 	{
 		ImGuiIO &io = ImGui::GetIO();
 		// set size
-		io.DisplaySize = ImVec2((float)m_windowService->m_width, (float)m_windowService->m_height);
+		io.DisplaySize = ImVec2((float)m_windowService->m_data.m_width, (float)m_windowService->m_data.m_height);
 
 		// Rendering
 		ImGui::Render();

@@ -6,10 +6,10 @@ namespace RC {
 	class LinuxServer : public Server {
 	public:
 		LinuxServer(const ServerInput& input);
-		~LinuxServer();
+		~LinuxServer() = default;
 
 		virtual void Init() override;
-		virtual void OnUpdate() override;
+		virtual void Run() override;
 
 	private:
 	};

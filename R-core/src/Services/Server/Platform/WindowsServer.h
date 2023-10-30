@@ -9,10 +9,10 @@ namespace RC {
 	class WindowsServer : public Server {
 	public:
 		WindowsServer(const ServerInput& input);
-		~WindowsServer();
+		~WindowsServer() = default;
 
 		virtual void Init() override;
-		virtual void OnUpdate() override; 
+		virtual void Run() override; 
 
 		void MainThreadLoop();
 		void WorkerThreadLoop();

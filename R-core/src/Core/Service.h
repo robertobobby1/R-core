@@ -19,17 +19,24 @@ namespace RC {
 
 		Service() = default;
 		virtual ~Service() = default;
+		//Application::GetApp().RemoveServiceById(this->GetId());
+
 		virtual void Init() = 0;
-		virtual void OnUpdate() = 0;
+		virtual void Run() = 0;
 
 		virtual inline void 
-			AddDependencyCallback(std::function<void(Dispatchable&)> dependency)
-		{
+			AddDependencyCallback(std::function<void(Dispatchable&)> dependency) {
 			m_dependencyCallbacks.emplace_back(dependency);
 		};
 
+		virtual inline void CallDepCallbacks(Dispatchable& dispatchable) const {
+			for (auto& callback : this->m_dependencyCallbacks) {
+				callback(dispatchable);
+			}
+		}
+
 		virtual inline std::string ToString() {
-			std::string res = "["; res += this->m_id; res += "-"; res += this->GetChildClassName(); res += "]";
+			std::string res = ""; res += this->m_id; res += "-"; res += this->GetChildClassName();
 			return res; 
 		}
 

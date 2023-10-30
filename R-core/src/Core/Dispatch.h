@@ -4,7 +4,9 @@ namespace RC {
 
 	enum DispatchableType {
 		DTNone = 0, 
-		ServerDataType
+		ServerDataType,
+		WindowDataType,
+		OnWindowCloseEventType
 	};
 
 	class Dispatchable {

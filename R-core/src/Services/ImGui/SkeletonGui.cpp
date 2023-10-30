@@ -1,27 +1,21 @@
 #include "rcpch.h"
-
-#include "Services/ServerGui/ServerGui.h"
+#include "SkeletonGui.h"
 
 #include "imgui.h"
 
 namespace RC {
 
-	ServerGui::ServerGui()
-		: Service()
-	{
-		m_guiService = std::make_shared<RCGui>();
-		this->m_dependencies.push_back(
-			DependencyDescriber("ImGui", m_guiService, false)
-		);
-	}
-
-	void ServerGui::Init()
+	void SkeletonGui::Init()
 	{
 	}
 
-	void ServerGui::OnUpdate()
+	void SkeletonGui::Run()
 	{
-		m_guiService->Begin();
+	}
+
+	void SkeletonGui::Begin()
+	{
+		RCGui::Begin();
 		// Note: Switch this to true to enable dockspace
 		static bool dockspaceOpen = true;
 		static bool opt_fullscreen_persistant = true;
@@ -53,7 +47,7 @@ namespace RC {
 		// We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
 		// any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-		ImGui::Begin("DockSpace Demo", &dockspaceOpen, window_flags);
+		ImGui::Begin("Application", &dockspaceOpen, window_flags);
 		ImGui::PopStyleVar();
 
 		if (opt_fullscreen)
@@ -109,14 +103,11 @@ namespace RC {
 
 			ImGui::EndMenuBar();
 		}
+	}
 
-		ImGui::Begin("Settings");
-		static bool m_show = true;
-		ImGui::Checkbox("Checkbox", &m_show);
-
+	void SkeletonGui::End()
+	{
 		ImGui::End();
-		ImGui::End();
-
-		m_guiService->End();
+		RCGui::End();
 	}
 }

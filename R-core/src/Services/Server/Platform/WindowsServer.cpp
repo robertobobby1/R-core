@@ -16,11 +16,6 @@ namespace RC {
         m_socketQueue = std::make_shared<std::queue<SOCKET>>();
     }
 
-    WindowsServer::~WindowsServer() 
-    {
-        
-    }
-
     void WindowsServer::Init()
     {
         // Initializes threads in their loop functions 
@@ -32,9 +27,9 @@ namespace RC {
         RC_LOG_MEMORYUSAGE();
     }
 
-	void WindowsServer::OnUpdate()
+	void WindowsServer::Run()
 	{
-        Server::OnUpdate();
+        Server::Run();
 	}
 
     void WindowsServer::MainThreadLoop()

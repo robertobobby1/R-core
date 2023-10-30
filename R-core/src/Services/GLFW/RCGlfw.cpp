@@ -8,8 +8,6 @@
 
 namespace RC {
 
-	static bool hasInfoBeenPrinted = false;
-
 	std::shared_ptr<RCGlfw> RCGlfw::Create()
 	{
 		return std::make_shared<RCGlfw>();
@@ -22,7 +20,7 @@ namespace RC {
 
 	void RCGlfw::PrintOpenGLInfo()
 	{
-		if (hasInfoBeenPrinted)
+		if (m_isPrinted)
 			return;
 
 		GLint major, minor;
@@ -35,7 +33,7 @@ namespace RC {
 		RC_LOG_INFO("GL Version (integer) : {0}.{1}", major, minor);
 		RC_LOG_INFO("GLSL Version         : {0}", (char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
 
-		hasInfoBeenPrinted = true;
+		m_isPrinted = true;
 	}
 
 	void RCGlfw::Init()
@@ -45,7 +43,7 @@ namespace RC {
 		RC_ASSERT_MSG(success, "Could not initialize GLFW!");
 	}
 
-	void RCGlfw::OnUpdate()
+	void RCGlfw::Run()
 	{
 	}
 }

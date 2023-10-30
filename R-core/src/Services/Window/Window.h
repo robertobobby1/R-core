@@ -1,8 +1,10 @@
 #pragma once
 
 #include "Core/Service.h"
+#include "Core/Data.h"
 
 #include "GLFW/glfw3.h"
+#include "Services/GLFW/RCGlfw.h"
 
 namespace RC {
 
@@ -15,24 +17,25 @@ namespace RC {
 			: Width(width), Height(height), Title(title)
 		{
 		}
-
 	};
 
 	class Window : public Service {
 	public:
 		Window(const WindowInput& input);
-		~Window() = default;
+		~Window();
 
 		virtual void Init() override;
-		virtual void OnUpdate() override;
+		virtual void Run() override;
+		void SetVSync(bool _Vsync);
 
 		static std::shared_ptr<Window> Create(const WindowInput& input);
 
-		const char* m_title;
-		uint32_t    m_width;
-		uint32_t    m_height;
-		bool	    m_Vsync;
-		GLFWwindow* m_window;
+		void OnDispatchable(Dispatchable& dispatchable);
 
+		GLFWwindow* m_window;
+		WindowData m_data;
+
+	private: 
+		std::shared_ptr<RCGlfw> m_glfw;
 	};
 }

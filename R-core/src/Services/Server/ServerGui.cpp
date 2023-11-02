@@ -26,12 +26,14 @@ namespace RC {
 
 	void ServerGui::Run()
 	{
-		ImGui::Begin("Settings");
+		while(true){
+			ImGui::Begin("Settings");
 
-		static bool m_show = true;
-		ImGui::Checkbox("Checkbox", &m_show);
+			static bool m_show = true;
+			ImGui::Checkbox("Checkbox", &m_show);
 
-		ImGui::End();
-		m_guiService->End();
+			ImGui::End();
+			m_guiService->End();
+		}
 	}
 }

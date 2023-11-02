@@ -18,18 +18,20 @@ namespace RC {
 
     void WindowsServer::Init()
     {
-        // Initializes threads in their loop functions 
-        Server::InitThreads(
-            RC_BIND_FN(WindowsServer::MainThreadLoop),
-            RC_BIND_FN(WindowsServer::WorkerThreadLoop)
-        );
 
         RC_LOG_MEMORYUSAGE();
     }
 
 	void WindowsServer::Run()
 	{
-        Server::Run();
+        //Server::Run();
+        // Initializes threads in their loop functions 
+        Server::InitThreads(
+            RC_BIND_FN(WindowsServer::MainThreadLoop),
+            RC_BIND_FN(WindowsServer::WorkerThreadLoop)
+        );
+
+        this->m_mainThread.join();
 	}
 
     void WindowsServer::MainThreadLoop()

@@ -21,7 +21,7 @@ namespace RC {
 
 		// will return the service id, add it to dep map and to service list
 		inline void AddService(std::shared_ptr<Service> service) {
-			if (DependencyManager::CheckDuplicatedUniqueService(service))
+			if (m_depManager->CheckDuplicatedUniqueService(service))
 				return;
 
 			service->m_id = (int)(m_services.size() + 1);
@@ -30,7 +30,7 @@ namespace RC {
 
 		inline void RemoveServiceById(int id) {
 			m_services.erase(id); 
-			DependencyManager::SetExecutionOrderIds();
+			m_serviceOrder = m_depManager->GetExecutionOrderIds();
 		}
 
 		inline void PrintServices() {
@@ -55,6 +55,8 @@ namespace RC {
 
 	public:
 		static Application* s_App;
+
+		DependencyManager* m_depManager;
 		/*
 		* keeps the service and a list of the dependencies that that service has
 		* it is unordered and must be formatted during Run function because it is

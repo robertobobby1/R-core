@@ -1,24 +1,20 @@
 #include "rcpch.h"
 #include "Core/DependencyManager.h"
 #include "Core/Application.h"
+#include "DependencyManager.h"
 
 namespace RC {
 
     void DependencyManager::Run()
     {
-        m_App = Application::GetApp();
-        //RC_ASSERT_MSG(m_App != nullptr, "No application instance was found");
-
         // add the dependencies in the services when needed 
 		AddDependencyServices();
 		// crash when a circular dependency is found
 		CheckNonCircularDependency();
-		// set services execution order
-		SetExecutionOrderIds();
     }
 
     bool DependencyManager::CheckDuplicatedUniqueService(std::shared_ptr<Service> service)
-	{
+    {
 		if (!service->IsUniqueService())
 			return false;
 
@@ -29,7 +25,7 @@ namespace RC {
 
 		// if already exists reassign given service to the already existing service
 		if (indexes.size() == 1) {
-			service = m_App.m_services[indexes[0]];
+			service = m_services[indexes[0]];
 			return true;
 		}
 
@@ -39,7 +35,7 @@ namespace RC {
 	void DependencyManager::AddDependencyServices()
 	{
 		// iterate all services incrementally
-		for (auto& service : m_App.m_services) {
+		for (auto& service : m_services) {
 			RC_LOG_INFO("{0}, checking its {1} dependencies", service.second->ToString(), service.second->m_dependencies.size());
 			// iterate the dependency vector using indexes 
 			for (int describerIndex = 0; describerIndex < service.second->m_dependencies.size(); describerIndex++) {
@@ -53,7 +49,7 @@ namespace RC {
 					!describer.dep->IsUniqueService() && describer.tryToFind && indexes.size() > 0
 				) {
 					// change the services dependency to the new service, allowing him to access his dependencies
-					service.second->m_dependencies[describerIndex].dep = m_App.m_services[indexes[0]];
+					service.second->m_dependencies[describerIndex].dep = m_services[indexes[0]];
 				}
 				// Add the dependency as a new service when: 
 				//		Dependency is unique service and the service hasn't been found
@@ -63,7 +59,7 @@ namespace RC {
 					!describer.dep->IsUniqueService()
 				) {
 					// will be added to the end of the list, dependencies will be checked anyways
-					m_App.AddService(describer.dep);
+					Application::GetApp().AddService(describer.dep);
 				// On Any other case throw descriptive errors for debug purposes 
 				} else if (describer.dep->IsUniqueService() && indexes.size() > 1) {
 					RC_ASSERT_MSG(false,
@@ -76,33 +72,33 @@ namespace RC {
 		}
 	}
 
-	void DependencyManager::SetExecutionOrderIds()
+	std::vector<int> DependencyManager::GetExecutionOrderIds()
 	{
 		std::vector<int> orderedList;
 
 		// iterate all services dependencies and then add service if needed
-		for (auto& service : m_App.m_services) {
+		for (auto& service : m_services) {
 			for (auto& dependency : service.second->m_dependencies) {
 				AddDependencyDependencies(orderedList, dependency);
 			}
 			// check if it already exists in the vector
 			bool found = false;
 			for (auto& index : orderedList) {
-				if (m_App.m_services[index]->GetId() == service.second->GetId())
+				if (m_services[index]->GetId() == service.second->GetId())
 					found = true;
 			}
 
 			if (!found) 
 				orderedList.push_back(service.second->GetId());
 		}
-		m_App.m_serviceOrder = orderedList;
+		return orderedList;
 	}
 
 	void DependencyManager::AddDependencyDependencies(std::vector<int>& orderedList, DependencyDescriber& describer)
 	{
 		// base case: dependency already in the list (this searches in the vector for the dep)
 		for (auto& index : orderedList) {
-			if (m_App.m_services[index]->GetId() == describer.dep->GetId())
+			if (m_services[index]->GetId() == describer.dep->GetId())
 				return;
 		}
 
@@ -117,7 +113,7 @@ namespace RC {
         std::vector<int> DependencyManager::SearchServicesByClassName(const char *className)
     {
         std::vector<int> res;
-        for (auto& service : m_App.m_services) {
+        for (auto& service : m_services) {
 			// check if it has the same className 
 			if (*(service.second) != className)
 				continue;
@@ -129,11 +125,11 @@ namespace RC {
 
 	void DependencyManager::CheckNonCircularDependency()
 	{
-		for (auto& service : m_App.m_services) {
+		for (auto& service : m_services) {
 			// should only be a couple of dependencies, iterate the services dependencies
 			for (auto& describer : service.second->m_dependencies) {
 				// search by class name on services
-				for (auto& dependencyService : m_App.m_services) {
+				for (auto& dependencyService : m_services) {
 					// check if it doesn't have the same className and ignore them
 					if (*(service.second) != describer.dep->GetChildClassName())
 						continue;

@@ -1,6 +1,7 @@
 #include "rcpch.h"
 #include "Core/Application.h"
 #include "Core/Service.h"
+#include "Core/DependencyManager.h"
 
 namespace RC {
 
@@ -20,7 +21,10 @@ namespace RC {
 
 	void Application::Run()
 	{
-		DependencyManager::Run();
+		m_depManager = new DependencyManager(m_services);
+		m_depManager->Run();
+		m_serviceOrder = m_depManager->GetExecutionOrderIds();
+
 		PrintServices(); 
 		
 		// Initialize all services, synchronously and in dependency order
@@ -36,9 +40,9 @@ namespace RC {
 
 		// Run all services in independent threads
 		for (auto& index : m_serviceOrder) {
-/* 			m_servicesThreads[index] = std::thread([this](std::shared_ptr<Service> service) {
+ 			m_servicesThreads[index] = std::thread([this](std::shared_ptr<Service> service) {
 				service->Run();
-			}, m_services[index]); */
+			}, m_services[index]); 
 		}
 
 		// UI needs to run in main thread!
@@ -49,9 +53,9 @@ namespace RC {
 		RC_LOG_INFO("No more GUI will be rendering");
 
 		// Wait till all of them are finished
-		for (auto& index : m_serviceOrder) {
-			RC_LOG_INFO("Waiting for service {0}", m_services[index]->ToString());
-			m_servicesThreads[index].join();
+		for (auto& thread : m_servicesThreads) {
+			RC_LOG_INFO("Waiting for service {0}", m_services[thread.first]->ToString());
+			thread.second.join();
 		}
 	}
 

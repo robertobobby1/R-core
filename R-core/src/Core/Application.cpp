@@ -45,6 +45,19 @@ namespace RC {
 				service->Run();
 			}, m_services[index]);
 		}
+
+		// UI needs to run in main thread!
+		bool keepUiRunning = true;
+		while (m_isUiRunning && keepUiRunning) {
+			keepUiRunning = false;
+			for (auto& index : m_serviceOrder) {
+				if (!m_services[index]->IsGuiService()) continue;
+				
+				m_services[index]->OnGuiUpdate();
+				keepUiRunning = true;
+			}
+		}
+
 		// Wait till all of them are finished
 		for (auto& index : m_serviceOrder) {
 			m_servicesThreads[index].join();

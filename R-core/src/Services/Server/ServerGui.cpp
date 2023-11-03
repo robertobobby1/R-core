@@ -20,20 +20,15 @@ namespace RC {
 		);
 	}
 
-	void ServerGui::Init()
+	void ServerGui::OnGuiUpdate()
 	{
-	}
+		m_guiService->Begin();
+		ImGui::Begin("Settings");
 
-	void ServerGui::Run()
-	{
-		while(true){
-			ImGui::Begin("Settings");
+		static bool m_show = true;
+		ImGui::Checkbox("Checkbox", &m_show);
 
-			static bool m_show = true;
-			ImGui::Checkbox("Checkbox", &m_show);
-
-			ImGui::End();
-			m_guiService->End();
-		}
+		ImGui::End();
+		m_guiService->End();
 	}
 }

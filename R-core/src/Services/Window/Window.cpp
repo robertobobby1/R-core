@@ -4,6 +4,8 @@
 #include "GLFW/glfw3.h"
 
 #include "Core/Core.h"
+#include "Core/Application.h"
+
 #include "Services/Window/Window.h"
 #include "Services/GLFW/RCGlfw.h"
 
@@ -34,7 +36,6 @@ namespace RC {
 	Window::~Window() 
 	{
 		glfwDestroyWindow(m_window);
-		Service::~Service();
 	}
 
 	void Window::Init()
@@ -112,6 +113,8 @@ namespace RC {
 	{
 		Dispatcher disp(dispatchable);
 		disp.Dispatch<OnWindowCloseEvent>([this](Dispatchable& dispatchable) {
+			// Stop applications UI rendering
+			Application::GetApp().m_isUiRunning = false;
 			this->~Window();
 		});
 	}
@@ -124,9 +127,5 @@ namespace RC {
 			glfwSwapInterval(0);
 
 		m_data.m_Vsync = _Vsync;
-	}
-
-	void Window::Run()
-	{
 	}
 }

@@ -25,7 +25,10 @@ namespace RC {
 		~Window();
 
 		virtual void Init() override;
-		virtual void Run() override;
+		virtual void Run() override {};
+		virtual void OnGuiUpdate() override {};
+		virtual inline bool IsUniqueService() const { return true; }
+
 		void SetVSync(bool _Vsync);
 
 		static std::shared_ptr<Window> Create(const WindowInput& input);

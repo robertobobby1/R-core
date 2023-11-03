@@ -16,13 +16,14 @@ namespace RC {
 		~RCGui();
 
 		virtual void Init() override;
-		virtual void Run() override;
+		virtual void Run() override {};
+		virtual void OnGuiUpdate() override {};	
 		virtual bool IsUniqueService() const override { return true; }
 
 		virtual void Begin();
 		virtual void End();
 
-	private:
+	protected:
 
 		std::shared_ptr<Window> m_windowService;
 	};

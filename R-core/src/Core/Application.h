@@ -18,8 +18,7 @@ namespace RC {
 		inline static Application& GetApp() { return *s_App; }
 
 		// will return the service id, add it to dep map and to service list
-		inline void AddService(std::shared_ptr<Service> service)
-		{
+		inline void AddService(std::shared_ptr<Service> service) {
 			if (CheckDuplicatedUniqueService(service))
 				return;
 
@@ -27,14 +26,12 @@ namespace RC {
 			m_services[service->m_id] = service;
 		}
 
-		inline void RemoveServiceById(int id) 
-		{
+		inline void RemoveServiceById(int id) {
 			m_services.erase(id); 
 			SetExecutionOrderIds();
 		}
 
-		inline void PrintServices()
-		{
+		inline void PrintServices() {
 			RC_LOG_INFO("-------------- Services and dependency information --------------");
 			for (auto& service : m_services) {
 
@@ -45,6 +42,9 @@ namespace RC {
 			}
 			RC_LOG_INFO("-------------- End services and dependency information --------------");
 		}
+
+	public:
+		bool m_isUiRunning = true;
 
 	private:
 		/*

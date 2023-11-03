@@ -5,14 +5,6 @@
 
 namespace RC {
 
-	void SkeletonGui::Init()
-	{
-	}
-
-	void SkeletonGui::Run()
-	{
-	}
-
 	void SkeletonGui::Begin()
 	{
 		RCGui::Begin();
@@ -109,5 +101,13 @@ namespace RC {
 	{
 		ImGui::End();
 		RCGui::End();
+	}
+
+	void SkeletonGui::OnDispatchable(Dispatchable& dispatchable)
+	{
+		Dispatcher disp(dispatchable);
+		disp.Dispatch<OnWindowCloseEvent>([this](Dispatchable& dispatchable) {
+			this->m_windowService->~Window();
+		});
 	}
 }

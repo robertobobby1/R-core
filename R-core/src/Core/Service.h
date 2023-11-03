@@ -12,7 +12,7 @@ namespace RC {
 
 	// forward DependencyDescriber, it will be defined at the end of the file
 	// DONT MOVE IT FROM THERE OR IT WILL CRASH AT EXECUTION
-	struct DependencyDescriber;
+	struct DependencyDescriber; 
 
 	class Service {
 	public:
@@ -23,6 +23,7 @@ namespace RC {
 
 		virtual void Init() = 0;
 		virtual void Run() = 0;
+		virtual void OnGuiUpdate() = 0;
 
 		virtual inline void 
 			AddDependencyCallback(std::function<void(Dispatchable&)> dependency) {
@@ -42,6 +43,7 @@ namespace RC {
 
 		virtual inline const char* GetChildClassName() const { return typeid(*(this)).name(); }
 		virtual inline bool IsUniqueService()          const { return false; }
+		virtual inline bool IsGuiService()             const { return false; }
 		virtual inline int GetId()                     const { return m_id; }
 		 
 		// Class operators to be able to use service to compare between them

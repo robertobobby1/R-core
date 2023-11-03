@@ -72,10 +72,6 @@ namespace RC
 		ImGui_ImplOpenGL3_Init("#version 410");
 	}
 
-	void RCGui::Run()
-	{
-	}
-
 	void RCGui::Begin()
 	{
 		glfwPollEvents();

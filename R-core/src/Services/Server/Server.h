@@ -28,8 +28,10 @@ namespace RC {
 		Server(const ServerInput& input);
 		~Server() = default;
 
-		virtual void Init() override = 0;
+		virtual void Init() override {};
 		virtual void Run() override;
+		virtual void OnGuiUpdate() override {};
+
 		virtual void InitThreads(std::function<void()> mainThreadFunc, std::function<void()> workerThreadFunc);
 		virtual void Shutdown();
 

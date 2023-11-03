@@ -9,8 +9,10 @@ namespace RC {
 		ServerGui();
 		~ServerGui() = default;
 
-		void Init() override;
-		void Run() override;
+		virtual void Init() override {};
+		virtual void Run() override {};
+		virtual void OnGuiUpdate() override;
+		virtual inline bool IsGuiService() const { return true; }
 
 	private: 
 		std::shared_ptr<SkeletonGui> m_guiService;

@@ -8,12 +8,15 @@ namespace RC {
 		SkeletonGui() : RCGui() {}
 		~SkeletonGui() = default;
 
-		virtual void Init() override;
-		virtual void Run() override;
+		virtual void Init() override {};
+		virtual void Run() override {};
+		virtual void OnGuiUpdate() override {};
 
 		virtual bool IsUniqueService() const override { return true; }
 
 		virtual void Begin();
 		virtual void End();
+
+		void OnDispatchable(Dispatchable& dispatchable);
 	};
 }

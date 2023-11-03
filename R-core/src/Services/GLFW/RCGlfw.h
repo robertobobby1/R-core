@@ -12,6 +12,7 @@ namespace RC {
 
 		virtual void Init() override;
 		virtual void Run() override;
+		virtual void OnGuiUpdate() override {};
 		virtual bool IsUniqueService() const override { return true; }
 
 		static std::shared_ptr<RCGlfw> Create();

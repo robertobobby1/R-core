@@ -13,6 +13,7 @@ namespace RC {
 
 		virtual void Init() override;
 		virtual void Run() override; 
+		virtual void OnGuiUpdate() override {};
 
 		void MainThreadLoop();
 		void WorkerThreadLoop();

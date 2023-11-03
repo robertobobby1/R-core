@@ -54,7 +54,7 @@ namespace RC {
 		virtual inline bool operator==(const char* className) const { return this->GetChildClassName() == className; }
 		virtual inline bool operator!=(const char* className) const { return this->GetChildClassName() != className; }
 
-	protected: 
+	public: 
 		// id 0 is an invalid id, this has to be set by Application
 		int m_id = 0;
 
@@ -70,9 +70,6 @@ namespace RC {
 		* application will check the deps and change this object 
 		*/
 		std::vector<DependencyDescriber> m_dependencies;
-
-		// give Application acces to the private objects in Service
-		friend class Application;
 	};
 
 	struct DependencyDescriber
@@ -84,7 +81,7 @@ namespace RC {
 		DependencyDescriber(const char* _depName, std::shared_ptr<Service> _dependency, bool _tryToFind)
 			: dep(_dependency), tryToFind(_tryToFind), depName(_depName){ }
 
-		/*
+        /*
 		* Careful usage, the function "casts" the object for you by returning the children object 
 		* however, it uses the given dependency name by the user to find it 
 		*/

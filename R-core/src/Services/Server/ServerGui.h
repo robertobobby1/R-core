@@ -9,7 +9,7 @@ namespace RC {
 		ServerGui();
 		~ServerGui() = default;
 
-		virtual void Init() override {};
+		virtual void Init() override;
 		virtual void Run() override {};
 		virtual void OnGuiUpdate() override;
 		virtual inline bool IsGuiService() const override { return true; }

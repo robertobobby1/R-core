@@ -4,6 +4,7 @@
 
 #include "Core/Platform.h"
 #include "Core/Core.h"
+#include "Core/DependencyManager.h"
 #include "Core/Application.h"
 #include "Core/Log.h"
 #include "Core/Service.h"

@@ -14,6 +14,7 @@
 #include "GLFW/glfw3.h"
 
 #include "Services/ImGui/RCGui.h"
+#include "RCGui.h"
 
 namespace RC
 {
@@ -21,16 +22,14 @@ namespace RC
 	RCGui::RCGui()
 		: Service()
 	{
-		m_windowService = Window::Create(WindowInput());
-
 		// default values for window input, customize in the future
 		this->m_dependencies.push_back(DependencyDescriber(
-			"Window", m_windowService, false)
+			"Window", Window::Create(WindowInput()), false)
 		);
-		m_windowService->AddDependencyCallback(RC_BIND_FN(RCGui::OnDispatchable));
+		
 	}
 
-	RCGui::~RCGui()
+	void RCGui::Shutdown()
 	{
 		// imgui
 		ImGui_ImplOpenGL3_Shutdown();
@@ -40,12 +39,20 @@ namespace RC
 		glfwTerminate();
 		// will call window's destructor including deletion of glfw window's deletion
 		m_windowService.reset();
-		// app
-		Application::GetApp().RemoveServiceById(m_windowService->GetId());
+	}
+
+	RCGui::~RCGui()
+	{
+		if (m_isInitialized){
+			Shutdown();
+		}
 	}
 
 	void RCGui::Init()
 	{
+		m_windowService = DependencyDescriber::get<Window>(this->m_dependencies, "Window");
+		m_windowService->AddDependencyCallback(RC_BIND_FN(RCGui::OnDispatchable));
+		
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -72,10 +79,11 @@ namespace RC
 		ImGui_ImplGlfw_InitForOpenGL(m_windowService->m_window, true);
 		// TODO Version 4.1 for now dynamic?
 		ImGui_ImplOpenGL3_Init("#version 410");
+		m_isInitialized = true;
 	}
 
-	void RCGui::Begin()
-	{
+    void RCGui::Begin() 
+    {
 		glfwPollEvents();			
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();

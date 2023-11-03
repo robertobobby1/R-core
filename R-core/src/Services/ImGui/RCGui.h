@@ -19,7 +19,8 @@ namespace RC {
 		virtual void Run() override {};
 		virtual void OnGuiUpdate() override {};	
 		virtual bool IsUniqueService() const override { return true; }
-
+		
+		void Shutdown();
 		virtual void Begin();
 		virtual void End();
 
@@ -30,5 +31,6 @@ namespace RC {
 		std::shared_ptr<Window> m_windowService;
 
 		bool m_isWindowRunning = true;
+		bool m_isInitialized = false;
 	};
 }

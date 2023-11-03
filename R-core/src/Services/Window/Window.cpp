@@ -25,14 +25,14 @@ namespace RC {
 		this->m_data.m_eventCallback = RC_BIND_FN(Window::OnDispatchable);
 
 		// Will initialize glfw environment
-		this->m_glfw = RCGlfw::Create();
 		this->m_dependencies.push_back(
-			DependencyDescriber("GLFW", this->m_glfw, false)
+			DependencyDescriber("GLFW", RCGlfw::Create(), false)
 		);
 	}
 
 	void Window::Init()
 	{
+		m_glfw = DependencyDescriber::get<RCGlfw>(this->m_dependencies, "GLFW");
 		// set openGL version
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
@@ -108,6 +108,7 @@ namespace RC {
 		// Stop applications UI rendering
 		Application::GetApp().m_isUiRunning = false;
 		glfwDestroyWindow(m_window);
+		RC_LOG_INFO("Window has been destroyed");
 	}
 
 	void Window::OnDispatchable(Dispatchable& dispatchable)

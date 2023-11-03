@@ -1,34 +1,40 @@
 #include "rcpch.h"
 
 #include "Services/Server/ServerGui.h"
+#include "Core/Application.h"
 
 #include "imgui.h"
+#include "ServerGui.h"
 
 namespace RC {
 
 	ServerGui::ServerGui()
 		: Service()
 	{
-		m_guiService = std::make_shared<SkeletonGui>();
 		this->m_dependencies.push_back(
-			DependencyDescriber("GUI", m_guiService, false)
+			DependencyDescriber("GUI", std::make_shared<SkeletonGui>(), false)
 		);
-
-		m_serverService = Server::Create(ServerInput());
 		this->m_dependencies.push_back(
-			DependencyDescriber("SERVER", m_serverService, false)
+			DependencyDescriber("SERVER", Server::Create(ServerInput()), false)
 		);
 	}
 
-	void ServerGui::OnGuiUpdate()
+	void ServerGui::Init()
 	{
-		m_guiService->Begin();
+		m_guiService = DependencyDescriber::get<SkeletonGui>(this->m_dependencies, "GUI");
+		m_serverService = DependencyDescriber::get<Server>(this->m_dependencies, "SERVER");
+
+		// Added in init where the gui service is already initialized
+		Application::GetApp().SetGuiRenderer(m_guiService);
+	}
+
+    void ServerGui::OnGuiUpdate() 
+    {
 		ImGui::Begin("Settings");
 
 		static bool m_show = true;
 		ImGui::Checkbox("Checkbox", &m_show);
 
 		ImGui::End();
-		m_guiService->End();
 	}
 }

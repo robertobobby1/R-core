@@ -29,7 +29,7 @@ namespace RC {
 		SetExecutionOrderIds();
 		
 		// Initialize all services, synchronously and in dependency order
-		RC_LOG_INFO("------------- Initializing application services -------------");
+		RC_LOG_INFO("-------------- Initializing application services -------------------");
 		for (auto& index : m_serviceOrder) {
 			auto& service = m_services[index];
 			service->Init();
@@ -37,7 +37,7 @@ namespace RC {
 				service->GetChildClassName(), service->GetId(), service.use_count()
 			);
 		}
-		RC_LOG_INFO("------------- End initializing application services -------------");
+		RC_LOG_INFO("-------------- End initializing application services ---------------");
 
 		// Run all services in independent threads
 		for (auto& index : m_serviceOrder) {

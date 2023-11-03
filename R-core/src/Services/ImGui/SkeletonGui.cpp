@@ -1,5 +1,5 @@
 #include "rcpch.h"
-#include "SkeletonGui.h"
+#include "Services/ImGui/SkeletonGui.h"
 
 #include "imgui.h"
 
@@ -101,13 +101,5 @@ namespace RC {
 	{
 		ImGui::End();
 		RCGui::End();
-	}
-
-	void SkeletonGui::OnDispatchable(Dispatchable& dispatchable)
-	{
-		Dispatcher disp(dispatchable);
-		disp.Dispatch<OnWindowCloseEvent>([this](Dispatchable& dispatchable) {
-			this->m_windowService->~Window();
-		});
 	}
 }

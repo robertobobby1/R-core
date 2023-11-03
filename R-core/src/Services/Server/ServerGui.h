@@ -12,7 +12,7 @@ namespace RC {
 		virtual void Init() override {};
 		virtual void Run() override {};
 		virtual void OnGuiUpdate() override;
-		virtual inline bool IsGuiService() const { return true; }
+		virtual inline bool IsGuiService() const override { return true; }
 
 	private: 
 		std::shared_ptr<SkeletonGui> m_guiService;

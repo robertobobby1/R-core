@@ -16,5 +16,6 @@ namespace RC {
 
 	void LinuxServer::Run()
 	{
+		while (true){}
 	}
 }

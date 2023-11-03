@@ -20,3 +20,5 @@ Makefile
 
 #vs code
 settings.json
+
+imgui.ini

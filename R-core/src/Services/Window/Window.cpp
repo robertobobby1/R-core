@@ -22,20 +22,13 @@ namespace RC {
 		this->m_data.m_width  = input.Width;
 		this->m_data.m_title  = input.Title;
 		this->m_data.m_Vsync  = true;
-		this->m_data.m_eventCallback = RC_BIND_FN(Service::CallDepCallbacks);
-
-		this->AddDependencyCallback(RC_BIND_FN(Window::OnDispatchable));
+		this->m_data.m_eventCallback = RC_BIND_FN(Window::OnDispatchable);
 
 		// Will initialize glfw environment
 		this->m_glfw = RCGlfw::Create();
 		this->m_dependencies.push_back(
 			DependencyDescriber("GLFW", this->m_glfw, false)
 		);
-	}
-
-	Window::~Window() 
-	{
-		glfwDestroyWindow(m_window);
 	}
 
 	void Window::Init()
@@ -70,7 +63,8 @@ namespace RC {
 		glfwSetWindowCloseCallback(m_window, [](GLFWwindow* window)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-			data.m_eventCallback(OnWindowCloseEvent());
+			auto event = OnWindowCloseEvent();
+			data.m_eventCallback(event);
 		});
 
 		glfwSetKeyCallback(m_window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -109,14 +103,19 @@ namespace RC {
 		});
 	}
 
+	void Window::OnWindowClose(OnWindowCloseEvent& event)
+	{
+		// Stop applications UI rendering
+		Application::GetApp().m_isUiRunning = false;
+		glfwDestroyWindow(m_window);
+	}
+
 	void Window::OnDispatchable(Dispatchable& dispatchable)
 	{
+		// First call all dependency callbacks
+		Service::CallDepCallbacks(dispatchable);
 		Dispatcher disp(dispatchable);
-		disp.Dispatch<OnWindowCloseEvent>([this](Dispatchable& dispatchable) {
-			// Stop applications UI rendering
-			Application::GetApp().m_isUiRunning = false;
-			this->~Window();
-		});
+		disp.Dispatch<OnWindowCloseEvent>(RC_BIND_FN(Window::OnWindowClose));
 	}
 
 	void Window::SetVSync(bool _Vsync)

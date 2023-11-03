@@ -23,8 +23,12 @@ namespace RC {
 		virtual void Begin();
 		virtual void End();
 
+		void OnDispatchable(Dispatchable& dispatchable);
+
 	protected:
 
 		std::shared_ptr<Window> m_windowService;
+
+		bool m_isWindowRunning = true;
 	};
 }

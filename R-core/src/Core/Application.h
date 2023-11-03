@@ -32,7 +32,7 @@ namespace RC {
 		}
 
 		inline void PrintServices() {
-			RC_LOG_INFO("-------------- Services and dependency information --------------");
+			RC_LOG_INFO("-------------- Services and dependency information ------------------");
 			for (auto& service : m_services) {
 
 				RC_LOG_INFO("{0}", service.second->ToString());

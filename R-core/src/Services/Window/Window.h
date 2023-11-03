@@ -22,17 +22,18 @@ namespace RC {
 	class Window : public Service {
 	public:
 		Window(const WindowInput& input);
-		~Window();
+		~Window() = default;
 
 		virtual void Init() override;
 		virtual void Run() override {};
 		virtual void OnGuiUpdate() override {};
-		virtual inline bool IsUniqueService() const { return true; }
+		virtual inline bool IsUniqueService() const override { return true; }
 
 		void SetVSync(bool _Vsync);
 
 		static std::shared_ptr<Window> Create(const WindowInput& input);
 
+		void OnWindowClose(OnWindowCloseEvent& event);
 		void OnDispatchable(Dispatchable& dispatchable);
 
 		GLFWwindow* m_window;

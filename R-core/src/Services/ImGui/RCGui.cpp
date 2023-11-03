@@ -25,7 +25,9 @@ namespace RC
 
 		// default values for window input, customize in the future
 		this->m_dependencies.push_back(DependencyDescriber(
-			"Window", m_windowService, false));
+			"Window", m_windowService, false)
+		);
+		m_windowService->AddDependencyCallback(RC_BIND_FN(RCGui::OnDispatchable));
 	}
 
 	RCGui::~RCGui()
@@ -74,7 +76,7 @@ namespace RC
 
 	void RCGui::Begin()
 	{
-		glfwPollEvents();
+		glfwPollEvents();			
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -107,6 +109,18 @@ namespace RC
 			glfwMakeContextCurrent(backup_current_context);
 		}
 
+		// don't swap buffers if window is not running
+		if (!m_isWindowRunning)
+			return;
+
 		glfwSwapBuffers(m_windowService->m_window);
+	}
+
+	void RCGui::OnDispatchable(Dispatchable& dispatchable)
+	{
+		Dispatcher disp(dispatchable);
+		disp.Dispatch<OnWindowCloseEvent>([this](OnWindowCloseEvent& dispatchable) {
+			this->m_isWindowRunning = false;
+		});
 	}
 }

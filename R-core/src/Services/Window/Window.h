@@ -25,8 +25,6 @@ namespace RC {
 		~Window() = default;
 
 		virtual void Init() override;
-		virtual void Run() override {};
-		virtual void OnGuiUpdate() override {};
 		virtual inline bool IsUniqueService() const override { return true; }
 
 		void SetVSync(bool _Vsync);

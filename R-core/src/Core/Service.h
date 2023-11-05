@@ -17,13 +17,14 @@ namespace RC {
 	class Service {
 	public:
 
-		Service() = default;
+		Service() {};
 		virtual ~Service() = default;
 		//Application::GetApp().RemoveServiceById(this->GetId());
 
-		virtual void Init() = 0;
-		virtual void Run() = 0;
-		virtual void OnGuiUpdate() = 0;
+		// Keep as non virtual! It's not mandatory to implement the methods
+		virtual void Init() {};
+		virtual void Run() {};
+		virtual void OnGuiUpdate() {};
 
 		virtual inline void 
 			AddDependencyCallback(std::function<void(Dispatchable&)> dependency) {

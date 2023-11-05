@@ -9,7 +9,6 @@ namespace RC {
 		~LinuxServer() = default;
 
 		virtual void Init() override;
-		virtual void OnGuiUpdate() override {};
 		virtual void Run() override;
 
 	private:

@@ -4,7 +4,6 @@
 #include "Core/Application.h"
 
 #include "imgui.h"
-#include "ServerGui.h"
 
 namespace RC {
 

@@ -29,9 +29,13 @@ namespace RC {
 		};
 
 		virtual inline void CallDepCallbacks(Dispatchable& dispatchable) const {
+			if (dispatchable.m_handled)
+				return;
+
 			for (auto& callback : this->m_dependencyCallbacks) {
 				callback(dispatchable);
 			}
+			dispatchable.m_handled = true;
 		}
 
 		virtual inline std::string ToString() {

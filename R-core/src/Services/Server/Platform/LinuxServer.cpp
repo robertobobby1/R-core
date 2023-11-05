@@ -10,10 +10,6 @@ namespace RC {
 	{
 	}
 
-	void LinuxServer::Init()
-	{
-	}
-
 	void LinuxServer::Run()
 	{
 		while (true){}

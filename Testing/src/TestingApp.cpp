@@ -10,10 +10,8 @@ int main(int argc, char **argv)
 	app->AddService(RC::Server::Create(serverInput));
 
 	app->AddService(std::make_shared<RC::ServerGui>());
-	app->AddService(std::make_shared<RC::ServerGui>());
-
-    //RC::WindowInput windowInput;
-	//app->AddService(RC::Window::Create(windowInput));
+	//app->AddService(std::make_shared<RC::ServerGui>());
+	app->AddService(std::make_shared<RC::ApplicationGui>());
 
 	app->Run();
 }

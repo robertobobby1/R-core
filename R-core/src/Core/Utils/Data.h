@@ -13,7 +13,6 @@ namespace RC {
 
 		virtual inline DispatchableType GetType() override { return DispatchableType::OnWindowCloseEventType; }
 		static  inline DispatchableType GetStaticType() { return DispatchableType::OnWindowCloseEventType; }
-
 	};
 
 	class ServerData : public Dispatchable {
@@ -25,8 +24,11 @@ namespace RC {
 		virtual inline DispatchableType GetType() override { return DispatchableType::ServerDataType; }
 		static  inline DispatchableType GetStaticType() { return DispatchableType::ServerDataType; }
 
-		uint8_t m_maxPoolSize = 1;
-		uint32_t m_port = 0;
+		unsigned int m_maxPoolSize = 1;
+		unsigned int m_port = 0;
+		unsigned int m_activeConnections = 0;
+		unsigned int m_totalConnections = 0;
+
 	};
 
 	class WindowData : public Dispatchable {

@@ -8,7 +8,6 @@ namespace RC {
 		LinuxServer(const ServerInput& input);
 		~LinuxServer() = default;
 
-		virtual void Init() override;
 		virtual void Run() override;
 
 	private:

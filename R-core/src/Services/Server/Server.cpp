@@ -34,10 +34,8 @@ namespace RC {
 
 	}
 
-	void Server::InitThreads(std::function<void()> mainThreadFunc, std::function<void()> workerThreadFunc)
+	void Server::InitThreads(std::function<void()> workerThreadFunc)
 	{
-		m_mainThread = std::thread(mainThreadFunc);
-
 		for (int i = 0; i < m_data->m_maxPoolSize; i++)
 		{
 			m_workerThreads.push_back(
@@ -48,7 +46,6 @@ namespace RC {
 
 	void Server::Shutdown()
 	{
-		m_mainThread.~thread();
 		for (auto& thread : m_workerThreads)
 		{
 			thread.~thread();
@@ -56,18 +53,5 @@ namespace RC {
 
 		m_isShutdown = true;
 		RC_LOG_WARN("Threads were terminated!");
-	}
-
-	void Server::Run()
-	{
-		if (m_data->m_handled)
-			return;
-
-		
-		for (auto& depFunc : m_dependencyCallbacks)
-		{
-			depFunc(*(m_data.get()));
-			m_data->m_handled = true;
-		}
 	}
 }

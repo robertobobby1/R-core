@@ -6,6 +6,8 @@
 
 namespace RC {
 
+	std::map<std::string, bool> SkeletonGui::s_dockWindowsOpen;
+
 	void SkeletonGui::Begin()
 	{
 		RCGui::Begin();
@@ -61,36 +63,11 @@ namespace RC {
 
 		if (ImGui::BeginMenuBar())
 		{
-			if (ImGui::BeginMenu("File"))
+			if (ImGui::BeginMenu("Windows"))
 			{
-				if (ImGui::MenuItem("Open Project...", "Ctrl+O"))
-					ImGui::Text("Whatever");
-
-				ImGui::Separator();
-
-				if (ImGui::MenuItem("New Scene", "Ctrl+N"))
-					ImGui::Text("Whatever");
-
-				if (ImGui::MenuItem("Save Scene", "Ctrl+S"))
-					ImGui::Text("Whatever");
-
-				if (ImGui::MenuItem("Save Scene As...", "Ctrl+Shift+S"))
-					ImGui::Text("Whatever");
-
-				ImGui::Separator();
-
-				if (ImGui::MenuItem("Exit"))
-					ImGui::Text("Whatever");
-
-				ImGui::EndMenu();
-			}
-
-			if (ImGui::BeginMenu("Script"))
-			{
-				if (ImGui::MenuItem("Reload assembly", "Ctrl+R"))
-				{
-					ImGui::Text("Whatever");
-				}
+				for (auto &dockWindow : s_dockWindowsOpen) {
+					ImGui::MenuItem(dockWindow.first.c_str(), NULL, &dockWindow.second);
+				}	
 				ImGui::EndMenu();
 			}
 

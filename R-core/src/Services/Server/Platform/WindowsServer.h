@@ -11,10 +11,8 @@ namespace RC {
 		WindowsServer(const ServerInput& input);
 		~WindowsServer() = default;
 
-		virtual void Init() override;
 		virtual void Run() override; 
 
-		void MainThreadLoop();
 		void WorkerThreadLoop();
 
 		void OnError(const std::string& msg, bool closeSocket = true);

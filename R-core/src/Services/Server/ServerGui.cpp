@@ -25,10 +25,14 @@ namespace RC {
 
 		// Added in init where the gui service is already initialized
 		Application::GetApp().SetGuiRenderer(m_guiService);
+		m_guiService->SetActiveDockWindow("Server", true);
 	}
 
     void ServerGui::OnGuiUpdate() 
     {
+		if (!m_guiService->GetActiveDockWindow("Server"))
+			return;
+
 		ImGui::Begin("Settings");
 
 		static bool m_show = true;

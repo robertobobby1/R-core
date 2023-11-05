@@ -16,28 +16,13 @@ namespace RC {
         m_socketQueue = std::make_shared<std::queue<SOCKET>>();
     }
 
-    void WindowsServer::Init()
-    {
-
-        RC_LOG_MEMORYUSAGE();
-    }
-
 	void WindowsServer::Run()
 	{
-        //Server::Run();
         // Initializes threads in their loop functions 
-        Server::InitThreads(
-            RC_BIND_FN(WindowsServer::MainThreadLoop),
-            RC_BIND_FN(WindowsServer::WorkerThreadLoop)
-        );
+        Server::InitThreads(RC_BIND_FN(WindowsServer::WorkerThreadLoop));
 
-        this->m_mainThread.join();
-	}
-
-    void WindowsServer::MainThreadLoop()
-    {
         Setup();
-        while(true)
+        while(m_isRunning)
         {
             SOCKET AcceptSocket = accept(ListenSocket, NULL, NULL);
             if (AcceptSocket == INVALID_SOCKET) 
@@ -51,7 +36,7 @@ namespace RC {
             SetTSQueue(AcceptSocket);
             m_condition.notify_one();
         }
-    }
+	}
 
     void WindowsServer::WorkerThreadLoop()
     {
@@ -164,7 +149,7 @@ namespace RC {
         unsigned long blocking_mode = 0;
         if (ioctlsocket(ListenSocket, FIONBIO, &blocking_mode) == -1)
         {
-            OnError("Couldn´t set to blocking mode! :: {0}");
+            OnError("Couldnï¿½t set to blocking mode! :: {0}");
             return false;
         }
         return true;

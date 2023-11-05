@@ -28,9 +28,9 @@ namespace RC {
 		Server(const ServerInput& input);
 		~Server() = default;
 
-		virtual void Run() override;
+		virtual void Run() override = 0;
 
-		virtual void InitThreads(std::function<void()> mainThreadFunc, std::function<void()> workerThreadFunc);
+		virtual void InitThreads(std::function<void()> workerThreadFunc);
 		virtual void Shutdown();
 
 		// mutex and conditions
@@ -44,7 +44,6 @@ namespace RC {
 		// By children objects or set functions 
 
 		// Thread objects
-		std::thread m_mainThread;
 		std::vector<std::thread> m_workerThreads;
 
 		// Basic server data

@@ -1,7 +1,7 @@
 #include "rcpch.h"
 #include "Core/Application.h"
 #include "Core/Service.h"
-#include "Core/DependencyManager.h"
+#include "Core/DependencyInjection/DependencyManager.h"
 
 namespace RC {
 
@@ -74,6 +74,10 @@ namespace RC {
     void Application::SetGuiRenderer(std::shared_ptr<RCGui> guiRenderer)
     {
 		if (m_guiRenderer != nullptr){
+			RC_LOG_INFO("{0} {1}", m_guiRenderer->GetId(), guiRenderer->GetId());
+			if (m_guiRenderer->GetId() == guiRenderer->GetId()){
+				return;
+			}
 			RC_LOG_WARN("Gui renderer was already set, if valid will overwrite!");
 		}
 		if (guiRenderer->GetId() == 0){

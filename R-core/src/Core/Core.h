@@ -1,7 +1,7 @@
 #pragma once
 #include "rcpch.h"
 
-#include "Core/Log.h"
+#include "Core/Utils/Log.h"
 
 // Memory allocation usage
 extern unsigned long long heapAllocatedBytes;

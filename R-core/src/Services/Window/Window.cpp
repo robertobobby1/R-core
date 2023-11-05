@@ -32,7 +32,7 @@ namespace RC {
 
 	void Window::Init()
 	{
-		m_glfw = DependencyDescriber::get<RCGlfw>(this->m_dependencies, "GLFW");
+		m_glfw = this->GetDep<RCGlfw>("GLFW");
 		// set openGL version
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);

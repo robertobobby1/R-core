@@ -50,7 +50,7 @@ namespace RC
 
 	void RCGui::Init()
 	{
-		m_windowService = DependencyDescriber::get<Window>(this->m_dependencies, "Window");
+		m_windowService = this->GetDep<Window>("Window");
 		m_windowService->AddDependencyCallback(RC_BIND_FN(RCGui::OnDispatchable));
 		
 		// Setup Dear ImGui context

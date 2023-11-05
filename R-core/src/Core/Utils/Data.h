@@ -1,7 +1,7 @@
 #pragma once
 #include "rcpch.h"
 
-#include "Core/Dispatch.h"
+#include "Core/Utils/Dispatch.h"
 
 namespace RC {
 

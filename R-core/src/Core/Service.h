@@ -1,7 +1,8 @@
 #pragma once
 #include "rcpch.h"
 
-#include "Core/Data.h"
+#include "Core/Utils/Data.h"
+#include "Core/DependencyInjection/DependencyDescriber.h"
 
 namespace RC {
 
@@ -9,10 +10,6 @@ namespace RC {
 		USTNone = 0,
 		UniqueWindow
 	};
-
-	// forward DependencyDescriber, it will be defined at the end of the file
-	// DONT MOVE IT FROM THERE OR IT WILL CRASH AT EXECUTION
-	struct DependencyDescriber; 
 
 	class Service {
 	public:
@@ -55,6 +52,20 @@ namespace RC {
 		virtual inline bool operator==(const char* className) const { return this->GetChildClassName() == className; }
 		virtual inline bool operator!=(const char* className) const { return this->GetChildClassName() != className; }
 
+        /*
+		* Careful usage, the function "casts" the object for you by returning the children object 
+		* however, it uses the given dependency name by the user to find it 
+		*/
+		template<typename T>
+		std::shared_ptr<T> GetDep(const char* serviceName)
+		{
+			for (auto& describer : this->m_dependencies) {
+				if (describer.depName == serviceName)
+					return std::dynamic_pointer_cast<T>(describer.dep);
+			}
+			return nullptr;
+		}
+
 	public: 
 		// id 0 is an invalid id, this has to be set by Application
 		int m_id = 0;
@@ -71,29 +82,5 @@ namespace RC {
 		* application will check the deps and change this object 
 		*/
 		std::vector<DependencyDescriber> m_dependencies;
-	};
-
-	struct DependencyDescriber
-	{
-		std::shared_ptr<Service> dep;
-		bool tryToFind;
-		const char* depName;
-
-		DependencyDescriber(const char* _depName, std::shared_ptr<Service> _dependency, bool _tryToFind)
-			: dep(_dependency), tryToFind(_tryToFind), depName(_depName){ }
-
-        /*
-		* Careful usage, the function "casts" the object for you by returning the children object 
-		* however, it uses the given dependency name by the user to find it 
-		*/
-		template<typename T>
-		static std::shared_ptr<T> get(std::vector<DependencyDescriber> dependencies, const char* serviceName)
-		{
-			for (auto& describer : dependencies) {
-				if (describer.depName == serviceName)
-					return std::dynamic_pointer_cast<T>(describer.dep);
-			}
-			return nullptr;
-		}
 	};
 }

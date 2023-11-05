@@ -2,9 +2,9 @@
 #include "rcpch.h"
 
 #include "Core/Service.h"
-#include "Core/Dispatch.h"
+#include "Core/Utils/Dispatch.h"
 #include "Core/Core.h"
-#include "Core/DependencyManager.h"
+#include "Core/DependencyInjection/DependencyManager.h"
 
 #include "Services/ImGui/RCGui.h"
 

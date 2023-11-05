@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core/Service.h"
-#include "Core/Buffer.h"
+#include "Core/Utils/Buffer.h"
 
 namespace RC {
 	

@@ -1,7 +1,7 @@
 #include "rcpch.h"
 
 #include "Core/Core.h"
-#include "Core/Data.h"
+#include "Core/Utils/Data.h"
 
 #if defined(RC_PLATFORM_MACOS) || defined(RC_PLATFORM_LINUX)
 	#include "Services/Server/Platform/LinuxServer.h"

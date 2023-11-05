@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core/Service.h"
-#include "Core/Data.h"
+#include "Core/Utils/Data.h"
 
 #include "GLFW/glfw3.h"
 #include "Services/GLFW/RCGlfw.h"

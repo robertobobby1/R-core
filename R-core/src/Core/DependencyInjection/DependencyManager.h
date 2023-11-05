@@ -9,7 +9,7 @@ namespace RC {
     public: 
         DependencyManager(std::map<int, std::shared_ptr<Service>>& services)
             : m_services(services) {};
-        
+		
         void Run();
         /*
 		* Search service by className and return id of the service, 

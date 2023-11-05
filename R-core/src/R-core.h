@@ -2,15 +2,16 @@
 
 #include "rcpch.h"
 
-#include "Core/Platform.h"
+#include "Core/Utils/Platform.h"
 #include "Core/Core.h"
-#include "Core/DependencyManager.h"
+#include "Core/DependencyInjection/DependencyManager.h"
+#include "Core/DependencyInjection/DependencyDescriber.h"
 #include "Core/Application.h"
-#include "Core/Log.h"
+#include "Core/Utils/Log.h"
 #include "Core/Service.h"
-#include "Core/Data.h"
-#include "Core/Dispatch.h"
-#include "Core/Buffer.h"
+#include "Core/Utils/Data.h"
+#include "Core/Utils/Dispatch.h"
+#include "Core/Utils/Buffer.h"
 
 // Platform dependent services
 #include "Services/Server/Server.h"
@@ -23,4 +24,5 @@
 #include "Services/ImGui/RCGui.h"
 #include "Services/ImGui/SkeletonGui.h"
 #include "Services/Server/ServerGui.h"
+#include "Services/ApplicationGui/ApplicationGui.h"
 #include "Services/Window/Window.h"

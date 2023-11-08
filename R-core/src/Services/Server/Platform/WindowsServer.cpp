@@ -34,7 +34,8 @@ namespace RC {
 
             // Set SOCKET and notify one thread to handle it 
             SetTSQueue(AcceptSocket);
-            m_condition.notify_one();
+            m_queueCondition.notify_one();
+            m_data.m_totalConnections++;
         }
 	}
 
@@ -51,6 +52,11 @@ namespace RC {
 
             // Blocking until the thread gets a task (New conexion)
             SOCKET clientSocket = GetTSQueue();
+            {
+                std::lock_guard<std::mutex> lock(m_dataMutex);
+                m_data.m_activeConnections++;
+                m_data.m_handled = false;
+            }
             while (openConexion)
             {
                 int result = recv(clientSocket, buffer.Begin(), maxBufferLength, 0);
@@ -64,27 +70,38 @@ namespace RC {
                 {
                     RC_LOG_INFO("The peer closed the conexion!"); 
                     openConexion = false;
+                    {
+                        std::lock_guard<std::mutex> lock(m_dataMutex);
+                        m_data.m_activeConnections--;
+                        m_data.m_handled = false;
+                    }
                 }
                 else 
                 { 
                     // maybe we shouldn't completely shutdown the server
                     OnError("Conexion finished with error:"); 
                     openConexion = false;
+                    {
+                        std::lock_guard<std::mutex> lock(m_dataMutex);
+                        m_data.m_activeConnections--;
+                        m_data.m_handled = false;
+                    }
                 }
+                Service::CallDepCallbacks(m_data);
             }
         }
     }
 
     void WindowsServer::SetTSQueue(SOCKET socket)
     {
-        std::lock_guard<std::mutex> lock(m_mutex);
+        std::lock_guard<std::mutex> lock(m_queueMutex);
         m_socketQueue->push(socket);
     }
 
     SOCKET WindowsServer::GetTSQueue()
     {
-        std::unique_lock<std::mutex> lock(m_mutex);
-        m_condition.wait(lock);
+        std::unique_lock<std::mutex> lock(m_queueMutex);
+        m_queueCondition.wait(lock);
 
         if (m_socketQueue->empty())
             return -1;

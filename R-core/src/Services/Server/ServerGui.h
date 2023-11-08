@@ -13,8 +13,11 @@ namespace RC {
 		virtual void OnGuiUpdate() override;
 		virtual inline bool IsGuiService() const override { return true; }
 
-	private: 
+		void OnDispatchable(Dispatchable& dispatchable);
+
 		std::shared_ptr<SkeletonGui> m_guiService;
 		std::shared_ptr<Server> m_serverService;
+
+		ServerData m_serverData;
 	};
 }

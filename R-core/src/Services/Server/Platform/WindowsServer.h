@@ -14,12 +14,9 @@ namespace RC {
 		virtual void Run() override; 
 
 		void WorkerThreadLoop();
-
 		void OnError(const std::string& msg, bool closeSocket = true);
+		
 		void SetTSQueue(SOCKET socket);
-
-		// gets a SOCKET to process by the thread, 
-		// threads will wait here until they receive data by the main thread 
 		SOCKET GetTSQueue();
 
 	private:

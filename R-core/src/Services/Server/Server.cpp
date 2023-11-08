@@ -10,6 +10,7 @@
 #endif
 
 #include "Services/Server/Server.h"
+#include "Server.h"
 
 namespace RC {
 
@@ -27,16 +28,16 @@ namespace RC {
 
 	Server::Server(const ServerInput& input) : Service()
 	{
-		this->m_data = std::make_shared<ServerData>();
+		this->m_data = ServerData();
 
-		m_data->m_port = input.Port;
-		m_data->m_maxPoolSize = input.MaxPoolSize;
+		m_data.m_port = input.Port;
+		m_data.m_maxPoolSize = input.MaxPoolSize;
 
 	}
 
 	void Server::InitThreads(std::function<void()> workerThreadFunc)
 	{
-		for (int i = 0; i < m_data->m_maxPoolSize; i++)
+		for (int i = 0; i < m_data.m_maxPoolSize; i++)
 		{
 			m_workerThreads.push_back(
 				std::thread(workerThreadFunc)

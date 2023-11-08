@@ -25,10 +25,12 @@ namespace RC {
 
 		virtual inline void 
 			AddDependencyCallback(std::function<void(Dispatchable&)> dependency) {
+			std::lock_guard<std::mutex> lock(m_dataMutex);
 			m_dependencyCallbacks.emplace_back(dependency);
 		};
 
-		virtual inline void CallDepCallbacks(Dispatchable& dispatchable) const {
+		virtual inline void CallDepCallbacks(Dispatchable& dispatchable) {
+			std::lock_guard<std::mutex> lock(m_dataMutex);
 			if (dispatchable.m_handled)
 				return;
 
@@ -73,6 +75,9 @@ namespace RC {
 	public: 
 		// id 0 is an invalid id, this has to be set by Application
 		int m_id = 0;
+
+		// Mutex to access thread safely data
+		std::mutex m_dataMutex;
 
 		/* 
 		* Services that need to access other services data must subscribe the dependency callback 

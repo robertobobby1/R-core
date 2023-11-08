@@ -34,8 +34,8 @@ namespace RC {
 		virtual void Shutdown();
 
 		// mutex and conditions
-		std::mutex m_mutex;
-		std::condition_variable m_condition;
+		std::mutex m_queueMutex;
+		std::condition_variable m_queueCondition;
 
 		// Shutdown flag
 		bool m_isShutdown = false;
@@ -47,7 +47,7 @@ namespace RC {
 		std::vector<std::thread> m_workerThreads;
 
 		// Basic server data
-		std::shared_ptr<ServerData> m_data;
+		ServerData m_data;
 
 		// Callback to new Data
 		std::function<void(Buffer&)> f_onNewData;

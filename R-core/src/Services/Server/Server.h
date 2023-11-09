@@ -6,11 +6,12 @@
 namespace RC {
 	
 	struct ServerInput {
-		uint32_t  Port;
-		uint8_t  MaxPoolSize;
+		unsigned int Port;
+		unsigned int MaxPoolSize;
+		unsigned int Backlog;
 
-		ServerInput(uint32_t port = 1000, uint8_t maxPoolSize = 3)
-			: Port(port), MaxPoolSize(maxPoolSize)
+		ServerInput(unsigned int port = 1000, unsigned int maxPoolSize = 3, unsigned int backlog = 100)
+			: Port(port), MaxPoolSize(maxPoolSize), Backlog(backlog)
 		{
 		}
 
@@ -32,6 +33,9 @@ namespace RC {
 
 		virtual void InitThreads(std::function<void()> workerThreadFunc);
 		virtual void Shutdown();
+
+		void ReduceActiveConexions();
+		void IncrementActiveConexions();
 
 		// mutex and conditions
 		std::mutex m_queueMutex;

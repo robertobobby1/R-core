@@ -10,82 +10,71 @@
 
 namespace RC {
 
-    WindowsServer::WindowsServer(const ServerInput& input) 
-        : Server(input) 
+    WindowsServer::WindowsServer(const ServerInput& input)
+        : Server(input)
     {
         m_socketQueue = std::make_shared<std::queue<SOCKET>>();
     }
 
-	void WindowsServer::Run()
-	{
-        // Initializes threads in their loop functions 
+    void WindowsServer::Run()
+    {
+        // Initializes threads in their loop functions
         Server::InitThreads(RC_BIND_FN(WindowsServer::WorkerThreadLoop));
 
         Setup();
-        while(m_isRunning)
+        while (m_isShutdown)
         {
-            SOCKET AcceptSocket = accept(ListenSocket, NULL, NULL);
-            if (AcceptSocket == INVALID_SOCKET) 
+            SOCKET AcceptSocket = accept(m_listenSocket, NULL, NULL);
+            if (AcceptSocket == INVALID_SOCKET)
             {
                 OnError("Accept failed with error:");
                 return;
             }
             RC_LOG_INFO("New connection!");
 
-            // Set SOCKET and notify one thread to handle it 
+            // Set SOCKET and notify one thread to handle it
             SetTSQueue(AcceptSocket);
             m_queueCondition.notify_one();
             m_data.m_totalConnections++;
         }
-	}
+    }
 
     void WindowsServer::WorkerThreadLoop()
     {
-        while (true) 
+        // create a heap buffer that will receive constantly
+        int maxBufferLength = 512;
+        Buffer buffer(maxBufferLength);
+        int result = 0;
+
+        bool openConexion = true;
+        SOCKET clientSocket;
+
+        while (true)
         {
-            // create a heap buffer that will receive constantly
-            int maxBufferLength = 512;
-            Buffer buffer(maxBufferLength);
-            int result = 0;
-
-            bool openConexion = true;
-
             // Blocking until the thread gets a task (New conexion)
-            SOCKET clientSocket = GetTSQueue();
-            {
-                std::lock_guard<std::mutex> lock(m_dataMutex);
-                m_data.m_activeConnections++;
-                m_data.m_handled = false;
-            }
+            clientSocket = GetTSQueue();
+            Server::IncrementActiveConexions();
             while (openConexion)
             {
-                int result = recv(clientSocket, buffer.Begin(), maxBufferLength, 0);
+                result = recv(clientSocket, buffer.Begin(), maxBufferLength, 0);
                 if (result > 0)
                 {
                     RC_LOG_INFO("New Packet with {0} bytes", result);
                     if (f_onNewData)
                         f_onNewData(buffer);
                 }
-                else if (result == 0)     
+                else if (result == 0)
                 {
-                    RC_LOG_INFO("The peer closed the conexion!"); 
+                    RC_LOG_INFO("The peer closed the conexion!");
                     openConexion = false;
-                    {
-                        std::lock_guard<std::mutex> lock(m_dataMutex);
-                        m_data.m_activeConnections--;
-                        m_data.m_handled = false;
-                    }
+                    Server::ReduceActiveConexions();
                 }
-                else 
-                { 
+                else
+                {
                     // maybe we shouldn't completely shutdown the server
-                    OnError("Conexion finished with error:"); 
+                    OnError("Conexion finished with error:");
                     openConexion = false;
-                    {
-                        std::lock_guard<std::mutex> lock(m_dataMutex);
-                        m_data.m_activeConnections--;
-                        m_data.m_handled = false;
-                    }
+                    Server::ReduceActiveConexions();
                 }
                 Service::CallDepCallbacks(m_data);
             }
@@ -112,18 +101,18 @@ namespace RC {
         return res;
     }
 
-    void WindowsServer::OnError(const std::string& msg, bool closeSocket)
+    void WindowsServer::OnError(const std::string &msg, bool closeSocket)
     {
         RC_LOG_ERROR(msg, WSAGetLastError());
 
         if (closeSocket)
-            closesocket(ListenSocket);
+            closesocket(m_listenSocket);
 
         WSACleanup();
         Shutdown();
     }
 
-    bool WindowsServer::Setup()
+    void WindowsServer::Setup()
     {
         // Initialize Winsock.
         WSADATA wsaData;
@@ -133,15 +122,15 @@ namespace RC {
         {
             RC_LOG_ERROR("WSAStartup failed with error: {0}", iResult);
             Shutdown();
-            return false;
+            return;
         }
 
         // Create a SOCKET for listening
-        ListenSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-        if (ListenSocket == INVALID_SOCKET)
+        m_listenSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+        if (m_listenSocket == INVALID_SOCKET)
         {
             OnError("socket failed with error: {0}", false);
-            return false;
+            return;
         }
 
         // Define the sockaddr_in structure
@@ -149,27 +138,26 @@ namespace RC {
         service.sin_family = AF_INET;
         service.sin_port = htons(27015);
         inet_pton(AF_INET, "127.0.0.1", &service.sin_addr);
-        if (bind(ListenSocket, (SOCKADDR*)&service, sizeof(service)) == SOCKET_ERROR)
+        if (bind(m_listenSocket, (SOCKADDR *)&service, sizeof(service)) == SOCKET_ERROR)
         {
             OnError("bind failed with error: {0}");
-            return false;
+            return;
         }
 
         // Listen for incoming connection requests.
-        if (listen(ListenSocket, 1) == SOCKET_ERROR)
+        if (listen(m_listenSocket, 1) == SOCKET_ERROR)
         {
             OnError("listen failed with error: {0}");
-            return false;
+            return;
         }
 
         // Set blocking mode to wait for connections
         unsigned long blocking_mode = 0;
-        if (ioctlsocket(ListenSocket, FIONBIO, &blocking_mode) == -1)
+        if (ioctlsocket(m_listenSocket, FIONBIO, &blocking_mode) == -1)
         {
             OnError("Couldn�t set to blocking mode! :: {0}");
-            return false;
+            return;
         }
-        return true;
     }
 }
 

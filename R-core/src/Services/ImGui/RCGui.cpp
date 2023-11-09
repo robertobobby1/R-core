@@ -84,7 +84,7 @@ namespace RC
 
     void RCGui::Begin() 
     {
-		glfwPollEvents();			
+		glfwPollEvents();		
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();

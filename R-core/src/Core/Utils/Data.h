@@ -28,6 +28,7 @@ namespace RC {
 		unsigned int m_port = 0;
 		unsigned int m_activeConnections = 0;
 		unsigned int m_totalConnections = 0;
+		unsigned int m_backlog = 0;
 
 	};
 

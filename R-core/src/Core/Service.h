@@ -41,8 +41,8 @@ namespace RC {
 		}
 
 		virtual inline std::string ToString() {
-			std::string res = ""; res += this->m_id; res += "-"; res += this->GetChildClassName();
-			return res; 
+			std::string res = ""; res += std::to_string(this->m_id); res += "-"; res += this->GetChildClassName();
+return res; 
 		}
 
 		virtual inline const char* GetChildClassName() const { return typeid(*(this)).name(); }

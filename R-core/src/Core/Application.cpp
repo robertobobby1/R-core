@@ -6,6 +6,7 @@
 namespace RC {
 
 	Application* Application::s_App = nullptr;	
+	std::map<size_t, std::string> LogFormatter::m_threadIdToServiceName;
 
 	Application::Application() 
 	{
@@ -13,6 +14,7 @@ namespace RC {
 		s_App = this;
 
 		Log::Init();
+		LogFormatter::AddThreadName(RC_THREAD_ID(), "MainAppThread");
 	}
 
 	Application::~Application()
@@ -28,19 +30,19 @@ namespace RC {
 		PrintServices(); 
 		
 		// Initialize all services, synchronously and in dependency order
-		RC_LOG_INFO("-------------- Initializing application services -------------------");
 		for (auto& index : m_serviceOrder) {
 			auto& service = m_services[index];
 			service->Init();
-			RC_LOG_INFO("The service {0} with id {1} has a shared ptr count of {2} was succesfully initialized",
-				service->GetChildClassName(), service->GetId(), service.use_count()
+			RC_LOG_INFO("The service {0} was succesfully initialized",
+				service->ToString(), service.use_count()
 			);
 		}
-		RC_LOG_INFO("-------------- End initializing application services ---------------");
 
 		// Run all services in independent threads
 		for (auto& index : m_serviceOrder) {
  			m_servicesThreads[index] = std::thread([this](std::shared_ptr<Service> service) {
+				//LogFormatter::AddThreadName(RC_THREAD_ID(), service->ToString().c_str());
+				RC_LOG_INFO("Starting...");
 				service->Run();
 			}, m_services[index]); 
 		}
@@ -63,18 +65,20 @@ namespace RC {
     {
 		while (m_isUiRunning){
 			m_guiRenderer->Begin();
+			RC_LOG_INFO(1);
 			for (auto& index : m_serviceOrder) {
 				if (!m_services[index]->IsGuiService()) continue;
+				RC_LOG_INFO(1);
 				m_services[index]->OnGuiUpdate();
 			}
 			m_guiRenderer->End();
+			RC_LOG_INFO(1);
 		}
     }
 
     void Application::SetGuiRenderer(std::shared_ptr<RCGui> guiRenderer)
     {
 		if (m_guiRenderer != nullptr){
-			RC_LOG_INFO("{0} {1}", m_guiRenderer->GetId(), guiRenderer->GetId());
 			if (m_guiRenderer->GetId() == guiRenderer->GetId()){
 				return;
 			}

@@ -32,7 +32,6 @@ namespace RC {
 
 	void Window::Init()
 	{
-		m_glfw = this->GetDep<RCGlfw>("GLFW");
 		// set openGL version
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
@@ -44,8 +43,6 @@ namespace RC {
 		glfwMakeContextCurrent(m_window);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		RC_ASSERT_MSG(status, "Failed to initialize Glad!");
-
-		this->m_glfw->PrintOpenGLInfo();
 
 		glfwSetWindowUserPointer(m_window, &m_data);
 		SetVSync(m_data.m_Vsync);

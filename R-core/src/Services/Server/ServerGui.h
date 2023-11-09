@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Services/Imgui/SkeletonGui.h"
+#include "Services/Server/ServerGui.h"
+#include "Services/ImGui/SkeletonGui.h"
 #include "Services/Server/Server.h"
 
 namespace RC {

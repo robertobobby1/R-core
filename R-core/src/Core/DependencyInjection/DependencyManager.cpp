@@ -36,7 +36,6 @@ namespace RC {
 	{
 		// iterate all services incrementally
 		for (auto& service : m_services) {
-			RC_LOG_INFO("{0}, checking its {1} dependencies", service.second->ToString(), service.second->m_dependencies.size());
 			// iterate the dependency vector using indexes 
 			for (int describerIndex = 0; describerIndex < service.second->m_dependencies.size(); describerIndex++) {
 				auto& describer = service.second->m_dependencies[describerIndex];

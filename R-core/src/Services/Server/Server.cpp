@@ -32,7 +32,7 @@ namespace RC {
 
 		m_data.m_port = input.Port;
 		m_data.m_maxPoolSize = input.MaxPoolSize;
-
+		m_data.m_backlog = input.Backlog;
 	}
 
 	void Server::InitThreads(std::function<void()> workerThreadFunc)
@@ -55,4 +55,17 @@ namespace RC {
 		m_isShutdown = true;
 		RC_LOG_WARN("Threads were terminated!");
 	}
+
+	void Server::ReduceActiveConexions(){
+		std::lock_guard<std::mutex> lock(m_dataMutex);
+		m_data.m_activeConnections--;
+		m_data.m_handled = false;
+	}
+
+	void Server::IncrementActiveConexions(){
+		std::lock_guard<std::mutex> lock(m_dataMutex);
+		m_data.m_activeConnections++;
+		m_data.m_handled = false;
+	}
+
 }

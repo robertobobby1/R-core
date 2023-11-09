@@ -7,7 +7,7 @@ namespace RC {
 
 	Application* Application::s_App = nullptr;	
 	std::map<size_t, std::string> LogFormatter::m_threadIdToServiceName;
-
+	
 	Application::Application() 
 	{
 		RC_ASSERT_MSG(!s_App, "App already instantiated!");
@@ -38,10 +38,14 @@ namespace RC {
 			);
 		}
 
+		if (m_guiRenderer != nullptr){
+			m_guiRenderer->m_windowService->m_glfw->PrintOpenGLInfo();
+		}
+
 		// Run all services in independent threads
 		for (auto& index : m_serviceOrder) {
  			m_servicesThreads[index] = std::thread([this](std::shared_ptr<Service> service) {
-				//LogFormatter::AddThreadName(RC_THREAD_ID(), service->ToString().c_str());
+				LogFormatter::AddThreadName(RC_THREAD_ID(), service->ToString().c_str());
 				RC_LOG_INFO("Starting...");
 				service->Run();
 			}, m_services[index]); 
@@ -65,14 +69,11 @@ namespace RC {
     {
 		while (m_isUiRunning){
 			m_guiRenderer->Begin();
-			RC_LOG_INFO(1);
 			for (auto& index : m_serviceOrder) {
 				if (!m_services[index]->IsGuiService()) continue;
-				RC_LOG_INFO(1);
 				m_services[index]->OnGuiUpdate();
 			}
 			m_guiRenderer->End();
-			RC_LOG_INFO(1);
 		}
     }
 

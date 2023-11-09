@@ -37,7 +37,7 @@ namespace RC {
 		GLFWwindow* m_window;
 		WindowData m_data;
 
-	private: 
+	public: 
 		std::shared_ptr<RCGlfw> m_glfw;
 	};
 }

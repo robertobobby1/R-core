@@ -24,10 +24,10 @@ namespace RC {
 
 		void OnDispatchable(Dispatchable& dispatchable);
 
-	protected:
-
+	public:
 		std::shared_ptr<Window> m_windowService;
 
+	protected:
 		bool m_isWindowRunning = true;
 		bool m_isInitialized = false;
 	};

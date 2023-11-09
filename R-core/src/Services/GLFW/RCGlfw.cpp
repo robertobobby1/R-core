@@ -45,6 +45,5 @@ namespace RC {
 
 	void RCGlfw::Run()
 	{
-		PrintOpenGLInfo();
 	}
 }

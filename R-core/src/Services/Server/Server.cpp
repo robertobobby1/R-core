@@ -47,11 +47,6 @@ namespace RC {
 
 	void Server::Shutdown()
 	{
-		for (auto& thread : m_workerThreads)
-		{
-			thread.~thread();
-		}
-
 		m_isShutdown = true;
 		RC_LOG_WARN("Threads were terminated!");
 	}

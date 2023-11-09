@@ -2,6 +2,7 @@
 #include "rcpch.h"
 
 #include "Core/Utils/Data.h"
+#include "Core/Utils/Helper.h"
 #include "Core/DependencyInjection/DependencyDescriber.h"
 
 namespace RC {
@@ -41,7 +42,7 @@ namespace RC {
 		}
 
 		virtual inline std::string ToString() {
-			std::string res = ""; res += std::to_string(this->m_id); res += "-"; res += this->GetChildClassName();
+			std::string res = ""; res += to_string(this->m_id); res += "-"; res += this->GetChildClassName();
 return res; 
 		}
 

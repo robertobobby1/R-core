@@ -22,7 +22,8 @@ namespace RC {
         Server::InitThreads(RC_BIND_FN(WindowsServer::WorkerThreadLoop));
 
         Setup();
-        while (m_isShutdown)
+
+        while (!m_isShutdown)
         {
             SOCKET AcceptSocket = accept(m_listenSocket, NULL, NULL);
             if (AcceptSocket == INVALID_SOCKET)

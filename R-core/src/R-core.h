@@ -8,6 +8,7 @@
 #include "Core/DependencyInjection/DependencyDescriber.h"
 #include "Core/Application.h"
 #include "Core/Utils/Log.h"
+#include "Core/Utils/Helper.h"
 #include "Core/Service.h"
 #include "Core/Utils/Data.h"
 #include "Core/Utils/Dispatch.h"

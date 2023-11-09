@@ -12,6 +12,7 @@
 #include <map>
 #include <utility>
 #include <queue>
+#include<sstream>
 
 // make sure the platform is correctly set
 #include "Core/Utils/Platform.h"

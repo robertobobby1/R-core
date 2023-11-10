@@ -19,14 +19,19 @@ namespace RC {
 		Server::InitThreads(RC_BIND_FN(LinuxServer::WorkerThreadLoop));
 
 		auto clientFileDescriptor = std::make_unique<int>();
+		RC_LOG_INFO("Accepting requests in port {0}", m_data.m_port);
 		while (!m_isShutdown){
 			auto sizeSocket = sizeof(sockaddr_in);
 
 			int clientSocket = accept(m_fileDescriptor, (sockaddr*)clientFileDescriptor.get(), (socklen_t *)&sizeSocket);
+			if (clientSocket == -1){
+				RC_LOG_WARN("Couldn't accept connection, retrying!");
+				sleep(10);
+				continue;
+			}
             RC_LOG_INFO("New connection!");
 
             // Set SOCKET and notify one thread to handle it
-			
             SetTSQueue(clientSocket);
 			RC_LOG_INFO("setted");
             m_queueCondition.notify_one();
@@ -46,7 +51,6 @@ namespace RC {
 		int clientSocket;
 		while (openConexion)
 		{
-			RC_LOG_INFO("getting");
 			// Blocking until the thread gets a task (New conexion)
 			int clientSocket = GetTSQueue();
 			Server::IncrementActiveConexions();

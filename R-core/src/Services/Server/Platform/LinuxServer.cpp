@@ -5,7 +5,7 @@
 #include "Services/Server/Platform/LinuxServer.h"
 #include "LinuxServer.h"
 
-//#if defined(RC_PLATFORM_MACOS) || defined(RC_PLATFORM_LINUX)
+#if defined(RC_PLATFORM_MACOS) || defined(RC_PLATFORM_LINUX)
 
 namespace RC {
 
@@ -133,4 +133,4 @@ namespace RC {
     }
 }
 
-//#endif
+#endif

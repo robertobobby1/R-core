@@ -3,6 +3,8 @@
 
 #include "Services/Server/Server.h"
 
+#if defined(RC_PLATFORM_MACOS) || defined(RC_PLATFORM_LINUX)
+
 namespace RC {
 
 	class LinuxServer : public Server {
@@ -27,3 +29,5 @@ namespace RC {
 		std::shared_ptr<std::queue<int>> m_socketQueue;
 	};
 }
+
+#endif

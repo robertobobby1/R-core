@@ -84,7 +84,11 @@ namespace RC
 
     void RCGui::Begin() 
     {
-		glfwPollEvents();		
+		glfwPollEvents();	
+
+		if (!m_isWindowRunning)
+			return;
+
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -92,6 +96,9 @@ namespace RC
 
 	void RCGui::End()
 	{
+		if (!m_isWindowRunning)
+			return;
+
 		ImGuiIO &io = ImGui::GetIO();
 		// set size
 		io.DisplaySize = ImVec2((float)m_windowService->m_data.m_width, (float)m_windowService->m_data.m_height);
@@ -116,10 +123,6 @@ namespace RC
 			ImGui::RenderPlatformWindowsDefault();
 			glfwMakeContextCurrent(backup_current_context);
 		}
-
-		// don't swap buffers if window is not running
-		if (!m_isWindowRunning)
-			return;
 
 		glfwSwapBuffers(m_windowService->m_window);
 	}

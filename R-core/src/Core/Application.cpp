@@ -69,6 +69,9 @@ namespace RC {
     {
 		while (m_isUiRunning){
 			m_guiRenderer->Begin();
+			// check if polling events has closed the window
+			if (!m_isUiRunning)
+				return;
 			for (auto& index : m_serviceOrder) {
 				if (!m_services[index]->IsGuiService()) continue;
 				m_services[index]->OnGuiUpdate();

@@ -11,6 +11,10 @@ namespace RC {
 	void SkeletonGui::Begin()
 	{
 		RCGui::Begin();
+
+		if (!m_isWindowRunning)
+			return;
+
 		// Note: Switch this to true to enable dockspace
 		static bool dockspaceOpen = true;
 		static bool opt_fullscreen_persistant = true;
@@ -77,6 +81,9 @@ namespace RC {
 
 	void SkeletonGui::End()
 	{
+		if (!m_isWindowRunning)
+			return;
+
 		ImGui::End();
 		RCGui::End();
 	}

@@ -17,9 +17,9 @@
 // Platform dependent services
 #include "Services/Server/Server.h"
 #if defined(RC_PLATFORM_MACOS) || defined(RC_PLATFORM_LINUX)
-	#include "Services/Server/Platform/LinuxServer.h"
+#    include "Services/Server/Platform/LinuxServer.h"
 #elif defined(RC_PLATFORM_WINDOWS)
-	#include "Services/Server/Platform/WindowsServer.h"
+#    include "Services/Server/Platform/WindowsServer.h"
 #endif
 
 #include "Services/ImGui/GuiRenderer.h"

@@ -9,61 +9,53 @@
 
 namespace RC {
 
-	// static variables to be rendered by imgui
-	static unsigned int s_activeConnections = 0;
-	static unsigned int s_totalConnections  = 0;
-	static unsigned int s_port  		    = 0;
-	static unsigned int s_workerThreads     = 0;
+    // static variables to be rendered by imgui
+    static unsigned int s_activeConnections = 0;
+    static unsigned int s_totalConnections = 0;
+    static unsigned int s_port = 0;
+    static unsigned int s_workerThreads = 0;
 
-	ServerGui::ServerGui()
-		: Service()
-	{
-		this->m_dependencies.push_back(
-			DependencyDescriber("GUI", std::make_shared<SkeletonGui>(), false)
-		);
-		this->m_dependencies.push_back(
-			DependencyDescriber("SERVER", Server::Create(ServerInput()), false)
-		);
-		m_serverData = ServerData();
-	}
+    ServerGui::ServerGui() : Service() {
+        this->m_dependencies.push_back(
+            DependencyDescriber("GUI", std::make_shared<SkeletonGui>(), false));
+        this->m_dependencies.push_back(
+            DependencyDescriber("SERVER", Server::Create(ServerInput()), false));
+        m_serverData = ServerData();
+    }
 
-	void ServerGui::Init()
-	{
-		m_guiService = this->GetDep<SkeletonGui>("GUI");
-		m_serverService = this->GetDep<Server>("SERVER");
-		// receive changes in the server information to display
-		m_serverService->AddDependencyCallback(RC_BIND_FN(ServerGui::OnDispatchable));
+    void ServerGui::Init() {
+        m_guiService = this->GetDep<SkeletonGui>("GUI");
+        m_serverService = this->GetDep<Server>("SERVER");
+        // receive changes in the server information to display
+        m_serverService->AddDependencyCallback(RC_BIND_FN(ServerGui::OnDispatchable));
 
-		// Added in init where the gui service is already initialized
-		Application::GetApp().SetGuiRenderer(m_guiService);
-		m_guiService->SetActiveDockWindow("Server", true);
-	}
+        // Added in init where the gui service is already initialized
+        Application::GetApp().SetGuiRenderer(m_guiService);
+        m_guiService->SetActiveDockWindow("Server", true);
+    }
 
-	void ServerGui::OnDispatchable(Dispatchable& dispatchable)
-	{
-		Dispatcher disp(dispatchable);
-		disp.Dispatch<ServerData>([this](ServerData& serverData){
-			this->m_serverData = serverData;
-			
-			s_activeConnections = m_serverData.m_activeConnections;
-			s_totalConnections  = m_serverData.m_totalConnections;
-			s_port  = m_serverData.m_port;
-			s_workerThreads = m_serverData.m_maxPoolSize;
-		});
-	}
+    void ServerGui::OnDispatchable(Dispatchable& dispatchable) {
+        Dispatcher disp(dispatchable);
+        disp.Dispatch<ServerData>([this](ServerData& serverData) {
+            this->m_serverData = serverData;
 
-    void ServerGui::OnGuiUpdate() 
-    {
-		if (!m_guiService->GetActiveDockWindow("Server"))
-			return;
+            s_activeConnections = m_serverData.m_activeConnections;
+            s_totalConnections = m_serverData.m_totalConnections;
+            s_port = m_serverData.m_port;
+            s_workerThreads = m_serverData.m_maxPoolSize;
+        });
+    }
 
-		ImGui::Begin("ServerData");
+    void ServerGui::OnGuiUpdate() {
+        if (!m_guiService->GetActiveDockWindow("Server")) return;
 
-		ImGui::Text("Active Connections (%d)", s_activeConnections);
-		ImGui::Text("Total Connections (%d)", s_totalConnections);
-		ImGui::Text("Port (%d)", s_port);
-		ImGui::Text("Number of worker threads (%d)", s_workerThreads);
+        ImGui::Begin("ServerData");
 
-		ImGui::End();
-	}
-}
+        ImGui::Text("Active Connections (%d)", s_activeConnections);
+        ImGui::Text("Total Connections (%d)", s_totalConnections);
+        ImGui::Text("Port (%d)", s_port);
+        ImGui::Text("Number of worker threads (%d)", s_workerThreads);
+
+        ImGui::End();
+    }
+}  // namespace RC

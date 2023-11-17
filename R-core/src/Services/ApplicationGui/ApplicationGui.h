@@ -4,16 +4,16 @@
 #include "Services/ImGui/SkeletonGui.h"
 
 namespace RC {
-  class ApplicationGui : public Service {
-  public:
-    ApplicationGui();
-    ~ApplicationGui() = default;       
+    class ApplicationGui : public Service {
+       public:
+        ApplicationGui();
+        ~ApplicationGui() = default;
 
-    virtual void Init() override;
-    virtual void OnGuiUpdate() override;
-    virtual inline bool IsGuiService() const override { return true; }
+        virtual void Init() override;
+        virtual void OnGuiUpdate() override;
+        virtual inline bool IsGuiService() const override { return true; }
 
-  private: 
-    std::shared_ptr<SkeletonGui> m_guiService;
-  };
-}
+       private:
+        std::shared_ptr<SkeletonGui> m_guiService;
+    };
+}  // namespace RC

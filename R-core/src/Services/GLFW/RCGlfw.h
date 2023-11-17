@@ -3,22 +3,21 @@
 #include "rcpch.h"
 #include "Core/Service.h"
 
-
 namespace RC {
-	class RCGlfw : public Service {
-	public: 
-		RCGlfw() : Service() {}
-		~RCGlfw() = default;
+    class RCGlfw : public Service {
+       public:
+        RCGlfw() : Service() {}
+        ~RCGlfw() = default;
 
-		virtual void Init() override;
-		virtual void Run() override;
-		virtual bool IsUniqueService() const override { return true; }
+        virtual void Init() override;
+        virtual void Run() override;
+        virtual bool IsUniqueService() const override { return true; }
 
-		static std::shared_ptr<RCGlfw> Create();
+        static std::shared_ptr<RCGlfw> Create();
 
-		void PrintOpenGLInfo();
+        void PrintOpenGLInfo();
 
-	private:
-		bool m_isPrinted = false;
-	};
-}
+       private:
+        bool m_isPrinted = false;
+    };
+}  // namespace RC

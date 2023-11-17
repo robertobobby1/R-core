@@ -6,26 +6,26 @@
 #ifdef RC_PLATFORM_WINDOWS
 namespace RC {
 
-	class WindowsServer : public Server {
-	public:
-		WindowsServer(const ServerInput& input);
-		~WindowsServer() = default;
+    class WindowsServer : public Server {
+       public:
+        WindowsServer(const ServerInput& input);
+        ~WindowsServer() = default;
 
-				virtual void Run() override;
+        virtual void Run() override;
 
-		void WorkerThreadLoop();
-		void OnError(const std::string& msg, bool closeSocket = true);
+        void WorkerThreadLoop();
+        void OnError(const std::string& msg, bool closeSocket = true);
 
-		void SetTSQueue(SOCKET socket);
-		SOCKET GetTSQueue();
+        void SetTSQueue(SOCKET socket);
+        SOCKET GetTSQueue();
 
-	private:
-		void Setup();
+       private:
+        void Setup();
 
-		// Only used by main thread
-		SOCKET m_listenSocket;
-		// Used by workers and main thread (needs to be protected with mutex)
-		std::shared_ptr<std::queue<SOCKET>> m_socketQueue;
-	};
-}
+        // Only used by main thread
+        SOCKET m_listenSocket;
+        // Used by workers and main thread (needs to be protected with mutex)
+        std::shared_ptr<std::queue<SOCKET>> m_socketQueue;
+    };
+}  // namespace RC
 #endif

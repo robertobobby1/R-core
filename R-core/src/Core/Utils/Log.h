@@ -4,52 +4,60 @@
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 
-#define RC_THREAD_ID() (std::hash<std::thread::id>{}(std::this_thread::get_id())) 
+#define RC_THREAD_ID() (std::hash<std::thread::id>{}(std::this_thread::get_id()))
 
 namespace RC {
 
-	class Log {
-	public:
-		static void Init();
+    class Log {
+       public:
+        static void Init();
 
-		static std::shared_ptr<spdlog::logger> GetLogger() { return s_logger; }
-		
-		template<typename... Args>
-		static void Debug(Args... args){ GetLogger()->debug(args...); };
+        static std::shared_ptr<spdlog::logger> GetLogger() { return s_logger; }
 
-		template<typename... Args>
-		static void Info(Args... args){ GetLogger()->info(args...); };
+        template <typename... Args>
+        static void Debug(Args... args) {
+            GetLogger()->debug(args...);
+        };
 
-		template<typename... Args>
-		static void Warn(Args... args){ GetLogger()->warn(args...); };
+        template <typename... Args>
+        static void Info(Args... args) {
+            GetLogger()->info(args...);
+        };
 
-		template<typename... Args>
-		static void Error(Args... args){ GetLogger()->error(args...); };
+        template <typename... Args>
+        static void Warn(Args... args) {
+            GetLogger()->warn(args...);
+        };
 
-		template<typename... Args>
-		static void Critical(Args... args){ GetLogger()->critical(args...); };
+        template <typename... Args>
+        static void Error(Args... args) {
+            GetLogger()->error(args...);
+        };
 
-	private:
-		static std::shared_ptr<spdlog::logger> s_logger;
-	};
+        template <typename... Args>
+        static void Critical(Args... args) {
+            GetLogger()->critical(args...);
+        };
 
-	class LogFormatter : public spdlog::custom_flag_formatter{
-	public:
-		void format(const spdlog::details::log_msg &, const std::tm &, spdlog::memory_buf_t &dest) override
-		{
-			std::string serviceName = m_threadIdToServiceName[RC_THREAD_ID()];
-			dest.append(serviceName.data(), serviceName.data() + serviceName.size());
-		}
+       private:
+        static std::shared_ptr<spdlog::logger> s_logger;
+    };
 
-		std::unique_ptr<custom_flag_formatter> clone() const override
-		{
-			return spdlog::details::make_unique<LogFormatter>();
-		}
+    class LogFormatter : public spdlog::custom_flag_formatter {
+       public:
+        void format(const spdlog::details::log_msg &, const std::tm &,
+                    spdlog::memory_buf_t &dest) override {
+            std::string serviceName = m_threadIdToServiceName[RC_THREAD_ID()];
+            dest.append(serviceName.data(), serviceName.data() + serviceName.size());
+        }
 
-		static void AddThreadName(size_t threadId, const char* serviceName) { 
-			m_threadIdToServiceName[threadId] = serviceName; 
-		};
-		static std::map<size_t, std::string> m_threadIdToServiceName;
-	};
-}
+        std::unique_ptr<custom_flag_formatter> clone() const override {
+            return spdlog::details::make_unique<LogFormatter>();
+        }
 
+        static void AddThreadName(size_t threadId, const char *serviceName) {
+            m_threadIdToServiceName[threadId] = serviceName;
+        };
+        static std::map<size_t, std::string> m_threadIdToServiceName;
+    };
+}  // namespace RC

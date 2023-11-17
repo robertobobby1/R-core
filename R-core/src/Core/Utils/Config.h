@@ -4,23 +4,22 @@
 
 namespace RC {
     class Config {
-    public: 
+       public:
         static void Load() {
-            
             std::ifstream configFile("config");
-            if (!configFile.is_open()){
+            if (!configFile.is_open()) {
                 RC_LOG_WARN("Config file was not found! Default configurations will be applied!");
             }
 
             std::string line;
-            while (std::getline(configFile, line)){
+            while (std::getline(configFile, line)) {
                 // remove all whitespaces
                 line = std::regex_replace(line, std::regex("^ +| +$|() +"), "$1");
 
                 std::istringstream keyLine(line);
                 std::string key;
 
-                if (!std::getline(keyLine, key, '=')){
+                if (!std::getline(keyLine, key, '=')) {
                     continue;
                 }
 
@@ -28,15 +27,15 @@ namespace RC {
                 std::string value;
                 if (std::getline(keyLine, value)) {
                     GetConfigMap()[key] = value;
-                }   
+                }
             }
         }
 
         static inline std::string Get(std::string& key) { return GetConfigMap()[key]; }
 
-        static inline std::map<std::string, std::string>& GetConfigMap() {return s_config;}
+        static inline std::map<std::string, std::string>& GetConfigMap() { return s_config; }
 
-    public:
+       public:
         static std::map<std::string, std::string> s_config;
     };
-}
+}  // namespace RC

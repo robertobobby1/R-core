@@ -15,120 +15,110 @@
 
 #include "Services/ImGui/GuiRenderer.h"
 
-namespace RC
-{
+namespace RC {
 
-	GuiRenderer::GuiRenderer()
-		: Service()
-	{
-		// default values for window input, customize in the future
-		this->m_dependencies.push_back(DependencyDescriber(
-			"Window", Window::Create(WindowInput()), false));
-	}
+    GuiRenderer::GuiRenderer() : Service() {
+        // default values for window input, customize in the future
+        this->m_dependencies.push_back(
+            DependencyDescriber("Window", Window::Create(WindowInput()), false));
+    }
 
-	void GuiRenderer::Shutdown()
-	{
-		// imgui
-		ImGui_ImplOpenGL3_Shutdown();
-		ImGui_ImplGlfw_Shutdown();
-		ImGui::DestroyContext();
-		// glfw
-		glfwTerminate();
-		// will call window's destructor including deletion of glfw window's deletion
-		m_windowService.reset();
-	}
+    void GuiRenderer::Shutdown() {
+        // imgui
+        ImGui_ImplOpenGL3_Shutdown();
+        ImGui_ImplGlfw_Shutdown();
+        ImGui::DestroyContext();
+        // glfw
+        glfwTerminate();
+        // will call window's destructor including deletion of glfw window's deletion
+        m_windowService.reset();
+    }
 
-	GuiRenderer::~GuiRenderer()
-	{
-		if (m_isInitialized)
-		{
-			Shutdown();
-		}
-	}
+    GuiRenderer::~GuiRenderer() {
+        if (m_isInitialized) {
+            Shutdown();
+        }
+    }
 
-	void GuiRenderer::Init()
-	{
-		m_windowService = this->GetDep<Window>("Window");
-		m_windowService->AddDependencyCallback(RC_BIND_FN(GuiRenderer::OnDispatchable));
+    void GuiRenderer::Init() {
+        m_windowService = this->GetDep<Window>("Window");
+        m_windowService->AddDependencyCallback(RC_BIND_FN(GuiRenderer::OnDispatchable));
 
-		// Setup Dear ImGui context
-		IMGUI_CHECKVERSION();
-		ImGui::CreateContext();
-		ImGuiIO &io = ImGui::GetIO();
-		(void)io;
-		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
-		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
-		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;	  // Enable Docking
-		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;	  // Enable Multi-Viewport / Platform Windows
-		// io.ConfigViewportsNoAutoMerge = true;
-		// io.ConfigViewportsNoTaskBarIcon = true;
+        // Setup Dear ImGui context
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGuiIO &io = ImGui::GetIO();
+        (void)io;
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;   // Enable Gamepad Controls
+        io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;      // Enable Docking
+        io.ConfigFlags |=
+            ImGuiConfigFlags_ViewportsEnable;  // Enable Multi-Viewport / Platform Windows
+        // io.ConfigViewportsNoAutoMerge = true;
+        // io.ConfigViewportsNoTaskBarIcon = true;
 
-		// Setup Dear ImGui style
-		ImGui::StyleColorsDark();
+        // Setup Dear ImGui style
+        ImGui::StyleColorsDark();
 
-		// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
-		ImGuiStyle &style = ImGui::GetStyle();
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			style.WindowRounding = 0.0f;
-			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-		}
+        // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look
+        // identical to regular ones.
+        ImGuiStyle &style = ImGui::GetStyle();
+        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+            style.WindowRounding = 0.0f;
+            style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+        }
 
-		ImGui_ImplGlfw_InitForOpenGL(m_windowService->m_window, true);
-		// TODO Version 4.1 for now dynamic?
-		ImGui_ImplOpenGL3_Init("#version 410");
-		m_isInitialized = true;
-	}
+        ImGui_ImplGlfw_InitForOpenGL(m_windowService->m_window, true);
+        // TODO Version 4.1 for now dynamic?
+        ImGui_ImplOpenGL3_Init("#version 410");
+        m_isInitialized = true;
+    }
 
-	void GuiRenderer::Begin()
-	{
-		glfwPollEvents();
+    void GuiRenderer::Begin() {
+        glfwPollEvents();
 
-		if (!m_isWindowRunning)
-			return;
+        if (!m_isWindowRunning) return;
 
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-	}
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+    }
 
-	void GuiRenderer::End()
-	{
-		if (!m_isWindowRunning)
-			return;
+    void GuiRenderer::End() {
+        if (!m_isWindowRunning) return;
 
-		ImGuiIO &io = ImGui::GetIO();
-		// set size
-		io.DisplaySize = ImVec2((float)m_windowService->m_data.m_width, (float)m_windowService->m_data.m_height);
+        ImGuiIO &io = ImGui::GetIO();
+        // set size
+        io.DisplaySize =
+            ImVec2((float)m_windowService->m_data.m_width, (float)m_windowService->m_data.m_height);
 
-		// Rendering
-		ImGui::Render();
+        // Rendering
+        ImGui::Render();
 
-		int display_w, display_h;
-		ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+        int display_w, display_h;
+        ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-		glfwGetFramebufferSize(m_windowService->m_window, &display_w, &display_h);
-		glViewport(0, 0, display_w, display_h);
-		glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
-		glClear(GL_COLOR_BUFFER_BIT);
+        glfwGetFramebufferSize(m_windowService->m_window, &display_w, &display_h);
+        glViewport(0, 0, display_w, display_h);
+        glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w,
+                     clear_color.z * clear_color.w, clear_color.w);
+        glClear(GL_COLOR_BUFFER_BIT);
 
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			GLFWwindow *backup_current_context = glfwGetCurrentContext();
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-			glfwMakeContextCurrent(backup_current_context);
-		}
+        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+            GLFWwindow *backup_current_context = glfwGetCurrentContext();
+            ImGui::UpdatePlatformWindows();
+            ImGui::RenderPlatformWindowsDefault();
+            glfwMakeContextCurrent(backup_current_context);
+        }
 
-		glfwSwapBuffers(m_windowService->m_window);
-	}
+        glfwSwapBuffers(m_windowService->m_window);
+    }
 
-	void GuiRenderer::OnDispatchable(Dispatchable &dispatchable)
-	{
-		Dispatcher disp(dispatchable);
-		disp.Dispatch<OnWindowCloseEvent>([this](OnWindowCloseEvent &dispatchable)
-										  { this->m_isWindowRunning = false; });
-	}
-}
+    void GuiRenderer::OnDispatchable(Dispatchable &dispatchable) {
+        Dispatcher disp(dispatchable);
+        disp.Dispatch<OnWindowCloseEvent>(
+            [this](OnWindowCloseEvent &dispatchable) { this->m_isWindowRunning = false; });
+    }
+}  // namespace RC

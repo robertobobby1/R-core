@@ -1,12 +1,12 @@
 #pragma once 
 #include "rcpch.h"
 
-#include "Services/ImGui/RCGui.h"
+#include "Services/ImGui/GuiRenderer.h"
 
 namespace RC {
-	class SkeletonGui : public RCGui {
+	class SkeletonGui : public GuiRenderer {
 	public:
-		SkeletonGui() : RCGui() {}
+		SkeletonGui() : GuiRenderer() {}
 		~SkeletonGui() = default;
 
 		virtual bool IsUniqueService() const override { return true; }

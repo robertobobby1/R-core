@@ -22,7 +22,7 @@
 	#include "Services/Server/Platform/WindowsServer.h"
 #endif
 
-#include "Services/ImGui/RCGui.h"
+#include "Services/ImGui/GuiRenderer.h"
 #include "Services/ImGui/SkeletonGui.h"
 #include "Services/Server/ServerGui.h"
 #include "Services/ApplicationGui/ApplicationGui.h"

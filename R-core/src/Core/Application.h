@@ -6,7 +6,7 @@
 #include "Core/Core.h"
 #include "Core/Injector/DependencyManager.h"
 
-#include "Services/ImGui/RCGui.h"
+#include "Services/ImGui/GuiRenderer.h"
 
 namespace RC {
 
@@ -45,7 +45,7 @@ namespace RC {
 			RC_LOG_INFO("-------------- End services and dependency information --------------");
 		}
 
-		void SetGuiRenderer(std::shared_ptr<RCGui> guiRenderer);
+		void SetGuiRenderer(std::shared_ptr<GuiRenderer> guiRenderer);
 
 	public:
 		bool m_isUiRunning = true;
@@ -72,6 +72,6 @@ namespace RC {
 		*/
 		std::map<int, std::thread> m_servicesThreads;
 
-		std::shared_ptr<RCGui> m_guiRenderer;
+		std::shared_ptr<GuiRenderer> m_guiRenderer;
 	};
 }

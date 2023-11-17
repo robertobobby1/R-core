@@ -10,7 +10,7 @@ namespace RC {
 
 	void SkeletonGui::Begin()
 	{
-		RCGui::Begin();
+		GuiRenderer::Begin();
 
 		if (!m_isWindowRunning)
 			return;
@@ -85,6 +85,6 @@ namespace RC {
 			return;
 
 		ImGui::End();
-		RCGui::End();
+		GuiRenderer::End();
 	}
 }

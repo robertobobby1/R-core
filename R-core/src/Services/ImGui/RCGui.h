@@ -5,15 +5,15 @@
 
 namespace RC {
 
-	class RCGui : public Service {
+	class GuiRenderer : public Service {
 	public: 
 
 		/*
 		* For more information on how this works check imgui implementation
 		* Specifically, example_glfw_opengl3 due to it being multiplatform
 		*/
-		RCGui();
-		~RCGui();
+		GuiRenderer();
+		~GuiRenderer();
 
 		virtual void Init() override;
 		virtual bool IsUniqueService() const override { return true; }

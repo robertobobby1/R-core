@@ -13,23 +13,20 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
-#include "Services/ImGui/RCGui.h"
-#include "RCGui.h"
+#include "Services/ImGui/GuiRenderer.h"
 
 namespace RC
 {
 
-	RCGui::RCGui()
+	GuiRenderer::GuiRenderer()
 		: Service()
 	{
 		// default values for window input, customize in the future
 		this->m_dependencies.push_back(DependencyDescriber(
-			"Window", Window::Create(WindowInput()), false)
-		);
-		
+			"Window", Window::Create(WindowInput()), false));
 	}
 
-	void RCGui::Shutdown()
+	void GuiRenderer::Shutdown()
 	{
 		// imgui
 		ImGui_ImplOpenGL3_Shutdown();
@@ -41,18 +38,19 @@ namespace RC
 		m_windowService.reset();
 	}
 
-	RCGui::~RCGui()
+	GuiRenderer::~GuiRenderer()
 	{
-		if (m_isInitialized){
+		if (m_isInitialized)
+		{
 			Shutdown();
 		}
 	}
 
-	void RCGui::Init()
+	void GuiRenderer::Init()
 	{
 		m_windowService = this->GetDep<Window>("Window");
-		m_windowService->AddDependencyCallback(RC_BIND_FN(RCGui::OnDispatchable));
-		
+		m_windowService->AddDependencyCallback(RC_BIND_FN(GuiRenderer::OnDispatchable));
+
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -82,9 +80,9 @@ namespace RC
 		m_isInitialized = true;
 	}
 
-    void RCGui::Begin() 
-    {
-		glfwPollEvents();	
+	void GuiRenderer::Begin()
+	{
+		glfwPollEvents();
 
 		if (!m_isWindowRunning)
 			return;
@@ -94,7 +92,7 @@ namespace RC
 		ImGui::NewFrame();
 	}
 
-	void RCGui::End()
+	void GuiRenderer::End()
 	{
 		if (!m_isWindowRunning)
 			return;
@@ -127,11 +125,10 @@ namespace RC
 		glfwSwapBuffers(m_windowService->m_window);
 	}
 
-	void RCGui::OnDispatchable(Dispatchable& dispatchable)
+	void GuiRenderer::OnDispatchable(Dispatchable &dispatchable)
 	{
 		Dispatcher disp(dispatchable);
-		disp.Dispatch<OnWindowCloseEvent>([this](OnWindowCloseEvent& dispatchable) {
-			this->m_isWindowRunning = false;
-		});
+		disp.Dispatch<OnWindowCloseEvent>([this](OnWindowCloseEvent &dispatchable)
+										  { this->m_isWindowRunning = false; });
 	}
 }

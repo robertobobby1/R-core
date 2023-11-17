@@ -4,8 +4,8 @@
 
 #include "Core/Utils/Platform.h"
 #include "Core/Core.h"
-#include "Core/DependencyInjection/DependencyManager.h"
-#include "Core/DependencyInjection/DependencyDescriber.h"
+#include "Core/Injector/DependencyManager.h"
+#include "Core/Injector/DependencyDescriber.h"
 #include "Core/Application.h"
 #include "Core/Utils/Log.h"
 #include "Core/Utils/Helper.h"

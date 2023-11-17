@@ -59,15 +59,21 @@ namespace RC {
 	}
 
 	void Server::ReduceActiveConexions(){
-		std::lock_guard<std::mutex> lock(m_dataMutex);
-		m_data.m_activeConnections--;
-		m_data.m_handled = false;
+		{
+			std::lock_guard<std::mutex> lock(m_dataMutex);
+			m_data.m_activeConnections--;
+			m_data.m_handled = false;
+		}
+		Service::CallDepCallbacks(m_data);
 	}
 
 	void Server::IncrementActiveConexions(){
-		std::lock_guard<std::mutex> lock(m_dataMutex);
-		m_data.m_activeConnections++;
-		m_data.m_handled = false;
+		{		
+			std::lock_guard<std::mutex> lock(m_dataMutex);
+			m_data.m_activeConnections++;
+			m_data.m_handled = false;
+		}	
+		Service::CallDepCallbacks(m_data);
 	}
 
 }

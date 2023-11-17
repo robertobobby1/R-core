@@ -12,10 +12,14 @@ namespace RC {
 	LinuxServer::LinuxServer(const ServerInput& input)
 		: Server(input)
 	{
+		m_socketQueue = std::make_shared<std::queue<int>>();
 	}
 
     void LinuxServer::Run() 
     {
+		Setup();
+		// Send server data to subscribed services
+		Service::CallDepCallbacks(m_data);
 		Server::InitThreads(RC_BIND_FN(LinuxServer::WorkerThreadLoop));
 
 		auto clientFileDescriptor = std::make_unique<int>();
@@ -26,14 +30,12 @@ namespace RC {
 			int clientSocket = accept(m_fileDescriptor, (sockaddr*)clientFileDescriptor.get(), (socklen_t *)&sizeSocket);
 			if (clientSocket == -1){
 				RC_LOG_WARN("Couldn't accept connection, retrying!");
-				sleep(10);
 				continue;
 			}
             RC_LOG_INFO("New connection!");
 
             // Set SOCKET and notify one thread to handle it
             SetTSQueue(clientSocket);
-			RC_LOG_INFO("setted");
             m_queueCondition.notify_one();
             m_data.m_totalConnections++;
 		}
@@ -46,35 +48,33 @@ namespace RC {
 		Buffer buffer(maxBufferLength);
 		int result = 0;
 
-		bool openConexion = true;
-		
-		int clientSocket;
-		while (openConexion)
-		{
+		while(!m_isShutdown){
+			bool openConexion = true;
 			// Blocking until the thread gets a task (New conexion)
 			int clientSocket = GetTSQueue();
 			Server::IncrementActiveConexions();
-			RC_LOG_INFO("read");
-			int result = read(clientSocket, buffer.Begin(), maxBufferLength);
-			if (result > 0)
+
+			while (openConexion)
 			{
-				RC_LOG_INFO("New Packet with {0} bytes", result);
-				if (f_onNewData)
-					f_onNewData(buffer);
+				int result = read(clientSocket, buffer.Begin(), maxBufferLength);
+				if (result > 0)
+				{
+					RC_LOG_INFO("New Packet with {0} bytes", result);
+					if (f_onNewData)
+						f_onNewData(buffer);
+				}
+				else if (result == 0)
+				{
+					RC_LOG_INFO("The peer closed the conexion!");
+					openConexion = false;
+				}
+				else
+				{
+					OnError("Conexion finished with error!");
+					openConexion = false;
+				}
 			}
-			else if (result == 0)
-			{
-				RC_LOG_INFO("The peer closed the conexion!");
-				openConexion = false;
-				Server::ReduceActiveConexions();
-			}
-			else
-			{
-				OnError("Conexion finished with error!");
-				openConexion = false;
-				Server::ReduceActiveConexions();
-			}
-			Service::CallDepCallbacks(m_data);
+			Server::ReduceActiveConexions();
 		}
 	}
 
@@ -82,7 +82,6 @@ namespace RC {
     {
 		// Create a socket
      	m_fileDescriptor = socket(AF_INET, SOCK_STREAM, 0);
-		RC_LOG_INFO(m_fileDescriptor);
 
 		sockaddr_in serverAddress;
 		// Set server address port and ip address in struct

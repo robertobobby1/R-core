@@ -1,18 +1,27 @@
 #include "rcpch.h"
 #include "Core/Application.h"
 #include "Core/Service.h"
-#include "Core/DependencyInjection/DependencyManager.h"
+#include "Core/Utils/Config.h"
+#include "Core/Utils/Helper.h"
+#include "Core/Injector/DependencyManager.h"
 
 namespace RC {
 
+	// static global variables 
 	Application* Application::s_App = nullptr;	
 	std::map<size_t, std::string> LogFormatter::m_threadIdToServiceName;
+	std::map<std::string, std::string> Config::s_config;
 	
 	Application::Application() 
 	{
 		RC_ASSERT_MSG(!s_App, "App already instantiated!");
 		s_App = this;
 
+		// load config file
+		Config::Load();
+		PrintConfig();
+
+		// Initialize logger
 		Log::Init();
 		LogFormatter::AddThreadName(RC_THREAD_ID(), "MainAppThread");
 	}
@@ -34,7 +43,7 @@ namespace RC {
 			auto& service = m_services[index];
 			service->Init();
 			RC_LOG_INFO("The service {0} was succesfully initialized",
-				service->ToString(), service.use_count()
+				service->ToString()
 			);
 		}
 

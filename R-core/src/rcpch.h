@@ -2,6 +2,8 @@
 
 #include <memory>
 #include <iostream>
+#include <fstream>
+#include <regex>
 #include <iterator>
 #include <thread>
 #include <mutex>
@@ -12,7 +14,7 @@
 #include <map>
 #include <utility>
 #include <queue>
-#include<sstream>
+#include <sstream>
 
 // make sure the platform is correctly set
 #include "Core/Utils/Platform.h"

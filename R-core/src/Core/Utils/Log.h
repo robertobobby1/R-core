@@ -13,6 +13,22 @@ namespace RC {
 		static void Init();
 
 		static std::shared_ptr<spdlog::logger> GetLogger() { return s_logger; }
+		
+		template<typename... Args>
+		static void Debug(Args... args){ GetLogger()->debug(args...); };
+
+		template<typename... Args>
+		static void Info(Args... args){ GetLogger()->info(args...); };
+
+		template<typename... Args>
+		static void Warn(Args... args){ GetLogger()->warn(args...); };
+
+		template<typename... Args>
+		static void Error(Args... args){ GetLogger()->error(args...); };
+
+		template<typename... Args>
+		static void Critical(Args... args){ GetLogger()->critical(args...); };
+
 	private:
 		static std::shared_ptr<spdlog::logger> s_logger;
 	};

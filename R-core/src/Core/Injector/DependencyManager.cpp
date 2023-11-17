@@ -1,5 +1,5 @@
 #include "rcpch.h"
-#include "Core/DependencyInjection/DependencyManager.h"
+#include "Core/Injector/DependencyManager.h"
 #include "Core/Application.h"
 #include "DependencyManager.h"
 

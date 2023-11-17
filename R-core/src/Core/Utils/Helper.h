@@ -1,5 +1,7 @@
 #pragma once 
 #include "rcpch.h"
+#include "Core/Core.h"
+#include "Core/Utils/Config.h"
 
 namespace RC {
 
@@ -8,6 +10,13 @@ namespace RC {
     {
         std::ostringstream os;
         os << value;
-        return os.str();
+        return os.str();        
+    }
+
+    static inline void PrintConfig(){
+        auto& configMap = Config::GetConfigMap();
+        for(auto configPair: configMap){
+            RC_LOG_INFO("{0} = {1} ", configPair.first, configPair.second);
+        }
     }
 }

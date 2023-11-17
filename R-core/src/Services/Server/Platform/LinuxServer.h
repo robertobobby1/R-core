@@ -27,6 +27,8 @@ namespace RC {
 		int m_fileDescriptor = 0;
 		// Used by workers and main thread (needs to be protected with mutex)
 		std::shared_ptr<std::queue<int>> m_socketQueue;
+		// file descriptors
+		fd_set m_currentSockets, m_readySockets;
 	};
 }
 

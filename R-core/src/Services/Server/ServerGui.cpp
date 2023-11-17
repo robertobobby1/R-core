@@ -3,16 +3,17 @@
 #include "Services/Server/ServerGui.h"
 #include "Core/Utils/Data.h"
 #include "Core/Application.h"
+#include "Core/Core.h"
 
 #include "imgui.h"
 
 namespace RC {
 
 	// static variables to be rendered by imgui
-	static unsigned int activeConnections = 0;
-	static unsigned int totalConnections  = 0;
-	static unsigned int port  			  = 0;
-	static unsigned int workerThreads     = 0;
+	static unsigned int s_activeConnections = 0;
+	static unsigned int s_totalConnections  = 0;
+	static unsigned int s_port  		    = 0;
+	static unsigned int s_workerThreads     = 0;
 
 	ServerGui::ServerGui()
 		: Service()
@@ -44,10 +45,10 @@ namespace RC {
 		disp.Dispatch<ServerData>([this](ServerData& serverData){
 			this->m_serverData = serverData;
 			
-			activeConnections = m_serverData.m_activeConnections;
-			totalConnections  = m_serverData.m_totalConnections;
-			port  = m_serverData.m_port;
-			workerThreads = m_serverData.m_maxPoolSize;
+			s_activeConnections = m_serverData.m_activeConnections;
+			s_totalConnections  = m_serverData.m_totalConnections;
+			s_port  = m_serverData.m_port;
+			s_workerThreads = m_serverData.m_maxPoolSize;
 		});
 	}
 
@@ -58,10 +59,10 @@ namespace RC {
 
 		ImGui::Begin("ServerData");
 
-		ImGui::Text("Active Connections (%d)", activeConnections);
-		ImGui::Text("Total Connections (%d)", totalConnections);
-		ImGui::Text("Port (%d)", port);
-		ImGui::Text("Number of worker threads (%d)", workerThreads);
+		ImGui::Text("Active Connections (%d)", s_activeConnections);
+		ImGui::Text("Total Connections (%d)", s_totalConnections);
+		ImGui::Text("Port (%d)", s_port);
+		ImGui::Text("Number of worker threads (%d)", s_workerThreads);
 
 		ImGui::End();
 	}

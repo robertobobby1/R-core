@@ -4,7 +4,7 @@
 #include "Core/Service.h"
 #include "Core/Utils/Dispatch.h"
 #include "Core/Core.h"
-#include "Core/DependencyInjection/DependencyManager.h"
+#include "Core/Injector/DependencyManager.h"
 
 #include "Services/ImGui/RCGui.h"
 

@@ -3,7 +3,7 @@
 
 #include "Core/Utils/Data.h"
 #include "Core/Utils/Helper.h"
-#include "Core/DependencyInjection/DependencyDescriber.h"
+#include "Core/Injector/DependencyDescriber.h"
 
 namespace RC {
 

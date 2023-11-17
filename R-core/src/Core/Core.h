@@ -30,23 +30,18 @@ static inline unsigned long long GetAllocations() { return heapAllocatedBytes; }
                 RC_DEBUGBREAK(); \
             }                    \
         }
-
-#    define RC_LOG_MEMORYUSAGE() \
-        ::RC::Log::Info("The current memory usage is {0}", (GetAllocations() / 8))
-#    define RC_LOG_DEBUG(...) ::RC::Log::Debug(__VA_ARGS__)
 #else
 #    define RC_ASSERT_MSG(assert, ...)
 #    define RC_ASSERT(assert)
-
-#    define RC_LOG_MEMORYUSAGE()
-#    define RC_LOG_DEBUG(...)
 #endif
 
-#define RC_LOG_INFO(...) ::RC::Log::Info(__VA_ARGS__)
-#define RC_LOG_WARN(...) ::RC::Log::Warn(__VA_ARGS__)
-#define RC_LOG_DEBUG(...) ::RC::Log::Debug(__VA_ARGS__)
-#define RC_LOG_ERROR(...) ::RC::Log::Error(__VA_ARGS__)
-#define RC_LOG_CRITICAL(...) ::RC::Log::Critical(__VA_ARGS__)
+#define RC_LOG_INFO(...) ::RC::Log::GetLogger()->info(__VA_ARGS__)
+#define RC_LOG_WARN(...) ::RC::Log::GetLogger()->warn(__VA_ARGS__)
+#define RC_LOG_DEBUG(...) ::RC::Log::GetLogger()->debug(__VA_ARGS__)
+#define RC_LOG_ERROR(...) ::RC::Log::GetLogger()->error(__VA_ARGS__)
+#define RC_LOG_CRITICAL(...) ::RC::Log::GetLogger()->critical(__VA_ARGS__)
+#define RC_LOG_MEMORYUSAGE() \
+    ::RC::Log::Info("The current memory usage is {0}", (GetAllocations() / 8))
 
 #define RC_BIND_FN(fn)                                          \
     [this](auto&&... args) -> decltype(auto) {                  \

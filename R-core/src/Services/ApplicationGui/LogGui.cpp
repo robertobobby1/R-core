@@ -18,7 +18,14 @@ namespace RC {
         m_guiService = this->GetDep<SkeletonGui>("GUI");
         // Added in init where the gui service is already initialized
         Application::GetApp().SetGuiRenderer(m_guiService);
-        Application::GetApp().AddLogCallback(RC_BIND_FN(LogGui::AddLog));
+        auto oldLogMessages =
+            Application::GetApp().AddLogCallback(RC_BIND_FN(LogGui::AddUnformattedLog));
+
+        // keep old messages
+        for (auto message : oldLogMessages) {
+            AddLog(message.c_str(), message.size());
+        }
+
         m_guiService->SetActiveDockWindow(m_dockWindowName, true);
     }
 
@@ -30,16 +37,18 @@ namespace RC {
         ImGui::End();
     }
 
-    void LogGui::AddLog(const spdlog::details::log_msg& msg) {
+    void LogGui::AddUnformattedLog(const spdlog::details::log_msg& msg) {
+        spdlog::memory_buf_t formatted;
+        Log::GetLoggerFormatter()->format(msg, formatted);
+        AddLog(formatted.begin(), formatted.size());
+    }
+
+    void LogGui::AddLog(const char* start, size_t size) {
         int old_size = m_buf.size();
+        m_buf.append(start, start + size);
 
-        m_buf.append(msg.payload.data());
-
-        for (int new_size = m_buf.size(); old_size < new_size; old_size++) {
-            if (m_buf[old_size] == '\n') {
-                m_lineOffsets.push_back(old_size + 1);
-            }
-        }
+        for (int new_size = m_buf.size(); old_size < new_size; old_size++)
+            if (m_buf[old_size] == '\n') m_lineOffsets.push_back(old_size + 1);
     }
 
     void LogGui::Draw() {

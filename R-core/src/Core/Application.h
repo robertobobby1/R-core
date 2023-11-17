@@ -32,8 +32,9 @@ namespace RC {
             m_serviceOrder = m_depManager->GetExecutionOrderIds();
         }
 
-        inline void AddLogCallback(LogCallbackFunction func) {
+        inline std::vector<std::string> AddLogCallback(LogCallbackFunction func) {
             m_servicesLogCallbacks.push_back(func);
+            return m_startLogMessages;
         }
 
         inline void PrintServices() {
@@ -48,7 +49,7 @@ namespace RC {
         }
 
         void SetGuiRenderer(std::shared_ptr<GuiRenderer> guiRenderer);
-        void LogCallback(const spdlog::details::log_msg& msg);
+        void LogCallback(const spdlog::details::log_msg msg);
 
        private:
         void RunGui();
@@ -74,7 +75,9 @@ namespace RC {
         std::map<int, std::thread> m_servicesThreads;
 
         std::shared_ptr<GuiRenderer> m_guiRenderer;
-
         std::vector<LogCallbackFunction> m_servicesLogCallbacks;
+        // only used to keep first messages
+        std::vector<std::string> m_startLogMessages;
+        bool m_keepLogs = true;
     };
 }  // namespace RC

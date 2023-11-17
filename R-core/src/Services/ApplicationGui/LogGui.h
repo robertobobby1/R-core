@@ -15,7 +15,8 @@ namespace RC {
         virtual void OnGuiUpdate() override;
         virtual inline bool IsGuiService() const override { return true; }
 
-        void AddLog(const spdlog::details::log_msg& msg);
+        void AddUnformattedLog(const spdlog::details::log_msg& msg);
+        void AddLog(const char* start, size_t size);
         void Draw();
 
         std::shared_ptr<SkeletonGui> m_guiService;

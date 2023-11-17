@@ -15,34 +15,13 @@ namespace RC {
         static void Init(LogCallbackFunction func = nullptr);
 
         static std::shared_ptr<spdlog::logger> GetLogger() { return s_logger; }
-
-        template <typename... Args>
-        static void Debug(Args... args) {
-            GetLogger()->debug(args...);
-        };
-
-        template <typename... Args>
-        static void Info(Args... args) {
-            GetLogger()->info(args...);
-        };
-
-        template <typename... Args>
-        static void Warn(Args... args) {
-            GetLogger()->warn(args...);
-        };
-
-        template <typename... Args>
-        static void Error(Args... args) {
-            GetLogger()->error(args...);
-        };
-
-        template <typename... Args>
-        static void Critical(Args... args) {
-            GetLogger()->critical(args...);
-        };
+        static std::shared_ptr<spdlog::pattern_formatter> GetLoggerFormatter() {
+            return s_formatter;
+        }
 
        private:
         static std::shared_ptr<spdlog::logger> s_logger;
+        static std::shared_ptr<spdlog::pattern_formatter> s_formatter;
     };
 
     class LogFormatter : public spdlog::custom_flag_formatter {

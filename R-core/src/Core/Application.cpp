@@ -23,7 +23,7 @@ namespace RC {
 
         // load config file
         Config::Load();
-        PrintConfig();
+        // PrintConfig();
     }
 
     void Application::Run() {
@@ -39,6 +39,7 @@ namespace RC {
             service->Init();
             RC_LOG_INFO("The service {0} was succesfully initialized", service->ToString());
         }
+        m_keepLogs = false;
 
         if (m_guiRenderer != nullptr) {
             m_guiRenderer->m_windowService->m_glfw->PrintOpenGLInfo();
@@ -96,7 +97,13 @@ namespace RC {
         m_guiRenderer = guiRenderer;
     }
 
-    void Application::LogCallback(const spdlog::details::log_msg& msg) {
+    void Application::LogCallback(const spdlog::details::log_msg msg) {
+        if (m_keepLogs) {
+            spdlog::memory_buf_t formatted;
+            Log::GetLoggerFormatter()->format(msg, formatted);
+            std::string stringMessage(formatted.begin(), formatted.end());
+            m_startLogMessages.push_back(stringMessage);
+        }
         for (auto& callback : m_servicesLogCallbacks) {
             callback(msg);
         }

@@ -13,7 +13,7 @@ namespace RC {
     class Application {
        public:
         Application();
-        ~Application();
+        ~Application() = default;
         void Run();
 
         // returns singleton
@@ -32,6 +32,10 @@ namespace RC {
             m_serviceOrder = m_depManager->GetExecutionOrderIds();
         }
 
+        inline void AddLogCallback(LogCallbackFunction func) {
+            m_servicesLogCallbacks.push_back(func);
+        }
+
         inline void PrintServices() {
             RC_LOG_INFO("-------------- Services and dependency information ------------------");
             for (auto& service : m_services) {
@@ -44,9 +48,7 @@ namespace RC {
         }
 
         void SetGuiRenderer(std::shared_ptr<GuiRenderer> guiRenderer);
-
-       public:
-        bool m_isUiRunning = true;
+        void LogCallback(const spdlog::details::log_msg& msg);
 
        private:
         void RunGui();
@@ -54,6 +56,7 @@ namespace RC {
        public:
         static Application* s_App;
 
+        bool m_isUiRunning = true;
         DependencyManager* m_depManager;
         /*
          * keeps the service and a list of the dependencies that that service has
@@ -71,5 +74,7 @@ namespace RC {
         std::map<int, std::thread> m_servicesThreads;
 
         std::shared_ptr<GuiRenderer> m_guiRenderer;
+
+        std::vector<LogCallbackFunction> m_servicesLogCallbacks;
     };
 }  // namespace RC

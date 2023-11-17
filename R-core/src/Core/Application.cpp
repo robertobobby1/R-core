@@ -4,6 +4,7 @@
 #include "Core/Utils/Config.h"
 #include "Core/Utils/Helper.h"
 #include "Core/Injector/DependencyManager.h"
+#include "Application.h"
 
 namespace RC {
 
@@ -17,15 +18,13 @@ namespace RC {
         s_App = this;
 
         // Initialize logger
-        Log::Init();
+        Log::Init(RC_BIND_FN(Application::LogCallback));
         LogFormatter::AddThreadName(RC_THREAD_ID(), "MainAppThread");
 
         // load config file
         Config::Load();
         PrintConfig();
     }
-
-    Application::~Application() {}
 
     void Application::Run() {
         m_depManager = new DependencyManager(m_services);
@@ -95,5 +94,11 @@ namespace RC {
             return;
         }
         m_guiRenderer = guiRenderer;
+    }
+
+    void Application::LogCallback(const spdlog::details::log_msg& msg) {
+        for (auto& callback : m_servicesLogCallbacks) {
+            callback(msg);
+        }
     }
 }  // namespace RC

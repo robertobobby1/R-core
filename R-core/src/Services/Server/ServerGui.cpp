@@ -13,6 +13,7 @@ namespace RC {
     static unsigned int s_activeConnections = 0;
     static unsigned int s_totalConnections = 0;
     static unsigned int s_port = 0;
+    static unsigned int s_backlog = 0;
     static unsigned int s_workerThreads = 0;
 
     ServerGui::ServerGui() : Service() {
@@ -21,6 +22,7 @@ namespace RC {
         this->m_dependencies.push_back(
             DependencyDescriber("SERVER", Server::Create(ServerInput()), false));
         m_serverData = ServerData();
+        m_dockWindowName = "Server";
     }
 
     void ServerGui::Init() {
@@ -31,7 +33,7 @@ namespace RC {
 
         // Added in init where the gui service is already initialized
         Application::GetApp().SetGuiRenderer(m_guiService);
-        m_guiService->SetActiveDockWindow("Server", true);
+        m_guiService->SetActiveDockWindow(m_dockWindowName, true);
     }
 
     void ServerGui::OnDispatchable(Dispatchable& dispatchable) {
@@ -43,18 +45,20 @@ namespace RC {
             s_totalConnections = m_serverData.m_totalConnections;
             s_port = m_serverData.m_port;
             s_workerThreads = m_serverData.m_maxPoolSize;
+            s_backlog = m_serverData.m_backlog;
         });
     }
 
     void ServerGui::OnGuiUpdate() {
-        if (!m_guiService->GetActiveDockWindow("Server")) return;
+        if (!m_guiService->GetActiveDockWindow(m_dockWindowName)) return;
 
         ImGui::Begin("ServerData");
 
-        ImGui::Text("Active Connections (%d)", s_activeConnections);
-        ImGui::Text("Total Connections (%d)", s_totalConnections);
-        ImGui::Text("Port (%d)", s_port);
-        ImGui::Text("Number of worker threads (%d)", s_workerThreads);
+        ImGui::Text("Active Connections: (%d)", s_activeConnections);
+        ImGui::Text("Total Connections: (%d)", s_totalConnections);
+        ImGui::Text("Port: (%d)", s_port);
+        ImGui::Text("Backlog: (%d)", s_workerThreads);
+        ImGui::Text("Number of worker threads: (%d)", s_workerThreads);
 
         ImGui::End();
     }

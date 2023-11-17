@@ -1,25 +1,28 @@
-#pragma once
+#include "rcpch.h"
 
-#include "Services/Server/ServerGui.h"
+#include "Core/Service.h"
 #include "Services/ImGui/SkeletonGui.h"
-#include "Services/Server/Server.h"
+
+#include "imgui.h"
 
 namespace RC {
-    class ServerGui : public Service {
+    class LogGui : public Service {
        public:
-        ServerGui();
-        ~ServerGui() = default;
+        LogGui();
+        ~LogGui() = default;
 
         virtual void Init() override;
         virtual void OnGuiUpdate() override;
         virtual inline bool IsGuiService() const override { return true; }
 
-        void OnDispatchable(Dispatchable& dispatchable);
+        void AddLog(const spdlog::details::log_msg& msg);
+        void Draw();
 
         std::shared_ptr<SkeletonGui> m_guiService;
-        std::shared_ptr<Server> m_serverService;
-
-        ServerData m_serverData;
         std::string m_dockWindowName;
+
+        ImGuiTextBuffer m_buf;
+        ImVector<int> m_lineOffsets;
+        bool m_autoScroll;
     };
 }  // namespace RC

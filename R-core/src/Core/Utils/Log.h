@@ -6,11 +6,13 @@
 
 #define RC_THREAD_ID() (std::hash<std::thread::id>{}(std::this_thread::get_id()))
 
+typedef std::function<void(const spdlog::details::log_msg &msg)> LogCallbackFunction;
+
 namespace RC {
 
     class Log {
        public:
-        static void Init();
+        static void Init(LogCallbackFunction func = nullptr);
 
         static std::shared_ptr<spdlog::logger> GetLogger() { return s_logger; }
 

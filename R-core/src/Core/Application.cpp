@@ -83,7 +83,7 @@ namespace RC {
         }
     }
 
-    void Application::SetGuiRenderer(std::shared_ptr<RCGui> guiRenderer) {
+    void Application::SetGuiRenderer(std::shared_ptr<GuiRenderer> guiRenderer) {
         if (m_guiRenderer != nullptr) {
             if (m_guiRenderer->GetId() == guiRenderer->GetId()) {
                 return;

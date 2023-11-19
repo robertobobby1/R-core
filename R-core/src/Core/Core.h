@@ -47,3 +47,15 @@ static inline unsigned long long GetAllocations() { return heapAllocatedBytes; }
     [this](auto&&... args) -> decltype(auto) {                  \
         return this->fn(std::forward<decltype(args)>(args)...); \
     }
+
+#define RC_ROUNDF(x, d) ((float)roundf(x * 10 * d) / (10 * d))
+
+#define RC_BTOKB(x) ((float)(x / 1024.0f))
+#define RC_BTOMB(x) ((float)(x / pow(1024, 2)))
+
+#define RC_IF(cond, fn) \
+    {                   \
+        if (cond) {     \
+            fn;         \
+        }               \
+    }

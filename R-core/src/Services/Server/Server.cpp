@@ -36,11 +36,8 @@ namespace RC {
     void Server::InitThreads(std::function<void()> workerThreadFunc) {
         for (int i = 0; i < m_data.m_maxPoolSize; i++) {
             m_workerThreads.push_back(std::thread([this, workerThreadFunc, i]() {
-                std::string threadName(ToString());
-                threadName.append("-W");
-                threadName.append(to_string(i));
-
-                LogFormatter::AddThreadName(RC_THREAD_ID(), threadName.c_str());
+                LogFormatter::AddThreadName(
+                    RC_THREAD_ID(), fmt::format("{}-W{}", ToString(), to_string(i)).c_str());
                 workerThreadFunc();
             }));
         }

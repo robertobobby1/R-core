@@ -18,5 +18,6 @@ namespace RC {
         void DisplayNodeDependencyInfo(int Id);
 
         std::shared_ptr<SkeletonGui> m_guiService;
+        std::string m_dockWindowName;
     };
 }  // namespace RC

@@ -12,9 +12,11 @@
 #include <vector>
 #include <unordered_map>
 #include <map>
+#include <cmath>
 #include <utility>
 #include <queue>
 #include <sstream>
+#include <filesystem>
 
 // make sure the platform is correctly set
 #include "Core/Utils/Platform.h"

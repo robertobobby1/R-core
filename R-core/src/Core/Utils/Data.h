@@ -2,6 +2,7 @@
 #include "rcpch.h"
 
 #include "Core/Utils/Dispatch.h"
+#include "Core/Utils/File.h"
 
 namespace RC {
 
@@ -53,5 +54,20 @@ namespace RC {
             return DispatchableType::WindowDataType;
         }
         static inline DispatchableType GetStaticType() { return DispatchableType::WindowDataType; }
+    };
+
+    class FileSystemData : public Dispatchable {
+       public:
+        std::shared_ptr<File> m_rootFile;
+
+        FileSystemData(std::shared_ptr<File> rootFile) { m_rootFile = rootFile; }
+        ~FileSystemData() = default;
+
+        virtual inline DispatchableType GetType() override {
+            return DispatchableType::FileSystemDataType;
+        }
+        static inline DispatchableType GetStaticType() {
+            return DispatchableType::FileSystemDataType;
+        }
     };
 }  // namespace RC

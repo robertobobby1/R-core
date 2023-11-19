@@ -36,11 +36,7 @@ namespace RC {
         }
 
         virtual inline std::string ToString() {
-            std::string res = "";
-            res += to_string(this->m_id);
-            res += "-";
-            res += this->GetChildClassName();
-            return res;
+            return fmt::format("{}-{}", this->m_id, this->GetChildClassName());
         }
 
         virtual inline const char* GetChildClassName() const { return typeid(*(this)).name(); }

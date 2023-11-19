@@ -2,7 +2,13 @@
 
 namespace RC {
 
-    enum DispatchableType { DTNone = 0, ServerDataType, WindowDataType, OnWindowCloseEventType };
+    enum DispatchableType {
+        DTNone = 0,
+        ServerDataType,
+        WindowDataType,
+        FileSystemDataType,
+        OnWindowCloseEventType
+    };
 
     class Dispatchable {
        public:

@@ -32,6 +32,7 @@ namespace RC {
         m_serviceOrder = m_depManager->GetExecutionOrderIds();
 
         PrintServices();
+        PrintConfig();
 
         // Initialize all services, synchronously and in dependency order
         for (auto& index : m_serviceOrder) {

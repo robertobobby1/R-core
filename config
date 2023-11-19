@@ -3,3 +3,4 @@ log_debug=false
 log_warn=true
 log_error=true
 log_critical=true
+file_system_root_path=/Users/robertomillamartinez/dev/external/

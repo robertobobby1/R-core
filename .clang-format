@@ -2,8 +2,9 @@ BasedOnStyle: Google
 IndentWidth: 4
 TabWidth: 4
 UseTab: Never
-ColumnLimit: 100
+ColumnLimit: 0
 NamespaceIndentation: All
 #BreakBeforeBraces: Stroustrup
 IndentPPDirectives: AfterHash
 SortIncludes: false
+AlignAfterOpenBracket: BlockIndent

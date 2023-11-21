@@ -31,11 +31,15 @@ project "R-Core"
 		"vendor/cpp-httplib",
 		"vendor/mysql/MySQLMacOSARM/include"
 	}
-	linkoptions
+	libdirs
 	{
-		"%{wks.location}/R-core/vendor/libs/libGLFW.a",
-		"%{wks.location}/R-core/vendor/libs/libImGui.a",
-		"%{wks.location}/R-core/vendor/libs/libglad.a",
+		"%{wks.location}/R-core/vendor/libs"
+	}
+	links
+	{
+		"GLFW",
+		"ImGui",
+		"glad"
 	}
 
 	filter "system:macosx"

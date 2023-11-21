@@ -24,6 +24,7 @@ namespace RC {
             std::ifstream configFile("config");
             if (!configFile.is_open()) {
                 RC_LOG_WARN("Config file was not found! Default configurations will be applied!");
+                return;
             }
 
             std::string line;

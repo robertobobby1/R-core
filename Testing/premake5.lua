@@ -21,15 +21,16 @@ project "Testing"
 		"%{wks.location}/R-core/vendor/glad/include",
 		"%{wks.location}/R-core/vendor/cpp-httplib"
 	}
+	libdirs
+	{
+		"%{wks.location}/R-core/vendor/libs"
+	}
 	links
 	{
+		"GLFW",
+		"ImGui",
+		"glad",
 		"R-core"
-	}
-	linkoptions
-	{
-		"%{wks.location}/R-core/vendor/libs/libGLFW.a",
-		"%{wks.location}/R-core/vendor/libs/libImGui.a",
-		"%{wks.location}/R-core/vendor/libs/libglad.a",
 	}
 
 	filter "system:macosx"
@@ -39,3 +40,13 @@ project "Testing"
 			"Cocoa.framework",
 			"IOKit.framework"
 		}
+
+	filter "configurations:Debug"
+		defines "RC_DEBUG"
+		runtime "Debug"
+		symbols "on"
+
+	filter "configurations:Release"
+		defines "RC_RELEASE"
+		runtime "Release"
+		optimize "on"

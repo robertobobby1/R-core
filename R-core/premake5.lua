@@ -39,11 +39,13 @@ project "R-Core"
 		"glad",
 		"GLFW",
 		"ssl",
-		"libmysqlcppconn8-static.a"
+		"crypto",
+		"pthread",
+		"resolv",
 	}
-	
 
 	filter "system:macosx"
+		systemversion "latest"
 		links 
 		{
 			"OpenGL.framework",
@@ -54,12 +56,24 @@ project "R-Core"
 		{
 			"vendor/mysql/MySQLMacOSARM/lib64"
 		}
+		linkoptions
+		{
+			"vendor/mysql/MySQLMacOSARM/lib64/libmysqlcppconn8-static.a"
+		}
 
 	filter "system:linux"
 		systemversion "latest"
 
 	filter "system:windows"
 		systemversion "latest"
+		libdirs
+		{
+			"%{wks.location}/R-core/vendor/mysql/MySQLWindows/lib64/vs14"
+		}
+		links
+		{
+			"libmysqlcppconn8-static"
+		}
 
 	filter "configurations:Debug"
 		defines "RC_DEBUG"

@@ -12,14 +12,6 @@ project "Testing"
 		"src/**.h",
 		"src/**.cpp",
 	}
-	defines 
-	{
-		"STATIC_CONCPP"
-	}
-	ignoredefaultlibraries
-	{
-		"libcmtd"
-	}
 	includedirs
 	{
 		"%{wks.location}/R-core/src",
@@ -31,33 +23,28 @@ project "Testing"
 	}
 	links
 	{
-		"R-core",
 		"ImGui",
 		"glad",
-		"GLFW"
+		"GLFW",
+		"R-core",
+		"ssl",
+		"crypto",
+		"pthread",
+		"resolv"
 	}
 
 	filter "system:macosx"
-		links
+		links 
 		{
 			"OpenGL.framework",
 			"Cocoa.framework",
-			"IOKit.framework",
+			"IOKit.framework"
 		}
 		libdirs
 		{
 			"%{wks.location}/R-core/vendor/mysql/MySQLMacOSARM/lib64"
 		}
-
-	filter "system:windows"
-		systemversion "latest"
-
-	filter "configurations:Debug"
-		defines "RC_DEBUG"
-		runtime "Debug"
-		symbols "on"
-
-	filter "configurations:Release"
-		defines "RC_RELEASE"
-		runtime "Release"
-		optimize "on"
+		linkoptions
+		{
+			"%{wks.location}/R-core/vendor/mysql/MySQLMacOSARM/lib64/libmysqlcppconn8-static.a"
+		}

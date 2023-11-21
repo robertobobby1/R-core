@@ -7,7 +7,7 @@ int main(int argc, char **argv) {
 
     app->AddService(std::make_shared<RC::ApplicationGui>());
     app->AddService(std::make_shared<RC::FileSystemGui>());
-    app->AddService(std::make_shared<RC::HttpServer>());
+    app->AddService(std::make_shared<RC::HttpServer>(2000));
 
     app->Run();
 }

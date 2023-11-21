@@ -17,7 +17,7 @@ namespace RC {
         virtual void Init() override;
         virtual void Run() override;
 
-        void HttpServer::AddController(
+        void AddController(
             std::shared_ptr<Controller> controller, std::vector<std::shared_ptr<Middleware>> middlewares = {}
         ) {
             this->m_controllers.push_back(controller);

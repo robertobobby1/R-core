@@ -45,7 +45,6 @@ project "R-Core"
 	}
 
 	filter "system:macosx"
-		systemversion "latest"
 		links 
 		{
 			"OpenGL.framework",

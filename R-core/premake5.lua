@@ -28,8 +28,7 @@ project "R-Core"
 		"vendor/spdlog/include",
 		"vendor/GLFW/include",
 		"vendor/glad/include",
-		"vendor/cpp-httplib",
-		"vendor/mysql/MySQLMacOSARM/include"
+		"vendor/cpp-httplib"
 	}
 	libdirs
 	{

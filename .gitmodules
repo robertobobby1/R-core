@@ -10,3 +10,6 @@
 [submodule "R-core/vendor/cpp-httplib"]
 	path = R-core/vendor/cpp-httplib
 	url = https://github.com/yhirose/cpp-httplib.git
+[submodule "R-core/vendor/mongodb"]
+	path = R-core/vendor/mongodb
+	url = https://github.com/mongodb/mongo-cxx-driver.git

@@ -19,7 +19,7 @@ project "Testing"
 		"%{wks.location}/R-core/vendor/spdlog/include",
 		"%{wks.location}/R-core/vendor/GLFW/include",
 		"%{wks.location}/R-core/vendor/glad/include",
-		"%{wks.location}/R-core/vendor/cpp-httplib"
+		"%{wks.location}/R-core/vendor/cpp-httplib",
 	}
 	libdirs
 	{
@@ -31,6 +31,10 @@ project "Testing"
 		"ImGui",
 		"glad",
 		"R-core"
+	}
+	libdirs
+	{
+		"%{wks.location}/R-core/vendor/libs",
 	}
 
 	filter "system:macosx"

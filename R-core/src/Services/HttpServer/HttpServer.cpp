@@ -42,12 +42,12 @@ namespace RC {
         };
 
         switch (route.m_method) {
-            case GET: m_server->Get(route.m_path, callback); break;
-            case POST: m_server->Post(route.m_path, callback); break;
-            case DELETE: m_server->Delete(route.m_path, callback); break;
-            case PATCH: m_server->Patch(route.m_path, callback); break;
-            case PUT: m_server->Put(route.m_path, callback); break;
-            case OPTIONS: m_server->Options(route.m_path, callback); break;
+            case HTTP_GET: m_server->Get(route.m_path, callback); break;
+            case HTTP_POST: m_server->Post(route.m_path, callback); break;
+            case HTTP_DELETE: m_server->Delete(route.m_path, callback); break;
+            case HTTP_PATCH: m_server->Patch(route.m_path, callback); break;
+            case HTTP_PUT: m_server->Put(route.m_path, callback); break;
+            case HTTP_OPTIONS: m_server->Options(route.m_path, callback); break;
             default: RC_LOG_WARN("Unknown Http method, skipping route subscription");
         }
     }

@@ -11,12 +11,12 @@ namespace RC {
     typedef httplib::Server HttpLibServer;
 
     enum HTTP_METHOD {
-        GET,
-        POST,
-        PUT,
-        PATCH,
-        DELETE,
-        OPTIONS
+        HTTP_GET,
+        HTTP_POST,
+        HTTP_PUT,
+        HTTP_PATCH,
+        HTTP_DELETE,
+        HTTP_OPTIONS
     };
 
 }  // namespace RC

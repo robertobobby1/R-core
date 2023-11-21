@@ -14,7 +14,7 @@ namespace RC {
         virtual void Run() override;
 
         void WorkerThreadLoop();
-        void OnError(const std::string& msg, bool closeSocket = true);
+        void OnError(bool closeSocket = true);
 
         void SetTSQueue(SOCKET socket);
         SOCKET GetTSQueue();

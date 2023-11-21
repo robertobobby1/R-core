@@ -40,8 +40,7 @@ namespace RC {
         else if (__cplusplus == 199711L)
             s += "C++98";
         else {
-            s += "pre-standard C++.";
-            s += __cplusplus;
+            s += "Unknown c++ standard";
         }
         RC_LOG_DEBUG("Cpp version running: {0}", s);
     }

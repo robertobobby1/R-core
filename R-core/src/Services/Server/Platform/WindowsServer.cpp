@@ -23,7 +23,8 @@ namespace RC {
         while (!m_isShutdown) {
             SOCKET AcceptSocket = accept(m_listenSocket, NULL, NULL);
             if (AcceptSocket == INVALID_SOCKET) {
-                OnError("Accept failed with error:");
+                RC_LOG_ERROR("Accept failed with error:", WSAGetLastError());
+                OnError();
                 return;
             }
             RC_LOG_INFO("New connection!");
@@ -59,7 +60,8 @@ namespace RC {
                     Server::ReduceActiveConexions();
                 } else {
                     // maybe we shouldn't completely shutdown the server
-                    OnError("Conexion finished with error:");
+                    RC_LOG_ERROR("Conexion finished with error:", WSAGetLastError());
+                    OnError();
                     openConexion = false;
                     Server::ReduceActiveConexions();
                 }
@@ -85,9 +87,7 @@ namespace RC {
         return res;
     }
 
-    void WindowsServer::OnError(const std::string &msg, bool closeSocket) {
-        RC_LOG_ERROR(msg, WSAGetLastError());
-
+    void WindowsServer::OnError(bool closeSocket) {
         if (closeSocket) closesocket(m_listenSocket);
 
         WSACleanup();
@@ -108,7 +108,8 @@ namespace RC {
         // Create a SOCKET for listening
         m_listenSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
         if (m_listenSocket == INVALID_SOCKET) {
-            OnError("socket failed with error: {0}", false);
+            RC_LOG_ERROR("socket failed with error: {0}", WSAGetLastError());
+            OnError(false);
             return;
         }
 
@@ -118,20 +119,23 @@ namespace RC {
         service.sin_port = htons(27015);
         inet_pton(AF_INET, "127.0.0.1", &service.sin_addr);
         if (bind(m_listenSocket, (SOCKADDR *)&service, sizeof(service)) == SOCKET_ERROR) {
-            OnError("bind failed with error: {0}");
+            RC_LOG_ERROR("bind failed with error: {0}", WSAGetLastError());
+            OnError();
             return;
         }
 
         // Listen for incoming connection requests.
         if (listen(m_listenSocket, 1) == SOCKET_ERROR) {
-            OnError("listen failed with error: {0}");
+            RC_LOG_ERROR("listen failed with error: {0}", WSAGetLastError());
+            OnError();
             return;
         }
 
         // Set blocking mode to wait for connections
         unsigned long blocking_mode = 0;
         if (ioctlsocket(m_listenSocket, FIONBIO, &blocking_mode) == -1) {
-            OnError("Couldn�t set to blocking mode! :: {0}");
+            RC_LOG_ERROR("Couldn't set to blocking mode! :: {0}", WSAGetLastError());
+            OnError();
             return;
         }
     }

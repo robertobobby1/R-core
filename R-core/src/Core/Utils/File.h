@@ -30,8 +30,8 @@ namespace RC {
         static std::shared_ptr<File> MakeFileObj(
             const fs::directory_entry& directory
         ) {
-            auto absolutePath = fs::absolute(directory.path());
-            auto fileName = directory.path().filename();
+            auto absolutePath = fs::absolute(directory.path()).string();
+            auto fileName = directory.path().filename().string();
             auto fileSize = directory.file_size();
 
             return std::make_shared<File>(FILE_TYPE::FILE, fileName, absolutePath, fileSize);
@@ -39,8 +39,8 @@ namespace RC {
         static std::shared_ptr<File> MakeDirectoryObj(
             const fs::directory_entry& directory
         ) {
-            auto absolutePath = fs::absolute(directory.path());
-            auto fileName = directory.path().filename();
+            auto absolutePath = fs::absolute(directory.path()).string();
+            auto fileName = directory.path().filename().string();
 
             return std::make_shared<File>(FILE_TYPE::DIR, fileName, absolutePath);
         }

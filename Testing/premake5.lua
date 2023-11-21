@@ -4,8 +4,8 @@ project "Testing"
 	language "C++"
 	cppdialect "C++20"
  
-	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
+	targetdir ("%{wks.location}/bin/" .. outputdir .. "/")
+	objdir ("%{wks.location}/bin/bin-int/" .. outputdir .. "/%{prj.name}")
 
 	files
 	{
@@ -23,14 +23,13 @@ project "Testing"
 	}
 	links
 	{
-		"ImGui",
-		"glad",
-		"GLFW",
-		"R-core",
-		"ssl",
-		"crypto",
-		"pthread",
-		"resolv"
+		"R-core"
+	}
+	linkoptions
+	{
+		"%{wks.location}/R-core/vendor/libs/libGLFW.a",
+		"%{wks.location}/R-core/vendor/libs/libImGui.a",
+		"%{wks.location}/R-core/vendor/libs/libglad.a",
 	}
 
 	filter "system:macosx"
@@ -39,12 +38,4 @@ project "Testing"
 			"OpenGL.framework",
 			"Cocoa.framework",
 			"IOKit.framework"
-		}
-		libdirs
-		{
-			"%{wks.location}/R-core/vendor/mysql/MySQLMacOSARM/lib64"
-		}
-		linkoptions
-		{
-			"%{wks.location}/R-core/vendor/mysql/MySQLMacOSARM/lib64/libmysqlcppconn8-static.a"
 		}

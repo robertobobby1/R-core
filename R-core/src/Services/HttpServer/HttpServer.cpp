@@ -2,8 +2,6 @@
 #include "Services/HttpServer/HttpServer.h"
 #include "Services/HttpServer/HttpLogging.h"
 
-#include <mysqlx/xdevapi.h>
-
 namespace RC {
 
     HttpServer::HttpServer(unsigned int port)

@@ -4,8 +4,8 @@ project "R-Core"
 	language "C++"
 	staticruntime "off"
 
-	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
+	targetdir ("%{wks.location}/bin/" .. outputdir .. "/")
+	objdir ("%{wks.location}/bin/bin-int/" .. outputdir .. "/%{prj.name}")
 
 	pchheader "rcpch.h"
 	pchsource "src/rcpch.cpp"
@@ -15,14 +15,12 @@ project "R-Core"
 		"src/**.cpp",
 		"src/**.h"
 	}
-	
 	defines 
 	{
 		"GLFW_INCLUDE_NONE",
 		"STATIC_CONCPP",
 		"IMGUI_IMPL_OPENGL_LOADER_GLAD"
 	}
-
 	includedirs
 	{
 		"src",
@@ -33,15 +31,11 @@ project "R-Core"
 		"vendor/cpp-httplib",
 		"vendor/mysql/MySQLMacOSARM/include"
 	}
-	links
+	linkoptions
 	{
-		"ImGui",
-		"glad",
-		"GLFW",
-		"ssl",
-		"crypto",
-		"pthread",
-		"resolv",
+		"%{wks.location}/R-core/vendor/libs/libGLFW.a",
+		"%{wks.location}/R-core/vendor/libs/libImGui.a",
+		"%{wks.location}/R-core/vendor/libs/libglad.a",
 	}
 
 	filter "system:macosx"
@@ -51,28 +45,12 @@ project "R-Core"
 			"Cocoa.framework",
 			"IOKit.framework"
 		}
-		libdirs
-		{
-			"vendor/mysql/MySQLMacOSARM/lib64"
-		}
-		linkoptions
-		{
-			"vendor/mysql/MySQLMacOSARM/lib64/libmysqlcppconn8-static.a"
-		}
 
 	filter "system:linux"
 		systemversion "latest"
 
 	filter "system:windows"
 		systemversion "latest"
-		libdirs
-		{
-			"%{wks.location}/R-core/vendor/mysql/MySQLWindows/lib64/vs14"
-		}
-		links
-		{
-			"libmysqlcppconn8-static"
-		}
 
 	filter "configurations:Debug"
 		defines "RC_DEBUG"

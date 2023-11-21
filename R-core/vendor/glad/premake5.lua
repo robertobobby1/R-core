@@ -3,8 +3,8 @@ project "glad"
     language "C"
     staticruntime "off"
     
-    targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
-    objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
+	targetdir ("%{wks.location}/R-core/vendor/libs")
+	objdir ("%{wks.location}/R-core/vendor/libs/bin/%{prj.name}")
 
     files
     {

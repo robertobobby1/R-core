@@ -7,3 +7,6 @@
 [submodule "R-core/vendor/glfw"]
 	path = R-core/vendor/glfw
 	url = https://github.com/glfw/glfw.git
+[submodule "R-core/vendor/cpp-httplib"]
+	path = R-core/vendor/cpp-httplib
+	url = https://github.com/yhirose/cpp-httplib.git

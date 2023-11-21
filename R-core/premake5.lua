@@ -1,6 +1,6 @@
 project "R-Core"
 	kind "StaticLib"
-	cppdialect "C++17"
+	cppdialect "C++20"
 	language "C++"
 	staticruntime "off"
 
@@ -19,6 +19,7 @@ project "R-Core"
 	defines 
 	{
 		"GLFW_INCLUDE_NONE",
+		"STATIC_CONCPP",
 		"IMGUI_IMPL_OPENGL_LOADER_GLAD"
 	}
 
@@ -29,15 +30,18 @@ project "R-Core"
 		"vendor/spdlog/include",
 		"vendor/GLFW/include",
 		"vendor/glad/include",
-		"vendor/cpp-httplib"
+		"vendor/cpp-httplib",
+		"vendor/mysql/MySQLMacOSARM/include"
 	}
 	links
 	{
 		"ImGui",
 		"glad",
 		"GLFW",
-		"ssl"
+		"ssl",
+		"libmysqlcppconn8-static.a"
 	}
+	
 
 	filter "system:macosx"
 		links 
@@ -45,6 +49,10 @@ project "R-Core"
 			"OpenGL.framework",
 			"Cocoa.framework",
 			"IOKit.framework"
+		}
+		libdirs
+		{
+			"vendor/mysql/MySQLMacOSARM/lib64"
 		}
 
 	filter "system:linux"

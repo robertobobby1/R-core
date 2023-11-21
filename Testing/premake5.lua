@@ -2,6 +2,7 @@
 project "Testing"
 	kind "ConsoleApp"
 	language "C++"
+	cppdialect "C++20"
  
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
@@ -10,6 +11,10 @@ project "Testing"
 	{
 		"src/**.h",
 		"src/**.cpp",
+	}
+	defines 
+	{
+		"STATIC_CONCPP"
 	}
 	ignoredefaultlibraries
 	{
@@ -37,11 +42,14 @@ project "Testing"
 		{
 			"OpenGL.framework",
 			"Cocoa.framework",
-			"IOKit.framework"
+			"IOKit.framework",
+		}
+		libdirs
+		{
+			"%{wks.location}/R-core/vendor/mysql/MySQLMacOSARM/lib64"
 		}
 
 	filter "system:windows"
-		cppdialect "C++17"
 		systemversion "latest"
 
 	filter "configurations:Debug"

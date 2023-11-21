@@ -23,7 +23,6 @@ namespace RC {
 
         // load config file
         Config::Load();
-        // PrintConfig();
     }
 
     void Application::Run() {
@@ -33,6 +32,8 @@ namespace RC {
 
         PrintServices();
         PrintConfig();
+        PrintCppVersion();
+        PrintSystem();
 
         // Initialize all services, synchronously and in dependency order
         for (auto& index : m_serviceOrder) {
@@ -54,7 +55,8 @@ namespace RC {
                     RC_LOG_INFO("Starting...");
                     service->Run();
                 },
-                m_services[index]);
+                m_services[index]
+            );
         }
 
         // UI needs to run in main thread!

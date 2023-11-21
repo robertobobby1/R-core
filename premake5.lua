@@ -1,7 +1,7 @@
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 workspace "R-core"
-	cppdialect "C++17"
+	cppdialect "C++20"
 	configurations
 	{
 		"Debug",

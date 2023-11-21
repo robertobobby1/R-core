@@ -21,9 +21,11 @@ namespace RC {
 
     FileSystemGui::FileSystemGui() : Service() {
         this->m_dependencies.push_back(
-            DependencyDescriber("GUI", std::make_shared<SkeletonGui>(), false));
+            DependencyDescriber("GUI", std::make_shared<SkeletonGui>(), false)
+        );
         this->m_dependencies.push_back(
-            DependencyDescriber("FILESYSTEM", std::make_shared<FileSystem>(), false));
+            DependencyDescriber("FILESYSTEM", std::make_shared<FileSystem>(), false)
+        );
         this->m_dockWindowName = "Filesystem";
     }
 
@@ -88,12 +90,12 @@ namespace RC {
                 ImGui::TreePop();
             }
         } else {
-            const char* sizeString = file->StringifyFileSize().c_str();
+            std::string sizeString = file->StringifyFileSize();
             bool open = ImGui::TreeNodeEx(fileName, s_fileFlags);
             ImGui::TableNextColumn();
             ImGui::TextUnformatted(File::GetFileTypeAsCharPointer(file->m_fileType));
             ImGui::TableNextColumn();
-            ImGui::TextUnformatted(sizeString);
+            ImGui::TextUnformatted(sizeString.c_str());
         }
     }
 

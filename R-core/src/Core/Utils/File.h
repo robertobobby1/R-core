@@ -28,18 +28,18 @@ namespace RC {
         }
 
         static std::shared_ptr<File> MakeFileObj(
-            const std::filesystem::directory_entry& directory
+            const fs::directory_entry& directory
         ) {
-            auto absolutePath = std::filesystem::absolute(directory.path());
+            auto absolutePath = fs::absolute(directory.path());
             auto fileName = directory.path().filename();
             auto fileSize = directory.file_size();
 
             return std::make_shared<File>(FILE_TYPE::FILE, fileName, absolutePath, fileSize);
         }
         static std::shared_ptr<File> MakeDirectoryObj(
-            const std::filesystem::directory_entry& directory
+            const fs::directory_entry& directory
         ) {
-            auto absolutePath = std::filesystem::absolute(directory.path());
+            auto absolutePath = fs::absolute(directory.path());
             auto fileName = directory.path().filename();
 
             return std::make_shared<File>(FILE_TYPE::DIR, fileName, absolutePath);

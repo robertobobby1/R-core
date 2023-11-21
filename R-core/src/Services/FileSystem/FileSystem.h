@@ -30,7 +30,7 @@ namespace RC {
 
        private:
         Action ConsumeFromActionQueue();
-        std::shared_ptr<File> FillDirectoryInfo(const std::filesystem::directory_entry& directory);
+        std::shared_ptr<File> FillDirectoryInfo(const fs::directory_entry& directory);
         void HardReloadDirectoryInfo();
 
         std::shared_ptr<File> m_rootFile;

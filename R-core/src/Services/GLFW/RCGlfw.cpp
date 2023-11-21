@@ -21,11 +21,15 @@ namespace RC {
         glGetIntegerv(GL_MAJOR_VERSION, &major);
         glGetIntegerv(GL_MINOR_VERSION, &minor);
 
-        RC_LOG_INFO("GL Vendor            : {0}", (char*)glGetString(GL_VENDOR));
-        RC_LOG_INFO("GL Renderer          : {0}", (char*)glGetString(GL_RENDERER));
-        RC_LOG_INFO("GL Version (string)  : {0}", (char*)glGetString(GL_VERSION));
-        RC_LOG_INFO("GL Version (integer) : {0}.{1}", major, minor);
-        RC_LOG_INFO("GLSL Version         : {0}", (char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
+        std::string s;
+
+        s += fmt::format("GL Vendor            : {}\n", (char*)glGetString(GL_VENDOR));
+        s += fmt::format("GL Renderer          : {}\n", (char*)glGetString(GL_RENDERER));
+        s += fmt::format("GL Version (string)  : {}\n", (char*)glGetString(GL_VERSION));
+        s += fmt::format("GL Version (integer) : {}.{}\n", major, minor);
+        s += fmt::format("GLSL Version         : {}\n", (char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+        RC_LOG_DEBUG("OpenGL information: \n{0}", s);
 
         m_isPrinted = true;
     }

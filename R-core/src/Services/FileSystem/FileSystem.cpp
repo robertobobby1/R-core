@@ -39,14 +39,14 @@ namespace RC {
     }
 
     void FileSystem::HardReloadDirectoryInfo() {
-        m_rootFile = FillDirectoryInfo(std::filesystem::directory_entry{m_rootFullPath});
+        m_rootFile = FillDirectoryInfo(fs::directory_entry{m_rootFullPath});
 
         FileSystemData data{m_rootFile};
         Service::CallDepCallbacks(data);
     }
 
     std::shared_ptr<File> FileSystem::FillDirectoryInfo(
-        const std::filesystem::directory_entry& directory
+        const fs::directory_entry& directory
     ) {
         if (!directory.is_directory()) {
             RC_LOG_WARN("The given entry is not a directory!");
@@ -54,7 +54,7 @@ namespace RC {
         }
 
         auto dir = File::MakeDirectoryObj(directory);
-        for (auto const& entry : std::filesystem::directory_iterator(directory)) {
+        for (auto const& entry : fs::directory_iterator(directory)) {
             if (entry.is_regular_file()) {
                 dir->files.push_back(File::MakeFileObj(entry));
             } else if (entry.is_directory()) {

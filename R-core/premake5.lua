@@ -25,18 +25,18 @@ project "R-Core"
 	includedirs
 	{
 		"src",
-
-		"vendor/glad/include",
 		"vendor/imgui",
-		"vendor/spdlog/include/",
-		"vendor/uuid",
-		"vendor/glfw/include"
+		"vendor/spdlog/include",
+		"vendor/GLFW/include",
+		"vendor/glad/include",
+		"vendor/cpp-httplib"
 	}
 	links
 	{
 		"ImGui",
 		"glad",
-		"GLFW"
+		"GLFW",
+		"ssl"
 	}
 
 	filter "system:macosx"

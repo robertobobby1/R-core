@@ -25,6 +25,8 @@
 #include "Services/ImGui/GuiRenderer.h"
 #include "Services/ImGui/SkeletonGui.h"
 #include "Services/Server/ServerGui.h"
+#include "Services/HttpServer/HttpServer.h"
+#include "Services/HttpServer/HttpLogging.h"
 #include "Services/ApplicationGui/InjectorGui.h"
 #include "Services/ApplicationGui/LogGui.h"
 #include "Services/ApplicationGui/ApplicationGui.h"

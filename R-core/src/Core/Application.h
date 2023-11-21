@@ -38,14 +38,15 @@ namespace RC {
         }
 
         inline void PrintServices() {
-            RC_LOG_INFO("-------------- Services and dependency information ------------------");
+            std::string s;
+            s += "Services and dependency information: \n";
             for (auto& service : m_services) {
-                RC_LOG_INFO("{0}", service.second->ToString());
+                s += fmt::format("{}\n", service.second->ToString());
                 for (auto& describer : service.second->m_dependencies) {
-                    RC_LOG_INFO("----{0}", describer.dep->ToString());
+                    s += fmt::format("----{}\n", describer.dep->ToString());
                 }
             }
-            RC_LOG_INFO("-------------- End services and dependency information --------------");
+            RC_LOG_DEBUG(s);
         }
 
         void SetGuiRenderer(std::shared_ptr<GuiRenderer> guiRenderer);

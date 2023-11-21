@@ -5,9 +5,9 @@
 int main(int argc, char **argv) {
     RC::Application *app = new RC::Application();
 
-    // app->AddService(std::make_shared<RC::ServerGui>());
     app->AddService(std::make_shared<RC::ApplicationGui>());
     app->AddService(std::make_shared<RC::FileSystemGui>());
+    app->AddService(std::make_shared<RC::HttpServer>());
 
     app->Run();
 }

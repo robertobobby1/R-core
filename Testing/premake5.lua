@@ -20,9 +20,9 @@ project "Testing"
 		"%{wks.location}/R-core/src",
 		"%{wks.location}/R-core/vendor/imgui",
 		"%{wks.location}/R-core/vendor/spdlog/include",
-		"%{wks.location}/R-core/vendor/uuid",
 		"%{wks.location}/R-core/vendor/GLFW/include",
-		"%{wks.location}/R-core/vendor/glad/include"
+		"%{wks.location}/R-core/vendor/glad/include",
+		"%{wks.location}/R-core/vendor/cpp-httplib"
 	}
 	links
 	{

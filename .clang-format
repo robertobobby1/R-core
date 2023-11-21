@@ -8,3 +8,4 @@ NamespaceIndentation: All
 IndentPPDirectives: AfterHash
 SortIncludes: false
 AlignAfterOpenBracket: BlockIndent
+AllowShortCaseLabelsOnASingleLine: true

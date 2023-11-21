@@ -3,6 +3,8 @@
 #include "Core/Core.h"
 #include "Core/Utils/Config.h"
 
+#include "httplib.h"
+
 namespace RC {
 
     template <typename T>
@@ -14,8 +16,12 @@ namespace RC {
 
     static inline void PrintConfig() {
         auto& configMap = Config::GetConfigMap();
+        std::string s = "Configuration:\n";
+
         for (auto configPair : configMap) {
-            RC_LOG_INFO("{0} = {1} ", configPair.first, configPair.second);
+            s += fmt::format("{} = {}\n", configPair.first, configPair.second);
         }
+
+        RC_LOG_DEBUG(s);
     }
 }  // namespace RC

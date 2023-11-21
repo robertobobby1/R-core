@@ -59,3 +59,5 @@ static inline unsigned long long GetAllocations() { return heapAllocatedBytes; }
             fn;         \
         }               \
     }
+
+namespace fs = std::filesystem;

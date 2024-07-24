@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+scripts/mac-linux-build-deps;
+scripts/premake5 gmake2 premake5.lua;
+make;

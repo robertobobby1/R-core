@@ -23,5 +23,6 @@ namespace RC {
         std::shared_ptr<FileSystem> m_fileService;
 
         bool m_isFileSystemReady = false;
+        bool m_isFileSystemError = false;
     };
 }  // namespace RC

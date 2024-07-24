@@ -45,7 +45,12 @@ namespace RC {
         ImGui::Begin("FileSystem");
         // Show loading while file system is not ready.
         if (!m_isFileSystemReady) {
-            ImGui::Text("Loading %c", "|/-\\"[(int)(ImGui::GetTime() / 0.05f) & 3]);
+            if (m_isFileSystemError) {
+                ImGui::Text("There was an error while reading directory %s", Config::Get("file_system_root_path").c_str());
+            } else {
+                ImGui::Text("Loading %c", "|/-\\"[(int)(ImGui::GetTime() / 0.05f) & 3]);
+            }
+
             ImGui::End();
             return;
         }
@@ -103,7 +108,11 @@ namespace RC {
         Dispatcher disp(dispatchable);
         disp.Dispatch<FileSystemData>([this](const FileSystemData& data) {
             s_rootFile = data.m_rootFile;
-            this->m_isFileSystemReady = true;
+            if (s_rootFile == nullptr) {
+                this->m_isFileSystemError = true;
+            } else {
+                this->m_isFileSystemReady = true;
+            }
         });
     }
 }  // namespace RC

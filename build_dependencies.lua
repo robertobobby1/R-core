@@ -1,0 +1,24 @@
+outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+
+workspace "R-core"
+	cppdialect "C++20"
+	configurations
+	{
+		"Debug",
+		"Release",
+		"Dist"
+	}
+
+	filter "system:macosx"
+		architecture "universal"
+
+	filter "system:windows"
+		architecture "x86_64"
+	
+	filter "system:linux"
+		architecture "x86_64"
+
+
+include "R-core/vendor/imgui"
+include "R-core/vendor/glfw"
+include "R-core/vendor/glad"

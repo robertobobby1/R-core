@@ -1,0 +1,25 @@
+# Binaries
+**/bin/
+bin-int/
+logs/
+**/libs/
+
+# Hazel files
+*.log
+
+# Visual Studio files and folder
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
+**.csproj
+
+#mac 
+Makefile
+.DS_Store
+
+#vs code
+settings.json
+
+imgui.ini

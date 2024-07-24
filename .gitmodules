@@ -1,0 +1,15 @@
+[submodule "R-core/vendor/spdlog"]
+	path = R-core/vendor/spdlog
+	url = https://github.com/gabime/spdlog.git
+[submodule "R-core/vendor/imgui"]
+	path = R-core/vendor/imgui
+	url = https://github.com/ocornut/imgui.git
+[submodule "R-core/vendor/glfw"]
+	path = R-core/vendor/glfw
+	url = https://github.com/glfw/glfw.git
+[submodule "R-core/vendor/cpp-httplib"]
+	path = R-core/vendor/cpp-httplib
+	url = https://github.com/yhirose/cpp-httplib.git
+[submodule "R-core/vendor/mongodb"]
+	path = R-core/vendor/mongodb
+	url = https://github.com/mongodb/mongo-cxx-driver.git

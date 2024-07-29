@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/sh
 
 ./mac-linux-build-deps;
 cd .. && Scripts/premake5 gmake2 premake5.lua;

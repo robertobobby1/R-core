@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/sh
 
 cd .. && Scripts/premake5 gmake2 build_dependencies.lua;
 

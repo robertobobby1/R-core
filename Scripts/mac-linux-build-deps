@@ -1,10 +1,10 @@
 #!/bin/zsh
 
-premake5 gmake2 build_dependencies.lua;
+cd .. && Scripts/premake5 gmake2 build_dependencies.lua;
 
-cp -f ../R-core/vendor/submodulePremakes/premake5_glfw.lua R-core/vendor/glfw/premake5.lua;
-cp -f ../R-core/vendor/submodulePremakes/premake5_imgui.lua R-core/vendor/glfw/premake5.lua;
+cp -f R-core/vendor/submodulePremakes/premake5_glfw.lua R-core/vendor/glfw/premake5.lua;
+cp -f R-core/vendor/submodulePremakes/premake5_imgui.lua R-core/vendor/glfw/premake5.lua;
 
-cd ../R-core/vendor/imgui && make;
+cd R-core/vendor/imgui && make;
 cd ../glfw && make;
 cd ../glad && make;

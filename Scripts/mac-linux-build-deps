@@ -1,7 +1,7 @@
 #!/bin/bash
 
-cp -f ../R-core/vendor/submodulePremakes/premake5_glfw.lua R-core/vendor/glfw/premake5.lua;
-cp -f ../R-core/vendor/submodulePremakes/premake5_imgui.lua R-core/vendor/glfw/premake5.lua;
+cp -f ../R-core/vendor/submodulePremakes/premake5_glfw.lua ../R-core/vendor/glfw/premake5.lua;
+cp -f ../R-core/vendor/submodulePremakes/premake5_imgui.lua ../R-core/vendor/glfw/premake5.lua;
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
         echo "OS => linux-gnu";

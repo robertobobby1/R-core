@@ -25,16 +25,16 @@ project "R-Core"
 	}
 	includedirs
 	{
-		absPathWorkspace .. "/R-core/src",
-		absPathWorkspace .. "/R-core/vendor/imgui",
-		absPathWorkspace .. "/R-core/vendor/spdlog/include",
-		absPathWorkspace .. "/R-core/vendor/GLFW/include",
-		absPathWorkspace .. "/R-core/vendor/glad/include",
-		absPathWorkspace .. "/R-core/vendor/cpp-httplib"
+		"%{wks.location}/R-core/src",
+		"%{wks.location}/R-core/vendor/imgui",
+		"%{wks.location}/R-core/vendor/spdlog/include",
+		"%{wks.location}/R-core/vendor/glfw/include",
+		"%{wks.location}/R-core/vendor/glad/include",
+		"%{wks.location}/R-core/vendor/cpp-httplib"
 	}
 	libdirs
 	{
-		absPathWorkspace .. "/R-core/vendor/libs"
+		"%{wks.location}/R-core/vendor/libs"
 	}
 	links
 	{

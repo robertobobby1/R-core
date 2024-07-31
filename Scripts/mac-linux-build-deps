@@ -13,6 +13,6 @@ else
         echo "OS => $OSTYPE, premake for OS NOT supported in script";
 fi
 
-cd ../R-core/vendor/imgui && make;
+cd R-core/vendor/imgui && make;
 cd ../glfw && make;
 cd ../glad && make;

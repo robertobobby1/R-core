@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ./mac-linux-build-deps;
 

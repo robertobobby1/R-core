@@ -5,14 +5,12 @@ cp -f ../R-core/vendor/submodulePremakes/premake5_imgui.lua ../R-core/vendor/img
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
         echo "OS => linux-gnu";
-        cd .. && Scripts/Premake/premake5-linux gmake2 build_dependencies.lua;
+        cd .. && Scripts/Premake/premake5-linux gmake2 --file=build_dependencies.lua;
 elif [[ "$OSTYPE" == "darwin"* ]]; then
         echo "OS => darwin";
-        cd .. && Scripts/Premake/premake5-mac gmake2 build_dependencies.lua;
+        cd .. && Scripts/Premake/premake5-mac gmake2 --file=build_dependencies.lua;
 else
         echo "OS => $OSTYPE, premake for OS NOT supported in script";
 fi
 
-cd R-core/vendor/imgui && make;
-cd ../glfw && make;
-cd ../glad && make;
+make;

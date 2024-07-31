@@ -4,10 +4,10 @@
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
         echo "OS => linux-gnu";
-        cd .. && Scripts/Premake/premake5-linux gmake2 premake5.lua;
+        cd .. && Scripts/Premake/premake5-linux gmake2 --file=premake5.lua;
 elif [[ "$OSTYPE" == "darwin"* ]]; then
         echo "OS => darwin";
-        cd .. && Scripts/Premake/premake5-mac gmake2 premake5.lua;
+        cd .. && Scripts/Premake/premake5-mac gmake2 --file=premake5.lua;
 else
         echo "OS => $OSTYPE, premake for OS NOT supported in script";
 fi

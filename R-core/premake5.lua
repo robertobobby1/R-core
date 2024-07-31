@@ -1,3 +1,5 @@
+absPathWorkspace = path.getabsolute("%{wks.location}")
+
 project "R-Core"
 	kind "StaticLib"
 	cppdialect "C++20"
@@ -23,16 +25,16 @@ project "R-Core"
 	}
 	includedirs
 	{
-		"%{wks.location}/R-core/src",
-		"%{wks.location}/R-core/vendor/imgui",
-		"%{wks.location}/R-core/vendor/spdlog/include",
-		"%{wks.location}/R-core/vendor/GLFW/include",
-		"%{wks.location}/R-core/vendor/glad/include",
-		"%{wks.location}/R-core/vendor/cpp-httplib"
+		absPathWorkspace .. "/R-core/src",
+		absPathWorkspace .. "/R-core/vendor/imgui",
+		absPathWorkspace .. "/R-core/vendor/spdlog/include",
+		absPathWorkspace .. "/R-core/vendor/GLFW/include",
+		absPathWorkspace .. "/R-core/vendor/glad/include",
+		absPathWorkspace .. "/R-core/vendor/cpp-httplib"
 	}
 	libdirs
 	{
-		"%{wks.location}/R-core/vendor/libs"
+		absPathWorkspace .. "/R-core/vendor/libs"
 	}
 	links
 	{

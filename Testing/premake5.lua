@@ -32,10 +32,6 @@ project "Testing"
 		"glad",
 		"R-core"
 	}
-	libdirs
-	{
-		"%{wks.location}/R-core/vendor/libs",
-	}
 
 	filter "system:macosx"
 		links 

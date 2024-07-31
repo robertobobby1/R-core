@@ -3,8 +3,6 @@
 #include "Core/Core.h"
 #include "Core/Utils/Config.h"
 
-#include "httplib.h"
-
 namespace RC {
 
     template <typename T>

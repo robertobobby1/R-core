@@ -8,15 +8,6 @@ workspace "R-core"
 		"Release",
 		"Dist"
 	}
-
-	filter "system:macosx"
-		architecture "universal"
-
-	filter "system:windows"
-		architecture "x86_64"
-	
-	filter "system:linux"
-		architecture "x86_64"
 		
 include "Testing"
 include "R-core"

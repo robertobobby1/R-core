@@ -5,6 +5,7 @@ cp -f ../R-core/vendor/submodulePremakes/premake5_imgui.lua ../R-core/vendor/img
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
         echo "OS => linux-gnu";
+        sudo apt install gobjc libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev;
         cd .. && Scripts/Premake/premake5-linux gmake2 --file=build_dependencies.lua;
 elif [[ "$OSTYPE" == "darwin"* ]]; then
         echo "OS => darwin";

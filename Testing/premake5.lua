@@ -7,6 +7,11 @@ project "Testing"
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/")
 	objdir ("%{wks.location}/bin/bin-int/" .. outputdir .. "/%{prj.name}")
 
+	defines 
+	{
+		"GLFW_INCLUDE_NONE",
+		"IMGUI_IMPL_OPENGL_LOADER_GLAD"
+	}
 	files
 	{
 		"src/**.h",

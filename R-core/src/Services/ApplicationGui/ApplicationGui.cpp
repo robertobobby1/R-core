@@ -10,13 +10,16 @@
 namespace RC {
     ApplicationGui::ApplicationGui() : Service() {
         this->m_dependencies.push_back(
-            DependencyDescriber("GUI", std::make_shared<SkeletonGui>(), false));
+            DependencyDescriber("GUI", std::make_shared<SkeletonGui>(), false)
+        );
         // add log to the main application gui
         this->m_dependencies.push_back(
-            DependencyDescriber("Log", std::make_shared<LogGui>(), false));
+            DependencyDescriber("Log", std::make_shared<LogGui>(), false)
+        );
         // add injector information
         this->m_dependencies.push_back(
-            DependencyDescriber("Injector", std::make_shared<InjectorGui>(), false));
+            DependencyDescriber("Injector", std::make_shared<InjectorGui>(), false)
+        );
     }
 
     void ApplicationGui::Init() {

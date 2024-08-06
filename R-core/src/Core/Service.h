@@ -7,18 +7,16 @@
 
 namespace RC {
 
-    enum UniqueServiceType { USTNone = 0, UniqueWindow };
-
     class Service {
        public:
-        Service(){};
+        Service() {};
         virtual ~Service() = default;
         // Application::GetApp().RemoveServiceById(this->GetId());
 
         // Keep as non virtual! It's not mandatory to implement the methods
-        virtual void Init(){};
-        virtual void Run(){};
-        virtual void OnGuiUpdate(){};
+        virtual void Init() {};
+        virtual void Run() {};
+        virtual void OnGuiUpdate() {};
 
         virtual inline void AddDependencyCallback(std::function<void(Dispatchable&)> dependency) {
             std::lock_guard<std::mutex> lock(m_dataMutex);

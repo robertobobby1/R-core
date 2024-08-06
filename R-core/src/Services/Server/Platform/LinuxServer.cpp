@@ -24,8 +24,7 @@ namespace RC {
         while (!m_isShutdown) {
             auto sizeSocket = sizeof(sockaddr_in);
 
-            int clientSocket = accept(m_fileDescriptor, (sockaddr *)clientFileDescriptor.get(),
-                                      (socklen_t *)&sizeSocket);
+            int clientSocket = accept(m_fileDescriptor, (sockaddr *)clientFileDescriptor.get(), (socklen_t *)&sizeSocket);
             if (clientSocket == -1) {
                 RC_LOG_WARN("Couldn't accept connection, retrying!");
                 continue;

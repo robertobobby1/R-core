@@ -19,7 +19,8 @@ namespace RC {
 
     InjectorGui::InjectorGui() : Service() {
         this->m_dependencies.push_back(
-            DependencyDescriber("GUI", std::make_shared<SkeletonGui>(), false));
+            DependencyDescriber("GUI", std::make_shared<SkeletonGui>(), false)
+        );
         this->m_dockWindowName = "Dependency info";
     }
 
@@ -87,9 +88,7 @@ namespace RC {
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
 
-        ImGui::TreeNodeEx(s_serviceNames[Id], tree_node_flags | ImGuiTreeNodeFlags_Leaf |
-                                                  ImGuiTreeNodeFlags_Bullet |
-                                                  ImGuiTreeNodeFlags_NoTreePushOnOpen);
+        ImGui::TreeNodeEx(s_serviceNames[Id], tree_node_flags | ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_Bullet | ImGuiTreeNodeFlags_NoTreePushOnOpen);
         ImGui::TableNextColumn();
         ImGui::TextUnformatted(s_isUniqueService[Id]);
         ImGui::TableNextColumn();

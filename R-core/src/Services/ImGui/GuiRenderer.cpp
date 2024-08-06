@@ -20,7 +20,8 @@ namespace RC {
     GuiRenderer::GuiRenderer() : Service() {
         // default values for window input, customize in the future
         this->m_dependencies.push_back(
-            DependencyDescriber("Window", Window::Create(WindowInput()), false));
+            DependencyDescriber("Window", Window::Create(WindowInput()), false)
+        );
     }
 
     void GuiRenderer::Shutdown() {
@@ -100,8 +101,7 @@ namespace RC {
 
         glfwGetFramebufferSize(m_windowService->m_window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
-        glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w,
-                     clear_color.z * clear_color.w, clear_color.w);
+        glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -119,6 +119,7 @@ namespace RC {
     void GuiRenderer::OnDispatchable(Dispatchable &dispatchable) {
         Dispatcher disp(dispatchable);
         disp.Dispatch<OnWindowCloseEvent>(
-            [this](OnWindowCloseEvent &dispatchable) { this->m_isWindowRunning = false; });
+            [this](OnWindowCloseEvent &dispatchable) { this->m_isWindowRunning = false; }
+        );
     }
 }  // namespace RC

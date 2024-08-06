@@ -26,8 +26,7 @@ namespace RC {
 
     class LogFormatter : public spdlog::custom_flag_formatter {
        public:
-        void format(const spdlog::details::log_msg &, const std::tm &,
-                    spdlog::memory_buf_t &dest) override {
+        void format(const spdlog::details::log_msg &, const std::tm &, spdlog::memory_buf_t &dest) override {
             std::string serviceName = m_threadIdToServiceName[RC_THREAD_ID()];
             dest.append(serviceName.data(), serviceName.data() + serviceName.size());
         }

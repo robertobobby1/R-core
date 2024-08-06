@@ -18,8 +18,7 @@ namespace RC {
         std::vector<int> indexes = SearchServicesByClassName(service->GetChildClassName());
 
         if (indexes.size() > 1)
-            RC_ASSERT_MSG(false,
-                          "The search should not find more than 1, there are already duplicates!");
+            RC_ASSERT_MSG(false, "The search should not find more than 1, there are already duplicates!");
 
         // if already exists reassign given service to the already existing service
         if (indexes.size() == 1) {
@@ -42,7 +41,7 @@ namespace RC {
                 // Use already instantiated services when its found by class name and:
                 //		Dependency is unique service and hasn't been found yet
                 //		Dependency is non unique service and has been found and try to find flag is
-                //set
+                // set
                 if (describer.dep->IsUniqueService() && indexes.size() == 1 ||
                     !describer.dep->IsUniqueService() && describer.tryToFind &&
                         indexes.size() > 0) {
@@ -53,7 +52,7 @@ namespace RC {
                 // Add the dependency as a new service when:
                 //		Dependency is unique service and the service hasn't been found
                 //		Dependency is non unique service and it wasn't found by class name or try to
-                //find flag is not set
+                // find flag is not set
                 else if (describer.dep->IsUniqueService() && indexes.size() == 0 ||
                          !describer.dep->IsUniqueService()) {
                     // will be added to the end of the list, dependencies will be checked anyways
@@ -64,8 +63,7 @@ namespace RC {
                                   "Some error occured! Only one unique service should appear, "
                                   "check function RemoveDuplicatedUniqueServices");
                 } else {
-                    RC_ASSERT_MSG(false,
-                                  "This error should be unaccesible, check unhandled option!")
+                    RC_ASSERT_MSG(false, "This error should be unaccesible, check unhandled option!")
                 }
             }
         }
@@ -90,8 +88,7 @@ namespace RC {
         return orderedList;
     }
 
-    void DependencyManager::AddDependencyDependencies(std::vector<int>& orderedList,
-                                                      DependencyDescriber& describer) {
+    void DependencyManager::AddDependencyDependencies(std::vector<int>& orderedList, DependencyDescriber& describer) {
         // base case: dependency already in the list (this searches in the vector for the dep)
         for (auto& index : orderedList) {
             if (m_services[index]->GetId() == describer.dep->GetId()) return;
@@ -128,11 +125,7 @@ namespace RC {
                     for (auto& dependencyServiceDependencies :
                          dependencyService.second->m_dependencies) {
                         // assert it is not circular
-                        RC_ASSERT_MSG((*(dependencyServiceDependencies.dep) !=
-                                       service.second->GetChildClassName()),
-                                      "Circular dependency {0} -> {1} -> {0} -> ...",
-                                      service.second->GetChildClassName(),
-                                      describer.dep->GetChildClassName())
+                        RC_ASSERT_MSG((*(dependencyServiceDependencies.dep) != service.second->GetChildClassName()), "Circular dependency {0} -> {1} -> {0} -> ...", service.second->GetChildClassName(), describer.dep->GetChildClassName())
                     }
                 }
             }

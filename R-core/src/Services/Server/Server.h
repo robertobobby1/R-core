@@ -10,8 +10,7 @@ namespace RC {
         unsigned int MaxPoolSize;
         unsigned int Backlog;
 
-        ServerInput(unsigned int port = 1000, unsigned int maxPoolSize = 3,
-                    unsigned int backlog = 100)
+        ServerInput(unsigned int port = 1000, unsigned int maxPoolSize = 3, unsigned int backlog = 100)
             : Port(port), MaxPoolSize(maxPoolSize), Backlog(backlog) {}
     };
 

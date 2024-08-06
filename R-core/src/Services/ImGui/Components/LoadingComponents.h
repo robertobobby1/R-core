@@ -5,8 +5,7 @@
 #include "imgui.h"
 
 namespace RC {
-    static bool BufferingBar(const char* label, float value, const ImVec2& size_arg,
-                             const ImU32& bg_col, const ImU32& fg_col) {
+    static bool BufferingBar(const char* label, float value, const ImVec2& size_arg, const ImU32& bg_col, const ImU32& fg_col) {
         ImGuiWindow* window = GetCurrentWindow();
         if (window->SkipItems) return false;
 
@@ -28,8 +27,7 @@ namespace RC {
         const float circleWidth = circleEnd - circleStart;
 
         window->DrawList->AddRectFilled(bb.Min, ImVec2(pos.x + circleStart, bb.Max.y), bg_col);
-        window->DrawList->AddRectFilled(bb.Min, ImVec2(pos.x + circleStart * value, bb.Max.y),
-                                        fg_col);
+        window->DrawList->AddRectFilled(bb.Min, ImVec2(pos.x + circleStart * value, bb.Max.y), fg_col);
 
         const float t = g.Time;
         const float r = size.y / 2;
@@ -76,8 +74,7 @@ namespace RC {
 
         for (int i = 0; i < num_segments; i++) {
             const float a = a_min + ((float)i / (float)num_segments) * (a_max - a_min);
-            window->DrawList->PathLineTo(ImVec2(centre.x + ImCos(a + g.Time * 8) * radius,
-                                                centre.y + ImSin(a + g.Time * 8) * radius));
+            window->DrawList->PathLineTo(ImVec2(centre.x + ImCos(a + g.Time * 8) * radius, centre.y + ImSin(a + g.Time * 8) * radius));
         }
 
         window->DrawList->PathStroke(color, false, thickness);

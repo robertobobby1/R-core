@@ -7,7 +7,7 @@ namespace RC {
     HttpServer::HttpServer(unsigned int port)
         : Service(), m_port(port) {}
 
-    void HttpServer::Init(){};
+    void HttpServer::Init() {};
 
     void HttpServer::Run() {
         m_server = std::make_shared<httplib::Server>();

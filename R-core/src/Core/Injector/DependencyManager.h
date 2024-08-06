@@ -8,7 +8,7 @@ namespace RC {
     class DependencyManager {
        public:
         DependencyManager(std::map<int, std::shared_ptr<Service>>& services)
-            : m_services(services){};
+            : m_services(services) {};
 
         void Run();
         /*

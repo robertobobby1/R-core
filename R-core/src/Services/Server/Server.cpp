@@ -37,7 +37,8 @@ namespace RC {
         for (unsigned int i = 0; i < m_data.m_maxPoolSize; i++) {
             m_workerThreads.push_back(std::thread([this, workerThreadFunc, i]() {
                 LogFormatter::AddThreadName(
-                    RC_THREAD_ID(), fmt::format("{}-W{}", ToString(), to_string(i)).c_str());
+                    RC_THREAD_ID(), fmt::format("{}-W{}", ToString(), to_string(i)).c_str()
+                );
                 workerThreadFunc();
             }));
         }

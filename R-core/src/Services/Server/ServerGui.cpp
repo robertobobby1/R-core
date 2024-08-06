@@ -18,9 +18,11 @@ namespace RC {
 
     ServerGui::ServerGui() : Service() {
         this->m_dependencies.push_back(
-            DependencyDescriber("GUI", std::make_shared<SkeletonGui>(), false));
+            DependencyDescriber("GUI", std::make_shared<SkeletonGui>(), false)
+        );
         this->m_dependencies.push_back(
-            DependencyDescriber("SERVER", Server::Create(ServerInput()), false));
+            DependencyDescriber("SERVER", Server::Create(ServerInput()), false)
+        );
         m_serverData = ServerData();
         m_dockWindowName = "Server";
     }

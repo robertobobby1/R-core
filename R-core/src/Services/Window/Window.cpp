@@ -32,8 +32,7 @@ namespace RC {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 
-        m_window = glfwCreateWindow((int)m_data.m_width, (int)m_data.m_height, m_data.m_title,
-                                    nullptr, nullptr);
+        m_window = glfwCreateWindow((int)m_data.m_width, (int)m_data.m_height, m_data.m_title, nullptr, nullptr);
 
         glfwMakeContextCurrent(m_window);
         int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -57,12 +56,11 @@ namespace RC {
             data.m_eventCallback(event);
         });
 
-        glfwSetKeyCallback(m_window,
-                           [](GLFWwindow* window, int key, int scancode, int action, int mods) {
-                               WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+        glfwSetKeyCallback(m_window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+            WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
-                               // implement callback event
-                           });
+            // implement callback event
+        });
 
         glfwSetCharCallback(m_window, [](GLFWwindow* window, unsigned int keycode) {
             WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -75,7 +73,8 @@ namespace RC {
                 WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
                 // implement callback event
-            });
+            }
+        );
 
         glfwSetScrollCallback(m_window, [](GLFWwindow* window, double xOffset, double yOffset) {
             WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);

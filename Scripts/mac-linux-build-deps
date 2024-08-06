@@ -1,0 +1,17 @@
+#!/bin/bash
+
+cp -f R-core/vendor/submodulePremakes/premake5_glfw.lua R-core/vendor/glfw/premake5.lua;
+cp -f R-core/vendor/submodulePremakes/premake5_imgui.lua R-core/vendor/imgui/premake5.lua;
+
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        echo "OS => linux-gnu";
+        sudo apt install gobjc libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev;
+        Scripts/Premake/premake5-linux gmake2 --file=build_dependencies.lua;
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+        echo "OS => darwin";
+        Scripts/Premake/premake5-mac gmake2 --file=build_dependencies.lua;
+else
+        echo "OS => $OSTYPE, premake for OS NOT supported in script";
+fi
+
+make;

@@ -1,0 +1,23 @@
+# Binaries
+**/bin/
+bin-int/
+logs/
+**/libs/
+
+# Visual Studio files and folder
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
+**.csproj
+
+#mac 
+Makefile
+.DS_Store
+
+#vs code
+/.vscode
+settings.json
+
+imgui.ini
